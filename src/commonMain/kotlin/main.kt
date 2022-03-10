@@ -11,8 +11,12 @@ import com.soywiz.korma.geom.Rectangle
 import com.soywiz.korma.geom.degrees
 import com.soywiz.korma.geom.vector.roundRect
 import com.soywiz.korma.interpolation.Easing
+import storage.Storage
 
 suspend fun main() = Korge(width = 512, height = 824, bgcolor = RGBA(253, 247, 240)) {
+    //val storage = Storage()
+    //val user = storage.getUser()
+    //println(user)
     val font = resourcesVfs["clear_sans.fnt"].readBitmapFont()
     val cellSize = views.virtualWidth / 5.0
     val fieldSize = 50 + 4 * cellSize
