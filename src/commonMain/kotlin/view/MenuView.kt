@@ -2,6 +2,7 @@ package view
 
 import Dependency
 import com.soywiz.korge.input.onClick
+import com.soywiz.korge.input.onSwipe
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.position
@@ -18,10 +19,10 @@ class MenuView(dependency: Dependency) : Scene() {
         solidRect(100.0, 100.0, Colors.BLUE) {
             position(views.virtualWidth / 2, views.virtualHeight / 2)
             onClick {
+                controller.handleUserEdit("2")
                 launchImmediately {
                     sceneContainer.changeTo<GameScene>()
                 }
-                controller.editUser("2")
             }
         }
     }

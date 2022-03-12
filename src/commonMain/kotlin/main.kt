@@ -4,7 +4,6 @@ import com.soywiz.korim.color.*
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.SizeInt
 import controller.GameScene
-import controller.Menu2Controller
 import view.MenuView
 
 suspend fun main() = Korge(Korge.Config(module = GameModule))
@@ -17,9 +16,8 @@ object GameModule : Module() {
 
     override suspend fun AsyncInjector.configure() {
         mapInstance(Dependency("HELLO WORLD"))
-        val menuController = Menu2Controller(MenuView(get()))
         mapPrototype { GameScene(get()) }
-        mapPrototype { menuController.getView() }
+        mapPrototype { MenuView(get()) }
     }
 
 }
