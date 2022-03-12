@@ -25,6 +25,7 @@ buildscript {
 
 apply<KorgeGradlePlugin>()
 
+
 korge {
 	id = "com.battleofwits.BattleOfWits"
 	supportBox2d()

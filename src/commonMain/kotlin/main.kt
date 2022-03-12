@@ -35,36 +35,29 @@ suspend fun main() = Korge(width = 512, height = 824, bgcolor = RGBA(253, 247, 2
             }
         }
     }
-    val bgLogo = roundRect(cellSize, cellSize, 5.0, fill = Colors["#edc403"]) {
-        position(leftIndent, 30.0)
-    }
-    text("2048", cellSize * 0.5, Colors.WHITE, font).centerOn(bgLogo)
-    val bgBest = roundRect(cellSize * 1.5, cellSize * 0.8, 5.0, fill = Colors["#bbae9e"]) {
-        alignRightToRightOf(bgField)
-        alignTopToTopOf(bgLogo)
-    }
-    val bgScore = roundRect(cellSize * 1.5, cellSize * 0.8, 5.0, fill = Colors["#bbae9e"]) {
-        alignRightToLeftOf(bgBest, 24)
-        alignTopToTopOf(bgBest)
-    }
-    text("BEST", cellSize * 0.25, RGBA(239, 226, 210), font) {
-        centerXOn(bgBest)
-        alignTopToTopOf(bgBest, 5.0)
-    }
-    text("0", cellSize * 0.5, Colors.WHITE, font) {
-        setTextBounds(Rectangle(0.0, 0.0, bgBest.width, cellSize - 24.0))
-        alignment = TextAlignment.MIDDLE_CENTER
-        alignTopToTopOf(bgBest, 12.0)
-        centerXOn(bgBest)
-    }
-    text("SCORE", cellSize * 0.25, RGBA(239, 226, 210), font) {
-        centerXOn(bgScore)
-        alignTopToTopOf(bgScore, 5.0)
-    }
-    text("0", cellSize * 0.5, Colors.WHITE, font) {
-        setTextBounds(Rectangle(0.0, 0.0, bgScore.width, cellSize - 24.0))
-        alignment = TextAlignment.MIDDLE_CENTER
-        centerXOn(bgScore)
-        alignTopToTopOf(bgScore, 12.0)
-    }
+    populate()
+}
+
+fun populate() {
+
+// Access a Cloud Firestore instance from your Activity
+
+    val db = Firebase.firestore
+
+// Create a new user with a first and last name
+    val user = hashMapOf(
+            "first" to "Postmann",
+            "last" to "Katt",
+            "died" to 1944
+    )
+
+// Add a new document with a generated ID
+    db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+            }
 }
