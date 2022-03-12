@@ -6,11 +6,20 @@ buildscript {
 	repositories {
 		mavenLocal()
 		mavenCentral()
-		google()
+		google() // Google's Maven repository
 		maven { url = uri("https://plugins.gradle.org/m2/") }
 	}
 	dependencies {
-		classpath("com.soywiz.korlibs.korge.plugins:korge-gradle-plugin:$korgePluginVersion")
+		classpath("com.soywiz.korlibs.korge.plugins:korge-gradle-plugin:$korgePluginVersion");
+		classpath("com.google.gms:google-services:4.3.10")
+		// Import the Firebase BoM
+		classpath(platform("com.google.firebase:firebase-bom:29.2.0"));
+		// Add the dependency for the Firebase SDK for Google Analytics
+		// When using the BoM, don't specify versions in Firebase dependencies
+		classpath("com.google.firebase:firebase-analytics-ktx")
+
+		// Add the dependencies for any other desired Firebase products
+		// https://firebase.google.com/docs/android/setup#available-libraries
 	}
 }
 
@@ -34,3 +43,15 @@ korge {
 	targetIos()
 	targetAndroidIndirect() // targetAndroidDirect()
 }
+
+/*
+allprojects {
+	repositories {
+		google()  // Google's Maven repository
+	}
+}
+ */
+
+apply(plugin="com.android.application")
+apply(plugin="com.google.gms.google-services")
+
