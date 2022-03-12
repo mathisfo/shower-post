@@ -16,7 +16,7 @@ buildscript {
 		classpath(platform("com.google.firebase:firebase-bom:29.2.0"));
 		// Add the dependency for the Firebase SDK for Google Analytics
 		// When using the BoM, don't specify versions in Firebase dependencies
-		classpath("com.google.firebase:firebase-analytics-ktx")
+		classpath("com.google.firebase:firebase-firestore-ktx")
 
 		// Add the dependencies for any other desired Firebase products
 		// https://firebase.google.com/docs/android/setup#available-libraries
@@ -24,11 +24,14 @@ buildscript {
 }
 
 apply<KorgeGradlePlugin>()
-
+//apply(plugin="com.android.application")
+//apply(plugin="com.google.gms.google-services")
 
 korge {
 	id = "com.battleofwits.BattleOfWits"
 	supportBox2d()
+	//androidCompileSdk = 29
+	//androidSdk(compileSdk = 29, minSdk = 16, targetSdk = 29)
 // To enable all targets at once
 
 	//targetAll()
@@ -45,14 +48,12 @@ korge {
 	targetAndroidIndirect() // targetAndroidDirect()
 }
 
-/*
+
 allprojects {
 	repositories {
 		google()  // Google's Maven repository
 	}
 }
- */
 
-apply(plugin="com.android.application")
-apply(plugin="com.google.gms.google-services")
+
 
