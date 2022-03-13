@@ -1,5 +1,5 @@
-import com.progark.gameofwits.view.LobbyView
-import com.soywiz.korge.*
+import com.progark.gameofwits.view.lobby.LobbyHostView
+import com.progark.gameofwits.view.lobby.LobbyView
 import com.soywiz.korge.scene.Module
 import com.soywiz.korim.color.*
 import com.soywiz.korinject.AsyncInjector
@@ -18,6 +18,7 @@ object GameModule : Module() {
         mapPrototype { GameScene(get()) }
         mapPrototype { MenuView(get()) }
         mapPrototype { LobbyView(get()) }
+        mapPrototype { LobbyHostView(get()) }
     }
 }
 

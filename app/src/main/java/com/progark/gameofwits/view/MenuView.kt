@@ -1,16 +1,15 @@
 package view
 
 import Dependency
-import com.progark.gameofwits.view.LobbyView
+import com.progark.gameofwits.view.lobby.LobbyHostView
+import com.progark.gameofwits.view.lobby.LobbyView
 import com.soywiz.korge.input.onClick
-import com.soywiz.korge.input.onSwipe
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.position
 import com.soywiz.korge.view.solidRect
 import com.soywiz.korim.color.Colors
 import com.soywiz.korio.async.launchImmediately
-import controller.GameScene
 import controller.MenuController
 
 class MenuView(dependency: Dependency) : Scene() {
