@@ -6,8 +6,6 @@ import com.soywiz.korma.geom.SizeInt
 import controller.GameScene
 import view.MenuView
 
-suspend fun main() = Korge(Korge.Config(module = GameModule))
-
 object GameModule : Module() {
     override val mainScene = MenuView::class
     override val bgcolor = RGBA(253, 247, 240)
@@ -19,7 +17,6 @@ object GameModule : Module() {
         mapPrototype { GameScene(get()) }
         mapPrototype { MenuView(get()) }
     }
-
 }
 
 class Dependency(val value: String)
