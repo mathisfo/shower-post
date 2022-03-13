@@ -1,6 +1,7 @@
 package com.progark.gameofwits.view.lobby
 
 import Dependency
+import com.progark.gameofwits.controller.LobbyController
 
 import com.soywiz.korge.input.onClick
 import com.soywiz.korge.scene.Scene
@@ -14,11 +15,13 @@ import com.soywiz.korim.font.BitmapFont
 import com.soywiz.korim.font.readBitmapFont
 import com.soywiz.korio.file.std.resourcesVfs
 
-class LobbyHostView(dependency: Dependency) : Scene() {
+class LobbyHostView(val dependency: Dependency) : Scene() {
+    private val controller = LobbyController(dependency.repository)
 
     override suspend fun Container.sceneInit(): Unit {
         val font: BitmapFont = resourcesVfs["clear_sans.fnt"].readBitmapFont()
-        text("Title", 500.0, font = font, color = Colors.BLACK ) {
+        val ID = dependency.repository.getLobbyID()
+        text(ID, 500.0, font = font, color = Colors.BLACK ) {
             
         }
 
