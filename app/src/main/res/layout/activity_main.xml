@@ -27,12 +27,12 @@
 
     <FrameLayout
         android:id="@+id/tool_container"
-        app:layout_constraintTop_toBottomOf="@id/loadViewButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="355dp"
+        android:layout_height="551dp"
         android:background="#1C1C1C"
-        android:layout_width="640px"
-        android:layout_height="480px" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loadViewButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

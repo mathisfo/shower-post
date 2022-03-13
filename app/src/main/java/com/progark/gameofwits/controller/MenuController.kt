@@ -8,4 +8,5 @@ class MenuController {
     fun handleUserEdit(id: String) {
         this.user = User(id)
     }
+
 }
