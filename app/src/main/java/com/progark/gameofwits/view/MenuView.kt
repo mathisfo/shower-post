@@ -1,6 +1,7 @@
 package view
 
 import Dependency
+import com.progark.gameofwits.view.LobbyView
 import com.soywiz.korge.input.onClick
 import com.soywiz.korge.input.onSwipe
 import com.soywiz.korge.scene.Scene
@@ -21,7 +22,7 @@ class MenuView(dependency: Dependency) : Scene() {
             onClick {
                 controller.handleUserEdit("2")
                 launchImmediately {
-                    sceneContainer.changeTo<GameScene>()
+                    sceneContainer.changeTo<LobbyView>()
                 }
             }
         }

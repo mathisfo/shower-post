@@ -1,3 +1,4 @@
+import com.progark.gameofwits.view.LobbyView
 import com.soywiz.korge.*
 import com.soywiz.korge.scene.Module
 import com.soywiz.korim.color.*
@@ -16,6 +17,7 @@ object GameModule : Module() {
         mapInstance(Dependency("HELLO WORLD"))
         mapPrototype { GameScene(get()) }
         mapPrototype { MenuView(get()) }
+        mapPrototype { LobbyView(get()) }
     }
 }
 
