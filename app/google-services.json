@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "951384451735",
+    "firebase_url": "https://tourist-post-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "tourist-post",
     "storage_bucket": "tourist-post.appspot.com"
   },
@@ -10,6 +11,35 @@
         "mobilesdk_app_id": "1:951384451735:android:ca499620c30f2824dbd7d2",
         "android_client_info": {
           "package_name": "com.battleofwits.BattleOfWits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951384451735-ask5bot3t0h192hca4ems7dhestbof7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgvNDg5UWe9peucLBdAqM10ciaONdDl7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951384451735-ask5bot3t0h192hca4ems7dhestbof7u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951384451735:android:502053b03acb9803dbd7d2",
+        "android_client_info": {
+          "package_name": "com.progark.gameofwits"
         }
       },
       "oauth_client": [
