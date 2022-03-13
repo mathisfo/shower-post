@@ -40,9 +40,7 @@ suspend fun main() = Korge(width = 512, height = 824, bgcolor = RGBA(253, 247, 2
 
 
 fun populate() {
-
     val db = Firebase.firestore
-// Access a Cloud Firestore instance from your Activity
 
 // Create a new user with a first and last name
     val user = hashMapOf(
