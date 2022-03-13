@@ -14,8 +14,6 @@ import com.soywiz.korma.geom.vector.roundRect
 class GameScene(val dependency: Dependency) : Scene() {
 
     override suspend fun Container.sceneInit() {
-
-        println(dependency.value)
         val font = resourcesVfs["clear_sans.fnt"].readBitmapFont()
         val cellSize = views.virtualWidth / 5.0
         val fieldSize = 50 + 4 * cellSize
