@@ -1,84 +1,58 @@
 package com.progark.gameofwits
 
-import GameModule
-import android.content.ContentValues.TAG
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import android.view.Menu
+import android.view.MenuItem
 import com.progark.gameofwits.databinding.ActivityMainBinding
-import com.soywiz.korge.android.KorgeAndroidView
 
-
-// This file is kinda a mess just :)
-// Dere må lese om hvordan AndroidActivitiy fungere for denne delen
-// Basically så leser den settingsene som ligger i main.kt
-// Resten er native stuff
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var korgeAndroidView: KorgeAndroidView
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /***
-         * Example of how we can add data to firestore:
-        val db = Firebase.firestore
-
-        val user = hashMapOf(
-        "first" to "Ada",
-        "last" to "Lovelace",
-        "died" to 1815
-        )
-
-        db.collection("users")
-        .add(user)
-        .addOnSuccessListener { documentReference ->
-        Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-        }
-        .addOnFailureListener { e ->
-        Log.w(TAG, "Error adding document", e)
-        }
-         */
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
-        korgeAndroidView = KorgeAndroidView(this)
-        binding.toolContainer.addView(korgeAndroidView)
+        setSupportActionBar(binding.toolbar)
 
-        binding.loadViewButton.setOnClickListener {
-            binding.loadViewButton.isEnabled = false
-            binding.unloadViewButton.isEnabled = true
-            loadToolModule()
-        }
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.unloadViewButton.setOnClickListener {
-            binding.loadViewButton.isEnabled = true
-            binding.unloadViewButton.isEnabled = false
-            unloadToolModule()
+        binding.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.loadViewButton.isEnabled = true
-        binding.unloadViewButton.isEnabled = false
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
     }
 
-    override fun onPause() {
-        super.onPause()
-        unloadToolModule()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
-    private fun loadToolModule() {
-        korgeAndroidView.loadModule(GameModule)
-    }
-
-    private fun unloadToolModule() {
-        korgeAndroidView.unloadModule()
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 }
