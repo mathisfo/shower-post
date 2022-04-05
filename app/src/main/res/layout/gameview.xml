@@ -7,15 +7,17 @@
     tools:context=".GameView">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/LobbyTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:ignore="MissingConstraints" />
+        android:text="LobbyView"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="171dp"
+        tools:layout_editor_absoluteY="62dp" />
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Navigate to LobbyView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
