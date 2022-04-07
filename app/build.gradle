@@ -6,6 +6,9 @@ plugins {
 
 android {
     compileSdk 32
+    dataBinding {
+        enabled = true
+    }
 
     buildFeatures {
         viewBinding true
@@ -51,6 +54,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation platform('com.google.firebase:firebase-bom:29.2.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    // Coroutine support
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 }
 
 apply plugin: 'com.google.gms.google-services'

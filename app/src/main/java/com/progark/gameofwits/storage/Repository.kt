@@ -9,5 +9,7 @@ interface Repository {
     suspend fun getLobbyID(): String
     // fun getActiveLobbies(): List<Lobby>
     // fun getLobbyById(id: String): Lobby
+    suspend fun getLobbies(): List<Lobby>
+    suspend fun getLobby(id: String): Lobby
 
 }
