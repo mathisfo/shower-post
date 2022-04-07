@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.components.Dependency
 import com.progark.gameofwits.controller.LobbyController
-import storage.Repository
 
 class LobbyView() : AppCompatActivity() {
     val controller = LobbyController();
@@ -21,7 +19,11 @@ class LobbyView() : AppCompatActivity() {
         checkbox2.setText(controller.lobbyMembers("1").get("2"))
 
         btn.setOnClickListener { openGameView() }
+        //val pin = CreateGameFragment().getGamePIN()
+        //println("PIN: " + pin)
     }
+
+
 
     private fun openGameView() {
         val intent = Intent(this, GameView::class.java)
