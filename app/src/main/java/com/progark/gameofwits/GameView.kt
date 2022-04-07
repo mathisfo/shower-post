@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.progark.gameofwits.model.Lobby
 
 class GameView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,40 +19,24 @@ class GameView : AppCompatActivity() {
         val btn: Button = findViewById(R.id.backButton)
         btn.setOnClickListener { openLobbyView() }
 
-        val loadLobbyBtn: Button = findViewById(R.id.loadLobbyButton)
-        loadLobbyBtn.setOnClickListener {loadLobby()}
-
         val textInput: TextInputEditText = findViewById(R.id.textInputEditText)
         val confirmWordBtn: Button = findViewById(R.id.confirmWordButton)
         confirmWordBtn.setOnClickListener {sendWordToFirebase(textInput.text.toString())}
     }
 
-    private fun loadLobby() : Lobby? {
-        val db = Firebase.firestore
-        var lobby: Lobby? = null
-        db.collection("lobbies").document("D82qYqJLp1oyjJ8EP3cC").get().addOnSuccessListener { document ->
-            if (document != null) {
-                Log.d(TAG, "DocumentSnapshot data: $document")
-                lobby = Lobby(document.id, true, document.get("users") as List<String>)
-                println(lobby)
-            } else {
-                Log.d(TAG, "No such document")
-            }
-        }.addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-        return lobby
-    }
-
     private fun sendWordToFirebase(word: String) {
         val db = Firebase.firestore
+        val docRef = db.collection("games").document("game1")
+        val wordEntry = hashMapOf(
+            // TODO: fetch the username and use that instead
+            "user2" to word
+        )
 
-        db.collection("words").add(word)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
+        // TODO: Dynamically set the round-number
+        docRef.update("round1", FieldValue.arrayUnion(wordEntry)).addOnSuccessListener{ documentReference ->
+            Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
+            }.addOnFailureListener { e ->
+                Log.w(TAG, "Error adding word", e)
             }
     }
 

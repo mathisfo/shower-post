@@ -21,26 +21,6 @@
         android:layout_height="wrap_content"
         android:text="Navigate to LobbyView" />
 
-    <Button
-        android:id="@+id/loadLobbyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="47dp"
-        android:text="Load Lobby"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LobbyTitle" />
-
-    <TextView
-        android:id="@+id/outputID"
-        android:layout_width="192dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="32dp"
-        android:text="idText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loadLobbyButton" />
-
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textInputEditText"
         android:layout_width="match_parent"
