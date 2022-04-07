@@ -2,18 +2,26 @@ package storage
 
 import android.content.ContentValues
 import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.model.Lobby
+import kotlinx.coroutines.tasks.await
 
-class Storage : Repository {
+class Storage private constructor(val db: FirebaseFirestore): Repository {
+    companion object {
+        private var instance : Storage? = null
+        fun getInstance() = instance ?: synchronized(this) {
+            instance?: Storage(Firebase.firestore).also { instance = it }
+        }
+    }
     override fun getUser(): String {
         // TODO: get user from firebase
         return ""
     }
 
     override fun addLobbyToFirestore(lobby: HashMap<String, Any>) {
-        val db = Firebase.firestore
-        db.collection("lobbies")
+        this.db.collection("lobbies")
             .add(lobby)
             .addOnSuccessListener { documentReference ->
                 Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
@@ -27,6 +35,23 @@ class Storage : Repository {
         return "lobbyID"
     }
 
+    override suspend fun getLobbies(): List<Lobby> {
+        val snapshot= db.collection("lobbies").get().await()
+        val lobbies = snapshot.map { doc ->
+            val id = doc.id
+            val active = doc.getBoolean("active")!!
+            val lobby = Lobby(id, active, listOf())
+            lobby
+        }
+        return lobbies
+    }
+
+    override suspend fun getLobby(id: String): Lobby {
+        val doc = db.collection("lobbies").document(id).get().await()
+        val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.get("users") as List<String>)
+        print(lobby)
+        return lobby
+    }
     /**
     override suspend fun getLobbyID(): String {
         val db = Firebase.firestore
