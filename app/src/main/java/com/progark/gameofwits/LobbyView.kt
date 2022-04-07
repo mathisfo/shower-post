@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.components.Dependency
+import com.progark.gameofwits.controller.LobbyController
+import storage.Repository
 
-
-class LobbyView : AppCompatActivity() {
+class LobbyView(dependency: Dependency) : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lobbyview)
