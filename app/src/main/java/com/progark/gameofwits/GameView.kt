@@ -5,12 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.model.Lobby
 
@@ -35,8 +32,8 @@ class GameView : AppCompatActivity() {
         var lobby: Lobby? = null
         db.collection("lobbies").document("D82qYqJLp1oyjJ8EP3cC").get().addOnSuccessListener { document ->
             if (document != null) {
-                Log.d(TAG, "DocumentSnapshot data: ${document}")
-                lobby = Lobby("D82qYqJLp1oyjJ8EP3cC", true, document.get("users") as List<String>)
+                Log.d(TAG, "DocumentSnapshot data: $document")
+                lobby = Lobby(document.id, true, document.get("users") as List<String>)
                 println(lobby)
             } else {
                 Log.d(TAG, "No such document")
@@ -44,19 +41,9 @@ class GameView : AppCompatActivity() {
         }.addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
             }
-
-        updateText(lobby)
         return lobby
     }
 
-    private fun updateText (lobby: Lobby?) {
-        val outputID: TextView = findViewById<TextView>(R.id.outputID)
-        if (lobby?.id === "D82qYqJLp1oyjJ8EP3cC"){
-            outputID.text = lobby.id
-        } else {
-            outputID.text = "Did not work"
-        }
-    }
     private fun sendWordToFirebase(word: String) {
         val db = Firebase.firestore
 
