@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.components.Dependency
 import com.progark.gameofwits.controller.LobbyController
@@ -20,7 +21,14 @@ class LobbyView() : AppCompatActivity() {
         checkbox1.setText(controller.lobbyMembers("1").get("1"))
         checkbox2.setText(controller.lobbyMembers("1").get("2"))
 
-        btn.setOnClickListener { openGameView() }
+        btn.setOnClickListener {
+            if (checkbox1.isChecked && checkbox2.isChecked) {
+                openGameView()
+            }
+            else {
+                Toast.makeText(this,"Waiting for all players to get ready",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun openGameView() {
