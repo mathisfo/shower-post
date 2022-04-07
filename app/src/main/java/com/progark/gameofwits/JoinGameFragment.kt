@@ -32,7 +32,7 @@ class JoinGameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         println("TEST ME")
         binding.joinBackButton.setOnClickListener {
-            findNavController().navigate(R.id.action_JoinGameFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_JoinGameFragment_to_MainMenuFragment)
         }
         binding.joinConfirmButton.setOnClickListener{
             val userName = binding.joinNameField.text.toString()

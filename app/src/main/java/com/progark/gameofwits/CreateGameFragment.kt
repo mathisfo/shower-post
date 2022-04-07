@@ -8,14 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.progark.gameofwits.databinding.FragmentSecondBinding
+import com.progark.gameofwits.databinding.FragmentCreateGameBinding
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class CreateGameFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentCreateGameBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -26,7 +26,7 @@ class SecondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateGameBinding.inflate(inflater, container, false)
 
         return binding.root
 
@@ -36,15 +36,24 @@ class SecondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.hostBackButton.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_CreateGameFragment_to_MainMenuFragment)
         }
         binding.hostConfirmButton.setOnClickListener{
             val userName = binding.hostNameField.text.toString()
             if (userName.isEmpty()){
                 Toast.makeText(context,"You did not enter a userName",Toast.LENGTH_SHORT).show()
-            } else openLobbyView()
+            } else {
+                createGamePIN()
+                openLobbyView()}
+
         }
 
+    }
+
+    private fun createGamePIN():String {
+        var pin = ""
+        for (i in 1..5) pin+=(0..9).random().toString()
+        return pin
     }
 
     private fun openLobbyView() {
