@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_JoinGameFragment"
+            app:destination="@id/JoinGameFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -25,4 +28,16 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/JoinGameFragment"
+        android:name="com.progark.gameofwits.JoinGameFragment"
+        android:label="@string/join_game_fragment_label"
+        tools:layout="@layout/fragment_join_game">
+
+        <action
+            android:id="@+id/action_JoinGameFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+
+
 </navigation>
