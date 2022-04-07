@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.progark.gameofwits.databinding.FragmentFirstBinding
+import com.progark.gameofwits.databinding.FragmentMainMenuBinding
 
 
-class FirstFragment : Fragment() {
+class MainMenuFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentMainMenuBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,7 +22,7 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentMainMenuBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,10 +30,10 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.menuCreateButton.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_MainMenuFragment_to_CreateGameFragment)
         }
         binding.menuJoinButton.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_JoinGameFragment)
+            findNavController().navigate(R.id.action_MainMenuFragment_to_JoinGameFragment)
         }
     }
 

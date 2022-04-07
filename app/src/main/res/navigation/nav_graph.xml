@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/MainMenuFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.progark.gameofwits.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/MainMenuFragment"
+        android:name="com.progark.gameofwits.MainMenuFragment"
+        android:label="@string/main_menu_fragment_label"
+        tools:layout="@layout/fragment_main_menu">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_MainMenuFragment_to_CreateGameFragment"
+            app:destination="@id/CreateGameFragment" />
         <action
-            android:id="@+id/action_FirstFragment_to_JoinGameFragment"
+            android:id="@+id/action_MainMenuFragment_to_JoinGameFragment"
             app:destination="@id/JoinGameFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.progark.gameofwits.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/CreateGameFragment"
+        android:name="com.progark.gameofwits.CreateGameFragment"
+        android:label="@string/create_game_fragment_label"
+        tools:layout="@layout/fragment_create_game">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_CreateGameFragment_to_MainMenuFragment"
+            app:destination="@id/MainMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/JoinGameFragment"
@@ -35,8 +35,8 @@
         tools:layout="@layout/fragment_join_game">
 
         <action
-            android:id="@+id/action_JoinGameFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_JoinGameFragment_to_MainMenuFragment"
+            app:destination="@id/MainMenuFragment" />
     </fragment>
 
 
