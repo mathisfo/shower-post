@@ -15,7 +15,6 @@ class LobbyView(dependency: Dependency) : AppCompatActivity() {
         val btn: Button = findViewById(R.id.nextbutton)
         btn.setOnClickListener { openGameView() }
     }
-
     private fun openGameView() {
         val intent = Intent(this, GameView::class.java)
         startActivity(intent)
