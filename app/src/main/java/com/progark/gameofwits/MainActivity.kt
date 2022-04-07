@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         btn.setOnClickListener { openLobbyView() }
 
         setSupportActionBar(binding.toolbar)
-
+        /**
         val db = Firebase.firestore
 
         val user = hashMapOf(
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
             }
-
+        **/
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
