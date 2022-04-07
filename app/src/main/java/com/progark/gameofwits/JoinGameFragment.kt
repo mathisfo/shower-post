@@ -8,14 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.progark.gameofwits.databinding.FragmentSecondBinding
+import com.progark.gameofwits.databinding.FragmentJoinGameBinding
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
-class SecondFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+class JoinGameFragment : Fragment() {
+
+    private var _binding: FragmentJoinGameBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,32 +23,35 @@ class SecondFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
-
+        // Inflate the layout for this fragment
+        _binding = FragmentJoinGameBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.hostBackButton.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        println("TEST ME")
+        binding.joinBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_JoinGameFragment_to_FirstFragment)
         }
-        binding.hostConfirmButton.setOnClickListener{
-            val userName = binding.hostNameField.text.toString()
+        binding.joinConfirmButton.setOnClickListener{
+            val userName = binding.joinNameField.text.toString()
+            val gameCode = binding.joinCodeField.text.toString()
+            val testCode = "123"
             if (userName.isEmpty()){
-                Toast.makeText(context,"You did not enter a userName",Toast.LENGTH_SHORT).show()
-            } else openLobbyView()
+                Toast.makeText(context,"You did not enter a userName", Toast.LENGTH_SHORT).show()
+            }
+            if (!gameCode.equals(testCode))
+                Toast.makeText(context, "Invalid game code", Toast.LENGTH_SHORT).show()
+            else openLobbyView()
         }
-
     }
 
     private fun openLobbyView() {
         val intent = Intent(getActivity(), LobbyView::class.java)
         startActivity(intent)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

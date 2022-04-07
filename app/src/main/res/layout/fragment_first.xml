@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="or"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +19,7 @@
         app:layout_constraintVertical_bias="0.514" />
 
     <Button
-        android:id="@+id/button_first"
+        android:id="@+id/menuCreateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Game"
@@ -30,7 +31,7 @@
         app:layout_constraintVertical_bias="0.43" />
 
     <Button
-        android:id="@+id/button_first2"
+        android:id="@+id/menuJoinButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Join Game"
@@ -41,7 +42,7 @@
         app:layout_constraintVertical_bias="0.591" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/menuTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Game Of Wits"

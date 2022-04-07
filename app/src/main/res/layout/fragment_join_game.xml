@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondFragment">
+    tools:context=".JoinGameFragment">
+
+    <!-- TODO: Update blank fragment layout -->
 
     <Button
-        android:id="@+id/hostBackButton"
+        android:id="@+id/joinConfirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:layout_marginBottom="139dp"
+        android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hostConfirmButton"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintTop_toBottomOf="@+id/joinNameField" />
 
     <EditText
-        android:id="@+id/hostNameField"
+        android:id="@+id/joinNameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -30,23 +32,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hostTextView"
+        app:layout_constraintTop_toBottomOf="@+id/joinTextView"
         app:layout_constraintVertical_bias="0.100000024" />
 
-    <Button
-        android:id="@+id/hostConfirmButton"
+    <EditText
+        android:id="@+id/joinCodeField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="139dp"
-        android:text="Confirm"
+        android:ems="10"
+        android:hint="Game code:"
+        android:inputType="text"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hostNameField" />
+        app:layout_constraintTop_toBottomOf="@+id/joinNameField"
+        app:layout_constraintVertical_bias="0.050000012" />
 
     <TextView
-        android:id="@+id/hostTextView"
+        android:id="@+id/joinTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Name"
@@ -57,4 +62,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.224" />
+
+    <Button
+        android:id="@+id/joinBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/joinConfirmButton"
+        app:layout_constraintVertical_bias="0.100000024" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
