@@ -16,9 +16,9 @@ class GameView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gameview)
 
-        val btn: Button = findViewById(R.id.backButton)
-        btn.setOnClickListener { openLobbyView() }
+        val endofgame: Button = findViewById(R.id.endofgamebtn)
 
+        endofgame.setOnClickListener { openEndOfGameView() }
         val textInput: TextInputEditText = findViewById(R.id.textInputEditText)
         val confirmWordBtn: Button = findViewById(R.id.confirmWordButton)
         confirmWordBtn.setOnClickListener {sendWordToFirebase(textInput.text.toString())}
@@ -40,8 +40,8 @@ class GameView : AppCompatActivity() {
             }
     }
 
-    private fun openLobbyView() {
-        val intent = Intent(this, LobbyView::class.java)
+    private fun openEndOfGameView() {
+        val intent = Intent(this, EndOfGameView::class.java)
         startActivity(intent)
     }
 }
