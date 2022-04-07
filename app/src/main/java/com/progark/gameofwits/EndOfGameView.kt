@@ -5,23 +5,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-class GameView : AppCompatActivity() {
+class EndOfGameView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.gameview)
-        val btn: Button = findViewById(R.id.backButton)
-        val endofgame: Button = findViewById(R.id.endofgamebtn)
+        setContentView(R.layout.endofgameview)
 
-        btn.setOnClickListener { openLobbyView() }
-        endofgame.setOnClickListener { openEndOfGameView() }
+        val playagain: Button = findViewById(R.id.playagainbtn)
+        val mainmenu: Button = findViewById(R.id.mainmenubtn)
+
+        playagain.setOnClickListener { openLobbyView() }
+        mainmenu.setOnClickListener { openMainActivity() }
     }
 
     private fun openLobbyView() {
         val intent = Intent(this, LobbyView::class.java)
         startActivity(intent)
     }
-    private fun openEndOfGameView() {
-        val intent = Intent(this, EndOfGameView::class.java)
+
+    private fun openMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 }
