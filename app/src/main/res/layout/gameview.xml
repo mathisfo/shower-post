@@ -70,38 +70,17 @@
         app:layout_constraintTop_toBottomOf="@+id/letter5"
         app:layout_constraintVertical_bias="0.055" />
 
-    <TextView
-        android:id="@+id/LobbyTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LobbyView"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="171dp"
-        tools:layout_editor_absoluteY="62dp" />
-
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Navigate to LobbyView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.147" />
 
     <Button
         android:id="@+id/endofgamebtn"
         android:layout_width="158dp"
         android:layout_height="52dp"
+        android:layout_marginTop="536dp"
         android:text="End of game"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.701" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/letter2"
@@ -168,7 +147,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.14" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
