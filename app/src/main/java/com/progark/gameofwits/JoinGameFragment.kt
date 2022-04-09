@@ -2,13 +2,18 @@ package com.progark.gameofwits
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.databinding.FragmentJoinGameBinding
+import com.progark.gameofwits.viewmodel.MainMenuViewModel
 
 
 class JoinGameFragment : Fragment() {
@@ -18,6 +23,7 @@ class JoinGameFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val viewModel: MainMenuViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,20 +36,20 @@ class JoinGameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        println("TEST ME")
+
+        // These must be set
+        binding.mainMenuViewModel =  viewModel
+        binding.lifecycleOwner = this
+
         binding.joinBackButton.setOnClickListener {
             findNavController().navigate(R.id.action_JoinGameFragment_to_MainMenuFragment)
         }
-        binding.joinConfirmButton.setOnClickListener{
-            val userName = binding.joinNameField.text.toString()
-            val gameCode = binding.joinCodeField.text.toString()
-            val testCode = "123"
-            if (userName.isEmpty()){
-                Toast.makeText(context,"You did not enter a userName", Toast.LENGTH_SHORT).show()
+        viewModel.validOrError.observe(viewLifecycleOwner) {(valid, error) ->
+            if (!valid) {
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+            } else {
+                openLobbyView()
             }
-            if (!gameCode.equals(testCode))
-                Toast.makeText(context, "Invalid game code", Toast.LENGTH_SHORT).show()
-            else openLobbyView()
         }
     }
 
