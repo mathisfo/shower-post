@@ -7,8 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.progark.gameofwits.databinding.FragmentCreateGameBinding
+import com.progark.gameofwits.databinding.FragmentSecondBinding
+import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.viewmodel.LobbyViewModel
 
 /**
  * A simple [Fragment] subclass for the "Create Game" view.
@@ -42,6 +47,10 @@ class CreateGameFragment : Fragment() {
             } else {
                 createGamePIN()
                 openLobbyView()}
+
+                val lobby = Lobby("1234", true, 0.0, userName)
+
+                openLobbyView(lobby)}
         }
     }
 
@@ -58,8 +67,14 @@ class CreateGameFragment : Fragment() {
     }
     **/
 
-    private fun openLobbyView() {
+    private fun openLobbyView(lobby: Lobby) {
+
+        val lobbyView: LobbyViewModel by viewModels()
+
         val intent = Intent(getActivity(), LobbyView::class.java)
+        lobbyView.createLobbyAndAddToStore(lobby)
+
+        intent.putExtra("lobbyHoster", lobby.hostName)
         startActivity(intent)
     }
 

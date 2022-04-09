@@ -31,7 +31,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         return ""
     }
 
-    override fun addLobbyToFirestore(lobby: HashMap<String, Any>) {
+    override fun createLobbyToStore(lobby: HashMap<String, Any>) {
         this.db.collection("lobbies")
             .add(lobby)
             .addOnSuccessListener { documentReference ->
@@ -51,7 +51,10 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         val lobbies = snapshot.map { doc ->
             val id = doc.id
             val active = doc.getBoolean("active")!!
-            val lobby = Lobby(id, active, listOf())
+            val active_round = doc.getDouble("active_round")
+            val hostName = doc.getString("hostName")
+
+            val lobby: Lobby = Lobby(id, active, active_round!!, hostName!!)
             lobby
         }
         return lobbies
@@ -59,7 +62,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
 
     override suspend fun getLobby(id: String): Lobby {
         val doc = db.collection("lobbies").document(id).get().await()
-        val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.get("users") as List<String>)
+        val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!! )
         print(lobby)
         return lobby
     }
@@ -92,6 +95,16 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
             .update(
                 "words.turn"+turn+"."+userID, word
             ).await()
+    override suspend fun createLobbyAndAddToStore(lobby: Lobby) {
+        val lobbyHash = hashMapOf(
+            "active" to lobby.active,
+            "active_round" to lobby.active_round,
+            "hostName" to lobby.hostName
+        )
+
+        print(" LOBBY")
+       this.db.collection("lobbies").add(lobbyHash).addOnSuccessListener { print("LOBBY BLE ADDA") }.await();
+
     }
 
     /**
