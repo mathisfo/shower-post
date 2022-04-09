@@ -14,7 +14,7 @@ class LobbyViewModel(private val repository: Repository = Storage.getInstance())
     var activeLobbyId = MutableLiveData("")
 
     fun getLobby() = liveData {
-        emit(repository.getLobby(activeLobbyId.value!!))
+        emit(repository.getLobby(activeLobbyId.value.toString()))
     }
 
 

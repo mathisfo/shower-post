@@ -64,7 +64,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         println(id)
         val doc = db.collection("lobbies").document(id).get().await()
         val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!! )
-        print(lobby)
+
         return lobby
     }
 
