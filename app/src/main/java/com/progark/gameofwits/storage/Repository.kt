@@ -19,6 +19,6 @@ interface Repository {
     suspend fun getGame(id: String): GameDoc
     suspend fun addGameToFirebase(game: GameDoc): String?
     suspend fun addWordToFirebase(userID: String, word: String, turn: Int, gameID: String)
-    suspend fun createLobbyAndAddToStore(lobby: Lobby);
+    suspend fun createLobbyAndAddToStore(lobby: Lobby): String;
 
 }

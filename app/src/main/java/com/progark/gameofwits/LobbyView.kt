@@ -12,21 +12,30 @@ import com.google.firebase.components.Dependency
 import com.progark.gameofwits.controller.LobbyController
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.viewmodel.LobbyViewModel
-import storage.Repository
-import storage.Storage
 
 class LobbyView() : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    val lobbyviewmodel: LobbyViewModel by viewModels();
+
+
+
+
+      override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.lobbyview)
         val i: Intent = getIntent();
         val hoster: String = i.getExtras()!!.getString("lobbyHoster", "")
         val btn: Button = findViewById(R.id.nextbutton)
         val checkbox1: CheckBox = findViewById<CheckBox>(R.id.playerCheckbox1)
         val checkbox2: CheckBox = findViewById<CheckBox>(R.id.playerCheckbox2)
+        val hostCheckbox: CheckBox = findViewById<CheckBox>(R.id.playerCheckbox1)
+          val activeLobby = lobbyviewmodel.getLobby().observe(this) { lobby ->
 
-        checkbox1.setText(hoster + " [HOST]")
+              println(lobby)
+              hostCheckbox.setText(lobby.hostName)
+          }
         btn.setOnClickListener { openGameView() }
         //val pin = CreateGameFragment().getGamePIN()
         //println("PIN: " + pin)

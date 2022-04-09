@@ -61,6 +61,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
     }
 
     override suspend fun getLobby(id: String): Lobby {
+        println(id)
         val doc = db.collection("lobbies").document(id).get().await()
         val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!! )
         print(lobby)
@@ -95,16 +96,11 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
             .update(
                 "words.turn"+turn+"."+userID, word
             ).await()
-    override suspend fun createLobbyAndAddToStore(lobby: Lobby) {
-        val lobbyHash = hashMapOf(
-            "active" to lobby.active,
-            "active_round" to lobby.active_round,
-            "hostName" to lobby.hostName
-        )
-
-        print(" LOBBY")
-       this.db.collection("lobbies").add(lobbyHash).addOnSuccessListener { print("LOBBY BLE ADDA") }.await();
-
+    
+    override suspend fun createLobbyAndAddToStore(lobby: Lobby): String {
+        val doc = this.db.collection("lobbies").add(lobby).await();
+        println(doc)
+        return doc.id
     }
 
     /**

@@ -70,10 +70,10 @@ class CreateGameFragment : Fragment() {
     private fun openLobbyView(lobby: Lobby) {
 
         val lobbyView: LobbyViewModel by viewModels()
-
+        println("ANHKHA")
+        println(lobby)
         val intent = Intent(getActivity(), LobbyView::class.java)
         lobbyView.createLobbyAndAddToStore(lobby)
-
         intent.putExtra("lobbyHoster", lobby.hostName)
         startActivity(intent)
     }
