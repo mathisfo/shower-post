@@ -4,8 +4,10 @@ import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.model.Game
+import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
 import kotlinx.coroutines.tasks.await
 
@@ -57,7 +59,10 @@ class Storage private constructor(val db: FirebaseFirestore): Repository {
     override suspend fun getGame(id: String): Game {
         val doc = db.collection("games").document(id).get().await()
         val game = doc.toObject(Game::class.java)
-        print(game)
+        val lettersDoc = db.collection("LetterArrays").document(game!!.LetterArrays).get().await()
+        val letters = lettersDoc.toObject(Letters::class.java)
+        game.Letters = letters
+        println("Game: " + game)
         return game!!
     }
     /**
