@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gameofwits">
         <activity
+            android:name=".IntermissionView"
+            android:exported="false" />
+        <activity
             android:name=".EndOfGameView"
             android:exported="false" />
         <activity
