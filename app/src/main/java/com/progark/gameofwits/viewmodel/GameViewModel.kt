@@ -20,4 +20,8 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
         emit(repository.getLobby("D82qYqJLp1oyjJ8EP3cC"))
     }
 
+    fun getGame() = liveData {
+        emit(repository.getGame("psfwZoWRJGEZXnoCcLOC"))
+    }
+
 }

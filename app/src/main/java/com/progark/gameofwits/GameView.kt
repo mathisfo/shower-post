@@ -7,10 +7,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.util.Log
+import androidx.activity.viewModels
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.util.stream.IntStream.range
+import com.progark.gameofwits.viewmodel.GameViewModel
 
 class GameView : AppCompatActivity() {
     private var word: String = ""
@@ -19,8 +20,10 @@ class GameView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gameview)
-
-
+        val gameViewModel: GameViewModel by viewModels()
+        gameViewModel.getGame().observe(this){game ->
+            println(game)
+        }
         val gameLetters: Array<String> = arrayOf<String>("A", "B", "C", "D", "E", "F", "G", "H", "I", "J") // fetchLetters()
         val endofgame: Button = findViewById(R.id.endofgamebtn)
         val enterword: Button = findViewById(R.id.enterword)

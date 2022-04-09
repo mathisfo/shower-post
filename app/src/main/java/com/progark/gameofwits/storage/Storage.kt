@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Lobby
 import kotlinx.coroutines.tasks.await
 
@@ -51,6 +52,13 @@ class Storage private constructor(val db: FirebaseFirestore): Repository {
         val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.get("users") as List<String>)
         print(lobby)
         return lobby
+    }
+
+    override suspend fun getGame(id: String): Game {
+        val doc = db.collection("games").document(id).get().await()
+        val game = doc.toObject(Game::class.java)
+        print(game)
+        return game!!
     }
     /**
     override suspend fun getLobbyID(): String {
