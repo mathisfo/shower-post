@@ -7,21 +7,23 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.util.Log
+import androidx.activity.viewModels
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.util.stream.IntStream.range
+import com.progark.gameofwits.viewmodel.GameViewModel
 
 class GameView : AppCompatActivity() {
     private var word: String = ""
-    private var buttons: Array<Button> = arrayOf()
+    private var buttons: List<Button> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gameview)
-
-
-        val gameLetters: Array<String> = arrayOf<String>("A", "B", "C", "D", "E", "F", "G", "H", "I", "J") // fetchLetters()
+        val gameViewModel: GameViewModel by viewModels()
+        gameViewModel.getGame().observe(this){game ->
+            setLetters(game.Letters!!.Turn1)
+        }
         val endofgame: Button = findViewById(R.id.endofgamebtn)
         val enterword: Button = findViewById(R.id.enterword)
         enterword.setOnClickListener { enterWordHandler() }
@@ -37,14 +39,17 @@ class GameView : AppCompatActivity() {
         val letter8: Button = findViewById(R.id.letter8)
         val letter9: Button = findViewById(R.id.letter9)
         val letter10: Button = findViewById(R.id.letter10)
-        buttons = arrayOf(letter1, letter2, letter3, letter4, letter5, letter6, letter7, letter8, letter9, letter10)
-        for(i in 0..9) {
-            buttons[i].text = gameLetters[i]
-        }
+        buttons = listOf(letter1, letter2, letter3, letter4, letter5, letter6, letter7, letter8, letter9, letter10)
         val writtenWord: TextView = findViewById(R.id.word)
         writtenWord.text = word
         buttons.forEach { btn -> btn.setOnClickListener { letterClicked(btn) }}
         endofgame.setOnClickListener { openEndOfGameView() }
+    }
+
+    private fun setLetters(letters: List<String>) {
+        for(i in 0..9) {
+            buttons[i].text = letters[i]
+        }
     }
 
     private fun letterClicked(button: Button) {

@@ -1,5 +1,6 @@
 package storage
 
+import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Lobby
 
 interface Repository {
@@ -11,5 +12,6 @@ interface Repository {
     // fun getLobbyById(id: String): Lobby
     suspend fun getLobbies(): List<Lobby>
     suspend fun getLobby(id: String): Lobby
+    suspend fun getGame(id: String): Game
 
 }
