@@ -24,4 +24,17 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
         emit(repository.getGame("psfwZoWRJGEZXnoCcLOC"))
     }
 
+    fun createLetterArray(): List<Char> = List(10) {
+        ('A'..'Z').random()
+    }
+
+    fun createGame(lobbyID: String, numberOfTurns: Int) {
+        val letters = hashMapOf(
+            "1" to createLetterArray()
+        )
+        for (i in 2..numberOfTurns) {
+            letters[""+i] = createLetterArray()
+        }
+    }
+
 }

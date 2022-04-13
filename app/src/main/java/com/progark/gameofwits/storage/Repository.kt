@@ -13,5 +13,6 @@ interface Repository {
     suspend fun getLobbies(): List<Lobby>
     suspend fun getLobby(id: String): Lobby
     suspend fun getGame(id: String): Game
+    fun addGameToFirestore(game: HashMap<String, Any>)
 
 }

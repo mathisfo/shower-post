@@ -11,6 +11,7 @@ import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
 import kotlinx.coroutines.tasks.await
 
+
 class Storage private constructor(val db: FirebaseFirestore): Repository {
     companion object {
         private var instance : Storage? = null
@@ -65,6 +66,18 @@ class Storage private constructor(val db: FirebaseFirestore): Repository {
         println("Game: " + game)
         return game!!
     }
+
+    override fun addGameToFirestore(game: HashMap<String, Any>) {
+        this.db.collection("lobbies")
+            .add(game)
+            .addOnSuccessListener { documentReference ->
+                Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error adding document", e)
+            }
+    }
+
     /**
     override suspend fun getLobbyID(): String {
         val db = Firebase.firestore

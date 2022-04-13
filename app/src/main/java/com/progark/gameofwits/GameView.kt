@@ -11,6 +11,8 @@ import androidx.activity.viewModels
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.model.Game
+import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.viewmodel.GameViewModel
 
 class GameView : AppCompatActivity() {
@@ -22,7 +24,7 @@ class GameView : AppCompatActivity() {
         setContentView(R.layout.gameview)
         val gameViewModel: GameViewModel by viewModels()
         gameViewModel.getGame().observe(this){game ->
-            setLetters(game.Letters!!.Turn1)
+            setLetters(game)
         }
         val endofgame: Button = findViewById(R.id.endofgamebtn)
         val enterword: Button = findViewById(R.id.enterword)
@@ -46,7 +48,12 @@ class GameView : AppCompatActivity() {
         endofgame.setOnClickListener { openEndOfGameView() }
     }
 
-    private fun setLetters(letters: List<String>) {
+    private fun setLetters(game: Game) {
+        var letters: List<String> = game.Letters!!.Turn1
+        if (game.CurrentTurn == 2) letters = game.Letters!!.Turn2!!
+        if (game.CurrentTurn == 3) letters = game.Letters!!.Turn3!!
+        if (game.CurrentTurn == 4) letters = game.Letters!!.Turn4!!
+        if (game.CurrentTurn == 5) letters = game.Letters!!.Turn5!!
         for(i in 0..9) {
             buttons[i].text = letters[i]
         }
