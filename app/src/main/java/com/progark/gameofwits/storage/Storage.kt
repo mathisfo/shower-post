@@ -2,23 +2,29 @@ package storage
 
 import android.content.ContentValues
 import android.util.Log
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
+
+import com.google.firebase.installations.FirebaseInstallations
+
 import com.google.firebase.firestore.ktx.getField
+
 import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.storage.documents.UserDoc
 import kotlinx.coroutines.tasks.await
-
-
-class Storage private constructor(val db: FirebaseFirestore): Repository {
+import model.User
+class Storage private constructor(val db: FirebaseFirestore) : Repository {
     companion object {
-        private var instance : Storage? = null
+        private var instance: Storage? = null
         fun getInstance() = instance ?: synchronized(this) {
-            instance?: Storage(Firebase.firestore).also { instance = it }
+            instance ?: Storage(Firebase.firestore).also { instance = it }
         }
     }
+
     override fun getUser(): String {
         // TODO: get user from firebase
         return ""
@@ -40,7 +46,7 @@ class Storage private constructor(val db: FirebaseFirestore): Repository {
     }
 
     override suspend fun getLobbies(): List<Lobby> {
-        val snapshot= db.collection("lobbies").get().await()
+        val snapshot = db.collection("lobbies").get().await()
         val lobbies = snapshot.map { doc ->
             val id = doc.id
             val active = doc.getBoolean("active")!!
@@ -55,6 +61,14 @@ class Storage private constructor(val db: FirebaseFirestore): Repository {
         val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.get("users") as List<String>)
         print(lobby)
         return lobby
+    }
+
+
+    override suspend fun createUser(name: String) {
+        val deviceId = FirebaseInstallations.getInstance().id.await()
+        val user = UserDoc("", name)
+        db.collection("users").document(deviceId).set(user).await()
+        println("ADDED NEW USER")
     }
 
     override suspend fun getGame(id: String): Game {
