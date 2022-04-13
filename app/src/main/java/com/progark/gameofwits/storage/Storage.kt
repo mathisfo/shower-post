@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.storage.documents.UserDoc
 import kotlinx.coroutines.tasks.await
 import model.User
 
@@ -66,7 +67,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
 
     override suspend fun createUser(name: String) {
         val deviceId = FirebaseInstallations.getInstance().id.await()
-        val user = User("", name)
+        val user = UserDoc("", name)
         db.collection("users").document(deviceId).set(user).await()
         println("ADDED NEW USER")
 
