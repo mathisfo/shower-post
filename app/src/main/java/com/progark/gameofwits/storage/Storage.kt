@@ -70,6 +70,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         val user = UserDoc("", name)
         db.collection("users").document(deviceId).set(user).await()
         println("ADDED NEW USER")
+    }
 
     override suspend fun getGame(id: String): Game {
         val doc = db.collection("games").document(id).get().await()
