@@ -71,8 +71,9 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
 
     override suspend fun getGame(id: String): GameDoc {
         val doc = db.collection("games").document(id).get().await()
-        println("DOC: " + doc)
-        val game = doc.toObject(GameDoc::class.java)
+        val game = doc.toObject(Game::class.java)
+        val lettersDoc = db.collection("LetterArrays").document().get().await()
+        val letters = lettersDoc.toObject(Letters::class.java)
         println("Game: " + game)
         return game!!
     }
