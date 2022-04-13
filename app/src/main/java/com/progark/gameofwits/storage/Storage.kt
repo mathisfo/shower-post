@@ -31,16 +31,6 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         return ""
     }
 
-    override fun createLobbyToStore(lobby: HashMap<String, Any>) {
-        this.db.collection("lobbies")
-            .add(lobby)
-            .addOnSuccessListener { documentReference ->
-                Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(ContentValues.TAG, "Error adding document", e)
-            }
-    }
 
     override suspend fun getLobbyID(): String {
         return "lobbyID"
@@ -50,20 +40,21 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         val snapshot = db.collection("lobbies").get().await()
         val lobbies = snapshot.map { doc ->
             val id = doc.id
+            val pin = doc.getString("pin")
             val active = doc.getBoolean("active")!!
             val active_round = doc.getDouble("active_round")
             val hostName = doc.getString("hostName")
 
-            val lobby: Lobby = Lobby(id, active, active_round!!, hostName!!)
+            val lobby: Lobby = Lobby(id, pin!!, active, active_round!!, hostName!!)
             lobby
         }
         return lobbies
     }
 
     override suspend fun getLobby(id: String): Lobby {
-        println(id)
+        println("GETLOBBY ID " + id)
         val doc = db.collection("lobbies").document(id).get().await()
-        val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!! )
+        val lobby = Lobby(doc.id, doc.getString("pin")!!, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!! )
 
         return lobby
     }
@@ -102,6 +93,17 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         println(doc)
         return doc.id
     }
+
+    override suspend fun getLobbyByPIN(PIN: String): Lobby {
+        val doc = db.collection("lobbies").whereEqualTo("pin", PIN).get().await().documents[0]
+
+
+        val lobby = Lobby(doc.id, doc.getString("pin")!!, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!! )
+
+        return lobby;
+    }
+
+
 
     /**
     override suspend fun getLobbyID(): String {

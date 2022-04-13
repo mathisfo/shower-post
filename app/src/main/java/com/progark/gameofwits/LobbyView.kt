@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.progark.gameofwits.model.Player
@@ -25,17 +26,20 @@ class LobbyView() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.lobbyview)
-        val i: Intent = getIntent();
-        val hoster: String = i.getExtras()!!.getString("lobbyHoster", "")
         val btn: Button = findViewById(R.id.nextbutton)
         val checkbox1: CheckBox = findViewById<CheckBox>(R.id.playerCheckbox1)
         val checkbox2: CheckBox = findViewById<CheckBox>(R.id.playerCheckbox2)
         val hostCheckbox: CheckBox = findViewById<CheckBox>(R.id.playerCheckbox1)
-          val activeLobby = lobbyviewmodel.getLobby().observe(this) { lobby ->
+        val lobbyPINTitle: TextView = findViewById<CheckBox>(R.id.lobbyId)
 
-              println(lobby)
-              hostCheckbox.setText(lobby.hostName)
-          }
+          println("LOBBYVIEWMODEL: " + lobbyviewmodel.activeLobbyId)
+
+        val activeLobby = lobbyviewmodel.getLobby("vdWrz94eJ9Fe0Vhxl5M9").observe(this) { lobby ->
+            println(lobby)
+            lobbyPINTitle.setText(lobby.pin)
+            hostCheckbox.setText(lobby.hostName)
+        }
+
         btn.setOnClickListener { openGameView() }
         //val pin = CreateGameFragment().getGamePIN()
         //println("PIN: " + pin)

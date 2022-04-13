@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.progark.gameofwits.databinding.FragmentCreateGameBinding
@@ -48,14 +47,14 @@ class CreateGameFragment : Fragment() {
                 createGamePIN()
                 openLobbyView()}
 
-                val lobby = Lobby("1234", true, 0.0, userName)
 
+                val lobby = Lobby("", createGamePIN(), true, 0.0, userName )
                 openLobbyView(lobby)}
         }
     }
 
     private fun createGamePIN():String {
-        for (i in 1..5) gamePin+=(0..9).random().toString()
+        for (i in 1..4) gamePin+=(0..9).random().toString()
         println("created pin: " + gamePin)
         return gamePin
     }
@@ -69,12 +68,9 @@ class CreateGameFragment : Fragment() {
 
     private fun openLobbyView(lobby: Lobby) {
 
-        val lobbyView: LobbyViewModel by viewModels()
-        println("ANHKHA")
-        println(lobby)
+        val lobbyViewModel: LobbyViewModel by viewModels()
         val intent = Intent(getActivity(), LobbyView::class.java)
-        lobbyView.createLobbyAndAddToStore(lobby)
-        intent.putExtra("lobbyHoster", lobby.hostName)
+        lobbyViewModel.createLobbyAndAddToStore(lobby)
         startActivity(intent)
     }
 

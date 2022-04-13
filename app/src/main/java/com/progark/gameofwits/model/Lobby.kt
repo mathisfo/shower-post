@@ -7,6 +7,10 @@ class Lobby(
     @DocumentId val
     id: String,
 
+
+    @PropertyName("pin")
+    val pin: String,
+
     @PropertyName("active")
     val active: Boolean,
 
@@ -15,7 +19,7 @@ class Lobby(
 
     @PropertyName("hostName") val hostName: String) {
 
-    constructor(): this("", false, 0.0, "DefaultHoster" )
+    constructor(): this("", "0000",false, 0.0, "DefaultHoster" )
 
     override fun toString(): String {
         return "Lobby($id): $hostName"

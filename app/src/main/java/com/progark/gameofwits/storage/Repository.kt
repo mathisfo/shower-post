@@ -9,7 +9,6 @@ import model.User
 interface Repository {
     fun getUser(): String
 
-    fun createLobbyToStore(lobby: HashMap<String, Any>)
     suspend fun getLobbyID(): String
     // fun getActiveLobbies(): List<Lobby>
     // fun getLobbyById(id: String): Lobby
@@ -20,5 +19,6 @@ interface Repository {
     suspend fun addGameToFirebase(game: GameDoc): String?
     suspend fun addWordToFirebase(userID: String, word: String, turn: Int, gameID: String)
     suspend fun createLobbyAndAddToStore(lobby: Lobby): String;
+    suspend fun getLobbyByPIN(PIN: String): Lobby;
 
 }

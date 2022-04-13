@@ -11,18 +11,22 @@ import storage.Storage
 
 class LobbyViewModel(private val repository: Repository = Storage.getInstance()): ViewModel() {
 
-    var activeLobbyId = MutableLiveData("")
+    var activeLobbyId: String = "";
 
-    fun getLobby() = liveData {
-        emit(repository.getLobby(activeLobbyId.value.toString()))
+
+    fun createLobbyAndAddToStore(lobby: Lobby): String {
+        viewModelScope.launch {
+            val id = repository.createLobbyAndAddToStore(lobby)
+            activeLobbyId = id;
+        }
+        return activeLobbyId;
     }
 
+    fun getLobbyByPIN(pin: String) = liveData {
+        emit(repository.getLobbyByPIN(pin))
+    }
 
-    fun createLobbyAndAddToStore(lobby: Lobby) {
-        viewModelScope.launch {
-            val id: String = repository.createLobbyAndAddToStore(lobby)
-            activeLobbyId.postValue(id)
-
-        }
+    fun getLobby(Id: String) = liveData {
+        emit(repository.getLobby(Id))
     }
 }
