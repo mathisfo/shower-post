@@ -29,4 +29,8 @@ class LobbyViewModel(private val repository: Repository = Storage.getInstance())
     fun getLobby(Id: String) = liveData {
         emit(repository.getLobby(Id))
     }
+
+    fun joinLobbyWithName(name: String, gamePIN: String) {
+        viewModelScope.launch { repository.joinLobbyWithName(name, gamePIN) }
+    }
 }

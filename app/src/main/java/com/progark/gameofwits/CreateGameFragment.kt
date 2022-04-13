@@ -13,6 +13,8 @@ import com.progark.gameofwits.databinding.FragmentCreateGameBinding
 import com.progark.gameofwits.databinding.FragmentSecondBinding
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.viewmodel.LobbyViewModel
+import com.progark.gameofwits.databinding.FragmentCreateGameBinding
+import com.progark.gameofwits.model.Player
 
 /**
  * A simple [Fragment] subclass for the "Create Game" view.
@@ -44,11 +46,7 @@ class CreateGameFragment : Fragment() {
             if (userName.isEmpty()){
                 Toast.makeText(context,"You did not enter a userName",Toast.LENGTH_SHORT).show()
             } else {
-                createGamePIN()
-                openLobbyView()}
-
-
-                val lobby = Lobby("", createGamePIN(), true, 0.0, userName )
+                val lobby = Lobby("", createGamePIN(), true, 0.0, userName, mutableListOf(Player("", userName, false)))
                 openLobbyView(lobby)}
         }
     }

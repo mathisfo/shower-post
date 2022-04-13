@@ -14,6 +14,8 @@ import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.databinding.FragmentJoinGameBinding
 import com.progark.gameofwits.viewmodel.MainMenuViewModel
+import com.progark.gameofwits.viewmodel.LobbyViewModel
+import storage.Storage
 
 
 class JoinGameFragment : Fragment() {
@@ -55,6 +57,8 @@ class JoinGameFragment : Fragment() {
 
     private fun openLobbyView() {
         val intent = Intent(getActivity(), LobbyView::class.java)
+        val lobbyViewModel: LobbyViewModel by viewModels()
+        lobbyViewModel.joinLobbyWithName("Johanne", "2180")
         startActivity(intent)
     }
 

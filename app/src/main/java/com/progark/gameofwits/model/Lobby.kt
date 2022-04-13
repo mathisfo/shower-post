@@ -17,9 +17,15 @@ class Lobby(
     @PropertyName("active_round")
     val active_round: Double,
 
-    @PropertyName("hostName") val hostName: String) {
+    @PropertyName("hostName") val hostName: String,
 
-    constructor(): this("", "0000",false, 0.0, "DefaultHoster" )
+    @PropertyName("players") val players: List<Player>,
+
+    ) {
+
+
+
+    constructor(): this("", "0000",false, 0.0, "DefaultHoster", mutableListOf(Player("", "DefaultName", false)))
 
     override fun toString(): String {
         return "Lobby($id): $hostName"
