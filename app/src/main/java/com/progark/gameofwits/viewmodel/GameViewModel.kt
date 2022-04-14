@@ -2,7 +2,10 @@ package com.progark.gameofwits.viewmodel
 
 
 import androidx.lifecycle.*
+import com.google.firebase.firestore.DocumentReference
+import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.storage.documents.GameDoc
 import kotlinx.coroutines.launch
 import storage.Repository
 import storage.Storage
@@ -20,21 +23,24 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
         emit(repository.getLobby("D82qYqJLp1oyjJ8EP3cC"))
     }
 
-    fun getGame() = liveData {
-        emit(repository.getGame("psfwZoWRJGEZXnoCcLOC"))
+    fun getGame(id: String) = liveData {
+        emit(repository.getGame(id))
     }
 
-    fun createLetterArray(): List<Char> = List(10) {
-        ('A'..'Z').random()
+    fun createLetterArray(): List<String> = List(10) {
+        ('A'..'Z').random().toString()
     }
 
-    fun createGame(lobbyID: String, numberOfTurns: Int) {
+    fun createGame(lobbyID: String, numberOfTurns: Int) = liveData {
         val letters = hashMapOf(
-            "1" to createLetterArray()
+            "turn1" to createLetterArray()
         )
         for (i in 2..numberOfTurns) {
-            letters[""+i] = createLetterArray()
+            letters["turn"+i] = createLetterArray()
         }
+        val letterArrays = Letters(letters["turn1"]!!, letters["turn2"], letters["turn3"], letters["turn4"], letters["turn5"])
+        var doc: String? = null
+            emit(repository.addGameToFirestore(GameDoc(null, lobbyID, 1, numberOfTurns, letterArrays)))
     }
 
 }

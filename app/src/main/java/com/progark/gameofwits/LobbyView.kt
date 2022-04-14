@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.progark.gameofwits.viewmodel.GameViewModel
 
 class LobbyView() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +23,11 @@ class LobbyView() : AppCompatActivity() {
 
 
     private fun openGameView() {
+        val gameViewModel: GameViewModel by viewModels()
         val intent = Intent(this, GameView::class.java)
-        startActivity(intent)
+        val docRef = gameViewModel.createGame("halla", 3).observe(this) {gameRef ->
+            intent.putExtra("GAME_REFERENCE", gameRef)
+            startActivity(intent)
+        }
     }
 }

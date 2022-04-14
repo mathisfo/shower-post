@@ -5,12 +5,11 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
 
 data class Letters (
-    @DocumentId val id: String,
-    @PropertyName("Turn1") val Turn1: List<String>,
-    @PropertyName("Turn2") val Turn2: List<String>?,
-    @PropertyName("Turn3") val Turn3: List<String>?,
-    @PropertyName("Turn4") val Turn4: List<String>?,
-    @PropertyName("Turn5") val Turn5: List<String>?,
+    @PropertyName("turn1") val turn1: List<String>,
+    @PropertyName("turn2") val turn2: List<String>?,
+    @PropertyName("turn3") val turn3: List<String>?,
+    @PropertyName("turn4") val turn4: List<String>?,
+    @PropertyName("turn5") val turn5: List<String>?,
     ) {
-        constructor(): this("", listOf(), null, null, null,null)
+        constructor(): this(listOf(), null, null, null,null)
     }

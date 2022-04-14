@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.storage.documents.GameDoc
 import com.progark.gameofwits.storage.documents.UserDoc
 import kotlinx.coroutines.tasks.await
 import model.User
@@ -71,25 +72,20 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         println("ADDED NEW USER")
     }
 
-    override suspend fun getGame(id: String): Game {
+    override suspend fun getGame(id: String): GameDoc {
         val doc = db.collection("games").document(id).get().await()
-        val game = doc.toObject(Game::class.java)
-        val lettersDoc = db.collection("LetterArrays").document(game!!.LetterArrays).get().await()
-        val letters = lettersDoc.toObject(Letters::class.java)
-        game.Letters = letters
+        println("DOC: " + doc)
+        val game = doc.toObject(GameDoc::class.java)
         println("Game: " + game)
         return game!!
     }
 
-    override fun addGameToFirestore(game: HashMap<String, Any>) {
-        this.db.collection("lobbies")
-            .add(game)
-            .addOnSuccessListener { documentReference ->
-                Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(ContentValues.TAG, "Error adding document", e)
-            }
+    override suspend fun addGameToFirestore(game: GameDoc):String? {
+        val ref = this.db.collection("games")
+            .add(game).await()
+        val doc = ref.get().await().toObject(GameDoc::class.java)
+        println("Storage document: " + doc)
+        return doc!!.id
     }
 
     /**

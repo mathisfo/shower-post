@@ -1,7 +1,9 @@
 package storage
 
+import com.google.firebase.firestore.DocumentReference
 import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.storage.documents.GameDoc
 import model.User
 
 interface Repository {
@@ -14,7 +16,7 @@ interface Repository {
     suspend fun getLobbies(): List<Lobby>
     suspend fun getLobby(id: String): Lobby
     suspend fun createUser(name: String)
-    suspend fun getGame(id: String): Game
-    fun addGameToFirestore(game: HashMap<String, Any>)
+    suspend fun getGame(id: String): GameDoc
+    suspend fun addGameToFirestore(game: GameDoc): String?
 
 }
