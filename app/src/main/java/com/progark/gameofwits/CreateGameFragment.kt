@@ -46,7 +46,7 @@ class CreateGameFragment : Fragment() {
             if (userName.isEmpty()){
                 Toast.makeText(context,"You did not enter a userName",Toast.LENGTH_SHORT).show()
             } else {
-                val lobby = Lobby("", createGamePIN(), true, 0.0, userName, mutableListOf(Player("", userName, false)))
+                val lobby = Lobby("", createGamePIN(), true, 0.0, userName, mutableListOf(Player(userName, false)))
                 openLobbyView(lobby)}
         }
     }
@@ -65,11 +65,12 @@ class CreateGameFragment : Fragment() {
     **/
 
     private fun openLobbyView(lobby: Lobby) {
-
-        val lobbyViewModel: LobbyViewModel by viewModels()
-        val intent = Intent(getActivity(), LobbyView::class.java)
-        lobbyViewModel.createLobbyAndAddToStore(lobby)
-        startActivity(intent)
+        val gameViewModel: LobbyViewModel by viewModels()
+        val intent = Intent(getContext(), LobbyView::class.java)
+        val docRef = gameViewModel.createLobbyAndAddToStore(lobby).observe(viewLifecycleOwner) {lobbyRef ->
+            intent.putExtra("LOBBY_REFERENCE", lobbyRef)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {

@@ -4,9 +4,6 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 
 class Player(
-    @DocumentId val
-    id: String,
-
     @PropertyName("playerName")
     val name: String,
 
@@ -15,10 +12,10 @@ class Player(
 
 
 
-    ) {
-    constructor(): this("", "mathias", false)
+) {
+    constructor(): this("defaultName", false)
 
     override fun toString(): String {
-        return "Lobby($id): $name"
+        return "Player($name): $name"
     }
 }

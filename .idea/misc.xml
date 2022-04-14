@@ -7,17 +7,21 @@
         <entry key="..\:/Users/47936/Documents/TDT4240/shower-post/app/src/main/res/layout/activity_main.xml" value="0.184375" />
         <entry key="..\:/Users/47936/Documents/TDT4240/shower-post/app/src/main/res/layout/endofgameview.xml" value="0.264" />
         <entry key="..\:/Users/47936/Documents/TDT4240/shower-post/app/src/main/res/layout/fragment_first.xml" value="0.184375" />
-        <entry key="..\:/Users/47936/Documents/TDT4240/shower-post/app/src/main/res/layout/gameview.xml" value="0.264" />
-        <entry key="..\:/Users/47936/Documents/TDT4240/shower-post/app/src/main/res/layout/intermissionview.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/47936/Documents/TDT4240/shower-post/app/src/main/res/layout/gameview.xml" value="0.16" />
         <entry key="..\:/Users/47936/Documents/TDT4240/shower-post/app/src/main/res/layout/lobbyview.xml" value="0.184375" />
         <entry key="app/src/main/res/layout/activity_lobbyview.xml" value="0.28489583333333335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5104166666666666" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.5104166666666666" />
+        <entry key="app/src/main/res/layout/lobbyview.xml" value="0.2620547971863678" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.5020833333333333" />
       </map>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+=======
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+>>>>>>> 6c41bac (working on getting lobbies with intent)
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

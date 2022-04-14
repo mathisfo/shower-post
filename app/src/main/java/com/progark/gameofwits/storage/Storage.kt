@@ -7,18 +7,11 @@ import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.model.Player
 import kotlinx.coroutines.tasks.await
 
-import com.google.firebase.installations.FirebaseInstallations
-
-import com.google.firebase.firestore.ktx.getField
-
 import com.google.firebase.ktx.Firebase
-import com.progark.gameofwits.model.Game
-import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.storage.documents.GameDoc
-import com.progark.gameofwits.storage.documents.UserDoc
 import kotlinx.coroutines.tasks.await
-import model.User
+
 class Storage private constructor(val db: FirebaseFirestore) : Repository {
     companion object {
         private var instance: Storage? = null
@@ -46,7 +39,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
             val active_round = doc.getDouble("active_round")
             val hostName = doc.getString("hostName")
 
-            val lobby: Lobby = Lobby(id, pin!!, active, active_round!!, hostName!!, mutableListOf(Player("", "mathias", false)))
+            val lobby: Lobby = Lobby(id, pin!!, active, active_round!!, hostName!!, mutableListOf(Player("", false)))
             lobby
         }
         return lobbies
@@ -55,9 +48,15 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
     override suspend fun getLobby(id: String): Lobby {
         println("GETLOBBY ID " + id)
         val doc = db.collection("lobbies").document(id).get().await()
-        val lobby = Lobby(doc.id, doc.getString("pin")!!, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!!, mutableListOf(
-            Player("", "mathias", false)
-        ) )
+
+        val players = db.collection("lobbies").document("Q3GHIMfcUh7wndWpA3bn").collection("players").document("mathias").get().await()
+
+        val playersArray: MutableList<Player?> = mutableListOf(players.toObject(Player::class.java))
+
+        println("ARRAY: " + playersArray)
+
+
+        val lobby = Lobby(doc.id, doc.getString("pin")!!, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!!, playersArray)
 
         return lobby
     }
@@ -91,10 +90,12 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
                 "words.turn"+turn+"."+userID, word
             ).await()
     
-    override suspend fun createLobbyAndAddToStore(lobby: Lobby): String {
-        val doc = this.db.collection("lobbies").add(lobby).await();
-        println(doc)
-        return doc.id
+    override suspend fun createLobbyAndAddToStore(lobby: Lobby):String {
+        val ref = this.db.collection("lobbies")
+            .add(lobby).await()
+        val doc = ref.get().await().toObject(Lobby::class.java)
+        println("Lobby: " + doc)
+        return doc!!.id
     }
 
     override suspend fun joinLobbyWithName(name: String, lobbyPIN: String) {
@@ -120,7 +121,7 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
             doc.getBoolean("active")!!,
             doc.getDouble("active_round")!!,
             doc.getString("hostName")!!,
-            mutableListOf(Player("", "MAthias", false))
+            mutableListOf(Player("", false))
         )
 
         return lobby;

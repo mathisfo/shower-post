@@ -14,12 +14,8 @@ class LobbyViewModel(private val repository: Repository = Storage.getInstance())
     var activeLobbyId: String = "";
 
 
-    fun createLobbyAndAddToStore(lobby: Lobby): String {
-        viewModelScope.launch {
-            val id = repository.createLobbyAndAddToStore(lobby)
-            activeLobbyId = id;
-        }
-        return activeLobbyId;
+    fun createLobbyAndAddToStore(lobby: Lobby) = liveData {
+        emit(repository.createLobbyAndAddToStore(lobby))
     }
 
     fun getLobbyByPIN(pin: String) = liveData {
