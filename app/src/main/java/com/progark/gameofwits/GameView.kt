@@ -17,14 +17,17 @@ import com.progark.gameofwits.viewmodel.GameViewModel
 class GameView : AppCompatActivity() {
     private var word: String = ""
     private var buttons: List<Button> = listOf()
+    private val gameViewModel: GameViewModel by viewModels()
+    private var gameID: String = ""
+    private var user: String = "2"
+    private var turn: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gameview)
-        val gameViewModel: GameViewModel by viewModels()
-        gameViewModel.createGame("halla", 2)
-        val gameId = intent.getStringExtra("GAME_REFERENCE")
-        gameViewModel.getGame(gameId!!).observe(this){game ->
+        gameID = intent.getStringExtra("GAME_REFERENCE")!!
+        gameViewModel.getGame(gameID).observe(this){game ->
+            turn = game.currentTurn!!
             setLetters(game)
         }
         val endofgame: Button = findViewById(R.id.endofgamebtn)
@@ -70,8 +73,9 @@ class GameView : AppCompatActivity() {
 
     //TODO: Add functionality for sending word and switching to intermission view
     private fun enterWordHandler() {
-        //TODO: store word somewhere
-        openIntermissionView()
+        gameViewModel.enterWord(user, word, turn, gameID).observe(this) {
+            word -> openIntermissionView()
+        }
     }
 
     private fun resetWord() {
