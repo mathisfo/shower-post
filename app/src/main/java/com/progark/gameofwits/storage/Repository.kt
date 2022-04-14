@@ -17,6 +17,7 @@ interface Repository {
     suspend fun getLobby(id: String): Lobby
     suspend fun createUser(name: String)
     suspend fun getGame(id: String): GameDoc
-    suspend fun addGameToFirestore(game: GameDoc): String?
+    suspend fun addGameToFirebase(game: GameDoc): String?
+    suspend fun addWordToFirebase(userID: String, word: String, turn: Int, gameID: String)
 
 }

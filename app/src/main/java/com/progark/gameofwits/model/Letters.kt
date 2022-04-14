@@ -10,6 +10,6 @@ data class Letters (
     @PropertyName("turn3") val turn3: List<String>?,
     @PropertyName("turn4") val turn4: List<String>?,
     @PropertyName("turn5") val turn5: List<String>?,
-    ) {
-        constructor(): this(listOf(), null, null, null,null)
-    }
+) {
+    constructor(): this(listOf(), null, null, null,null)
+}

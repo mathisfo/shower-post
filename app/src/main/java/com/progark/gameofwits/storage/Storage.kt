@@ -80,12 +80,18 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         return game!!
     }
 
-    override suspend fun addGameToFirestore(game: GameDoc):String? {
+    override suspend fun addGameToFirebase(game: GameDoc):String? {
         val ref = this.db.collection("games")
             .add(game).await()
         val doc = ref.get().await().toObject(GameDoc::class.java)
-        println("Storage document: " + doc)
         return doc!!.id
+    }
+
+    override suspend fun addWordToFirebase(userID: String, word: String, turn: Int, gameID: String) {
+        this.db.collection("games").document(gameID)
+            .update(
+                "words.turn"+turn+"."+userID, word
+            ).await()
     }
 
     /**
