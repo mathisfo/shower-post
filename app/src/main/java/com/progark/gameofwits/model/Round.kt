@@ -19,7 +19,6 @@ data class Round(private val letters: String) {
         // Throw error perhaps
         if (!valid) return
         // Throw error, user has submitted
-        if (submitted[user] != null) return
         submitted[user] = word
     }
 
