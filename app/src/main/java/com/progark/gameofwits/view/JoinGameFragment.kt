@@ -1,18 +1,15 @@
 package com.progark.gameofwits.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentJoinGameBinding
 import com.progark.gameofwits.viewmodel.MainMenuViewModel
-import com.progark.gameofwits.viewmodel.LobbyViewModel
 
 
 class JoinGameFragment : Fragment() {
@@ -22,7 +19,7 @@ class JoinGameFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel: MainMenuViewModel by viewModels()
+    private val activityViewModel: MainMenuViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,28 +34,10 @@ class JoinGameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // These must be set
-        binding.mainMenuViewModel =  viewModel
-        binding.lifecycleOwner = this
-
         binding.joinBackButton.setOnClickListener {
             findNavController().navigate(R.id.action_JoinGameFragment_to_MainMenuFragment)
         }
-        viewModel.validOrError.observe(viewLifecycleOwner) {(valid, error) ->
-            if (!valid) {
-                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-            } else {
-                openLobbyView()
-            }
-        }
     }
-
-    private fun openLobbyView() {
-        val intent = Intent(getActivity(), LobbyView::class.java)
-        val lobbyViewModel: LobbyViewModel by viewModels()
-        lobbyViewModel.joinLobbyWithName("Johanne", "2180")
-        startActivity(intent)
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

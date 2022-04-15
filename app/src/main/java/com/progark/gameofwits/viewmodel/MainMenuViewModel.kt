@@ -2,6 +2,8 @@ package com.progark.gameofwits.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
+import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.model.Player
 import kotlinx.coroutines.launch
 import storage.Repository
 import storage.Storage
@@ -11,24 +13,10 @@ class MainMenuViewModel(private val repository: Repository = Storage.getInstance
     val usernameInput = ObservableField<String>()
     val pinInput = ObservableField<String>()
 
-    val validOrError = MutableLiveData(Pair(false, ""))
-    val pinCode = 123
+    val _activeLobby = MutableLiveData<Lobby>()
+    val activeLobby: LiveData<Lobby> = _activeLobby
 
-
-    fun registerUser() {
-        val nameVal = usernameInput.get()
-        val pinVal = pinInput.get()
-        if (nameVal.isNullOrEmpty()) {
-            validOrError.postValue(Pair(false, "The username is invalid"))
-            return
-        }
-        if (pinVal.isNullOrEmpty() && pinVal?.toInt() != pinCode) {
-            validOrError.postValue(Pair(false, "The pincode is invalid"))
-            return
-        }
-        viewModelScope.launch {
-            repository.createUser(nameVal)
-            validOrError.postValue(Pair(true, ""))
-        }
+    fun setActiveLobby(lobby: Lobby) {
+        _activeLobby.postValue(lobby)
     }
 }

@@ -7,4 +7,5 @@ data class UserDoc(
     @DocumentId var id: String?,
     @PropertyName("name") val name: String?,
 ) {
+    constructor() : this("", "")
 }

@@ -13,18 +13,19 @@ import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentCreateGameBinding
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.viewmodel.LobbyViewModel
-import com.progark.gameofwits.model.Player
+import com.progark.gameofwits.viewmodel.CreateGameViewModel
 
 /**
  * A simple [Fragment] subclass for the "Create Game" view.
  */
 class CreateGameFragment : Fragment() {
     private var _binding: FragmentCreateGameBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val viewModel: CreateGameViewModel by viewModels()
 
-    var gamePin = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,41 +36,30 @@ class CreateGameFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Init
         super.onViewCreated(view, savedInstanceState)
+        binding.createGameViewModel = viewModel
+        binding.lifecycleOwner = this
 
         binding.hostBackButton.setOnClickListener {
             findNavController().navigate(R.id.action_CreateGameFragment_to_MainMenuFragment)
         }
-        binding.hostConfirmButton.setOnClickListener{
+        binding.hostConfirmButton.setOnClickListener {
             val userName = binding.hostNameField.text.toString()
-            if (userName.isEmpty()){
-                Toast.makeText(context,"You did not enter a userName",Toast.LENGTH_SHORT).show()
-            } else {
-                val lobby = Lobby("", createGamePIN(), true, 0.0, userName, mutableListOf(Player("",userName, false)))
-                openLobbyView(lobby)}
+            if (userName.isEmpty()) {
+                Toast.makeText(context, "You did not enter a username", Toast.LENGTH_SHORT).show()
+            }
+            viewModel.createLobby()
+        }
+        viewModel.lobbyId.observe(viewLifecycleOwner) { lobbyId ->
+            openLobbyView(lobbyId)
         }
     }
 
-    private fun createGamePIN():String {
-        for (i in 1..4) gamePin+=(0..9).random().toString()
-        println("created pin: " + gamePin)
-        return gamePin
-    }
-
-    /**
-    fun getGamePIN():String{
-        println("PIN in getGamePIN: " + gamePin)
-        return gamePin;
-    }
-    **/
-
-    private fun openLobbyView(lobby: Lobby) {
-        val gameViewModel: LobbyViewModel by viewModels()
+    private fun openLobbyView(lobbyId: String) {
         val intent = Intent(getContext(), LobbyView::class.java)
-        val docRef = gameViewModel.createLobbyAndAddToStore(lobby).observe(viewLifecycleOwner) {lobbyRef ->
-            intent.putExtra("LOBBY_REFERENCE", lobbyRef)
-            startActivity(intent)
-        }
+        intent.putExtra("ACTIVE_LOBBY_ID", lobbyId)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
