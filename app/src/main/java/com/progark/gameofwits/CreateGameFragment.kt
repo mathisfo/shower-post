@@ -7,8 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.progark.gameofwits.databinding.FragmentCreateGameBinding
+import com.progark.gameofwits.databinding.FragmentSecondBinding
+import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.viewmodel.LobbyViewModel
+import com.progark.gameofwits.databinding.FragmentCreateGameBinding
+import com.progark.gameofwits.model.Player
 
 /**
  * A simple [Fragment] subclass for the "Create Game" view.
@@ -40,13 +46,13 @@ class CreateGameFragment : Fragment() {
             if (userName.isEmpty()){
                 Toast.makeText(context,"You did not enter a userName",Toast.LENGTH_SHORT).show()
             } else {
-                createGamePIN()
-                openLobbyView()}
+                val lobby = Lobby("", createGamePIN(), true, 0.0, userName, mutableListOf(Player(userName, false)))
+                openLobbyView(lobby)}
         }
     }
 
     private fun createGamePIN():String {
-        for (i in 1..5) gamePin+=(0..9).random().toString()
+        for (i in 1..4) gamePin+=(0..9).random().toString()
         println("created pin: " + gamePin)
         return gamePin
     }
@@ -58,9 +64,13 @@ class CreateGameFragment : Fragment() {
     }
     **/
 
-    private fun openLobbyView() {
-        val intent = Intent(getActivity(), LobbyView::class.java)
-        startActivity(intent)
+    private fun openLobbyView(lobby: Lobby) {
+        val gameViewModel: LobbyViewModel by viewModels()
+        val intent = Intent(getContext(), LobbyView::class.java)
+        val docRef = gameViewModel.createLobbyAndAddToStore(lobby).observe(viewLifecycleOwner) {lobbyRef ->
+            intent.putExtra("LOBBY_REFERENCE", lobbyRef)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {

@@ -47,25 +47,25 @@
         android:layout_width="239dp"
         android:layout_height="49dp"
         android:text="CheckBox"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox4"
-        app:layout_constraintEnd_toEndOf="@+id/checkBox4"
+        app:layout_constraintBottom_toTopOf="@+id/playerCheckbox4"
+        app:layout_constraintEnd_toEndOf="@+id/playerCheckbox4"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/checkBox4"
+        app:layout_constraintStart_toStartOf="@+id/playerCheckbox4"
         app:layout_constraintTop_toBottomOf="@+id/playerCheckbox2" />
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/playerCheckbox4"
         android:layout_width="239dp"
         android:layout_height="49dp"
         android:text="CheckBox"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox5"
-        app:layout_constraintEnd_toEndOf="@+id/checkBox5"
+        app:layout_constraintBottom_toTopOf="@+id/playerCheckbox5"
+        app:layout_constraintEnd_toEndOf="@+id/playerCheckbox5"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/checkBox5"
+        app:layout_constraintStart_toStartOf="@+id/playerCheckbox5"
         app:layout_constraintTop_toBottomOf="@+id/playerCheckbox3" />
 
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/playerCheckbox5"
         android:layout_width="239dp"
         android:layout_height="49dp"
         android:layout_marginBottom="244dp"
@@ -74,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox4" />
+        app:layout_constraintTop_toBottomOf="@+id/playerCheckbox4" />
 
     <CheckBox
         android:id="@+id/playerCheckbox2"

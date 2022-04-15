@@ -9,15 +9,15 @@ import model.User
 interface Repository {
     fun getUser(): String
 
-    fun addLobbyToFirestore(lobby: HashMap<String, Any>)
     suspend fun getLobbyID(): String
-    // fun getActiveLobbies(): List<Lobby>
-    // fun getLobbyById(id: String): Lobby
     suspend fun getLobbies(): List<Lobby>
     suspend fun getLobby(id: String): Lobby
     suspend fun createUser(name: String)
     suspend fun getGame(id: String): GameDoc
     suspend fun addGameToFirebase(game: GameDoc): String?
     suspend fun addWordToFirebase(userID: String, word: String, turn: Int, gameID: String)
+    suspend fun createLobbyAndAddToStore(lobby: Lobby): String;
+    suspend fun joinLobbyWithName(name: String, lobbyPIN: String)
+    suspend fun getLobbyByPIN(PIN: String): Lobby;
 
 }

@@ -1,23 +1,17 @@
 package storage
 
-import android.content.ContentValues
-import android.util.Log
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
-
-import com.google.firebase.installations.FirebaseInstallations
-
-import com.google.firebase.firestore.ktx.getField
+import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.model.Player
+import kotlinx.coroutines.tasks.await
 
 import com.google.firebase.ktx.Firebase
-import com.progark.gameofwits.model.Game
-import com.progark.gameofwits.model.Letters
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.storage.documents.GameDoc
-import com.progark.gameofwits.storage.documents.UserDoc
 import kotlinx.coroutines.tasks.await
-import model.User
+
 class Storage private constructor(val db: FirebaseFirestore) : Repository {
     companion object {
         private var instance: Storage? = null
@@ -31,16 +25,6 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         return ""
     }
 
-    override fun addLobbyToFirestore(lobby: HashMap<String, Any>) {
-        this.db.collection("lobbies")
-            .add(lobby)
-            .addOnSuccessListener { documentReference ->
-                Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(ContentValues.TAG, "Error adding document", e)
-            }
-    }
 
     override suspend fun getLobbyID(): String {
         return "lobbyID"
@@ -50,17 +34,30 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
         val snapshot = db.collection("lobbies").get().await()
         val lobbies = snapshot.map { doc ->
             val id = doc.id
+            val pin = doc.getString("pin")
             val active = doc.getBoolean("active")!!
-            val lobby = Lobby(id, active, listOf())
+            val active_round = doc.getDouble("active_round")
+            val hostName = doc.getString("hostName")
+
+            val lobby: Lobby = Lobby(id, pin!!, active, active_round!!, hostName!!, mutableListOf(Player("", false)))
             lobby
         }
         return lobbies
     }
 
     override suspend fun getLobby(id: String): Lobby {
+        println("GETLOBBY ID " + id)
         val doc = db.collection("lobbies").document(id).get().await()
-        val lobby = Lobby(doc.id, doc.getBoolean("active")!!, doc.get("users") as List<String>)
-        print(lobby)
+
+        val players = db.collection("lobbies").document("Q3GHIMfcUh7wndWpA3bn").collection("players").document("mathias").get().await()
+
+        val playersArray: MutableList<Player?> = mutableListOf(players.toObject(Player::class.java))
+
+        println("ARRAY: " + playersArray)
+
+
+        val lobby = Lobby(doc.id, doc.getString("pin")!!, doc.getBoolean("active")!!, doc.getDouble("active_round")!!, doc.getString("hostName")!!, playersArray)
+
         return lobby
     }
 
@@ -92,7 +89,45 @@ class Storage private constructor(val db: FirebaseFirestore) : Repository {
             .update(
                 "words.turn"+turn+"."+userID, word
             ).await()
+    
+    override suspend fun createLobbyAndAddToStore(lobby: Lobby):String {
+        val ref = this.db.collection("lobbies")
+            .add(lobby).await()
+        val doc = ref.get().await().toObject(Lobby::class.java)
+        println("Lobby: " + doc)
+        return doc!!.id
     }
+
+    override suspend fun joinLobbyWithName(name: String, lobbyPIN: String) {
+
+        val data = hashMapOf(
+            // TODO: fetch the username and use that instead
+            "playerName" to "Mathias",
+            "ready" to false,
+        )
+
+        println("FØR JOIN")
+        this.db.collection("lobbies/vdWrz94eJ9Fe0Vhxl5M9/players").add(data).await();
+        print("ETTER JOIN")
+
+    }
+
+    override suspend fun getLobbyByPIN(PIN: String): Lobby {
+        val doc = db.collection("lobbies").whereEqualTo("pin", PIN).get().await().documents[0]
+
+
+        val lobby = Lobby(
+            doc.id, doc.getString("pin")!!,
+            doc.getBoolean("active")!!,
+            doc.getDouble("active_round")!!,
+            doc.getString("hostName")!!,
+            mutableListOf(Player("", false))
+        )
+
+        return lobby;
+    }
+
+
 
     /**
     override suspend fun getLobbyID(): String {
