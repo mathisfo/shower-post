@@ -1,4 +1,4 @@
-package com.progark.gameofwits
+package com.progark.gameofwits.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.R
 import com.progark.gameofwits.storage.documents.GameDoc
 import com.progark.gameofwits.viewmodel.GameViewModel
 

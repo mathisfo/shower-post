@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/MainMenuFragment"
-        android:name="com.progark.gameofwits.MainMenuFragment"
+        android:name="com.progark.gameofwits.view.MainMenuFragment"
         android:label="@string/main_menu_fragment_label"
         tools:layout="@layout/fragment_main_menu">
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/CreateGameFragment"
-        android:name="com.progark.gameofwits.CreateGameFragment"
+        android:name="com.progark.gameofwits.view.CreateGameFragment"
         android:label="@string/create_game_fragment_label"
         tools:layout="@layout/fragment_create_game">
 
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/JoinGameFragment"
-        android:name="com.progark.gameofwits.JoinGameFragment"
+        android:name="com.progark.gameofwits.view.JoinGameFragment"
         android:label="@string/join_game_fragment_label"
         tools:layout="@layout/fragment_join_game">
 

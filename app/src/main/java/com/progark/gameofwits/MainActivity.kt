@@ -1,22 +1,19 @@
 package com.progark.gameofwits
 
 import android.content.Intent
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.firebase.FirebaseError
 import com.progark.gameofwits.databinding.ActivityMainBinding
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.view.LobbyView
+
 //import storage.Storage
 //import storage.Repository
 

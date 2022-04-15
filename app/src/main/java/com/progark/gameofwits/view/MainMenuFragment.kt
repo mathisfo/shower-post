@@ -1,4 +1,4 @@
-package com.progark.gameofwits
+package com.progark.gameofwits.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentMainMenuBinding
 
 

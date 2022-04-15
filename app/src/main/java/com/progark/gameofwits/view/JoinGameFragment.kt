@@ -1,8 +1,7 @@
-package com.progark.gameofwits
+package com.progark.gameofwits.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.installations.FirebaseInstallations
-import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentJoinGameBinding
 import com.progark.gameofwits.viewmodel.MainMenuViewModel
 import com.progark.gameofwits.viewmodel.LobbyViewModel
-import storage.Storage
 
 
 class JoinGameFragment : Fragment() {

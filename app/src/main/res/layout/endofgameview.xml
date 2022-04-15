@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EndOfGameView">
+    tools:context=".view.EndOfGameView">
 
     <Button
         android:id="@+id/playagainbtn"

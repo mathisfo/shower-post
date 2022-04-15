@@ -1,4 +1,4 @@
-package com.progark.gameofwits
+package com.progark.gameofwits.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentCreateGameBinding
-import com.progark.gameofwits.databinding.FragmentSecondBinding
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.viewmodel.LobbyViewModel
-import com.progark.gameofwits.databinding.FragmentCreateGameBinding
 import com.progark.gameofwits.model.Player
 
 /**
@@ -46,7 +45,7 @@ class CreateGameFragment : Fragment() {
             if (userName.isEmpty()){
                 Toast.makeText(context,"You did not enter a userName",Toast.LENGTH_SHORT).show()
             } else {
-                val lobby = Lobby("", createGamePIN(), true, 0.0, userName, mutableListOf(Player(userName, false)))
+                val lobby = Lobby("", createGamePIN(), true, 0.0, userName, mutableListOf(Player("",userName, false)))
                 openLobbyView(lobby)}
         }
     }

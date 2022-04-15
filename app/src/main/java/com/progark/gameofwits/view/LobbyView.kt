@@ -1,4 +1,4 @@
-package com.progark.gameofwits
+package com.progark.gameofwits.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,9 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.progark.gameofwits.model.Player
 import com.progark.gameofwits.viewmodel.GameViewModel
-import com.google.firebase.components.Dependency
-import com.progark.gameofwits.controller.LobbyController
-import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.R
 import com.progark.gameofwits.viewmodel.LobbyViewModel
 
 class LobbyView() : AppCompatActivity() {
