@@ -12,7 +12,6 @@ class LobbyDoc(
     @PropertyName("active") val active: Boolean?,
     @PropertyName("games") val games: List<DocumentReference>?,
     @PropertyName("host") val host: DocumentReference?,
-    @PropertyName("players") val players: List<DocumentReference>?,
 ) {
-    constructor() : this("", "", false, listOf(), null, listOf())
+    constructor() : this("", "", false, listOf(), null)
 }

@@ -1,31 +1,39 @@
 package storage
 
-import com.google.firebase.database.FirebaseDatabase
+import android.content.ContentValues.TAG
+import android.util.Log
+import com.google.firebase.Timestamp
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.model.Lobby
-import com.progark.gameofwits.model.Player
+import com.progark.gameofwits.observers.PlayerEventSource
 import com.progark.gameofwits.storage.documents.GameDoc
 import com.progark.gameofwits.storage.documents.LobbyDoc
+import com.progark.gameofwits.storage.documents.PlayerRealtime
 import com.progark.gameofwits.storage.documents.UserDoc
 import kotlinx.coroutines.tasks.await
 import model.User
 
 
-class Storage private constructor(val db: FirebaseFirestore, val realtime: FirebaseDatabase) :
+class Storage private constructor(val db: FirebaseFirestore, val realtime: DatabaseReference) :
     Repository {
     companion object {
         private var instance: Storage? = null
         fun getInstance() = instance ?: synchronized(this) {
-            instance ?: Storage(Firebase.firestore, Firebase.database).also { instance = it }
+            instance ?: Storage(Firebase.firestore, Firebase.database.reference).also {
+                instance = it
+            }
         }
     }
 
-    override fun getUser(): String {
-        TODO("Not yet implemented")
+
+    override suspend fun getUserId(): String {
+        return FirebaseInstallations.getInstance().id.await()
     }
 
     override suspend fun getLobbies(): List<Lobby> {
@@ -40,22 +48,18 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Fireb
     override suspend fun getLobby(id: String): Lobby {
         val snapshot = db.collection("lobbies").document(id).get().await()
         val doc = snapshot.toObject(LobbyDoc::class.java)!!
-        val players = doc.players!!.map { ref ->
-            val playerDoc = ref.get().await()
-            playerDoc.toObject(UserDoc::class.java)!!
-        }
         val lobby = Lobby(
             doc.id!!,
             doc.pin!!,
             doc.active!!,
-            players.map { userDoc -> User(userDoc.id!!, userDoc.name!!) }.toMutableList()
+            mutableListOf()
         )
         return lobby
     }
 
     override suspend fun createUser(name: String): String {
         val deviceId = FirebaseInstallations.getInstance().id.await()
-        val user = UserDoc("", name)
+        val user = UserDoc("", Timestamp.now())
         db.collection("users").document(deviceId).set(user).await()
         return deviceId
     }
@@ -89,28 +93,46 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Fireb
     override suspend fun createLobby(lobby: Lobby, hostId: String): String {
         val hostRef = this.db.document("users/$hostId")
         val lobbyData =
-            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef, mutableListOf(hostRef))
+            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef)
         val doc = this.db.collection("lobbies").add(lobbyData).await()
         return doc.id
     }
 
-
-    override suspend fun joinLobbyWithName(name: String, lobbyPIN: String) {
-
-        val data = hashMapOf(
-            // TODO: fetch the username and use that instead
-            "playerName" to "Mathias",
-            "ready" to false,
-        )
-
-        println("FØR JOIN")
-        this.db.collection("lobbies/vdWrz94eJ9Fe0Vhxl5M9/players").add(data).await();
-        print("ETTER JOIN")
-
+    override suspend fun openLobby(lobbyId: String, pin: String) {
+        this.realtime.child("lobbies").child(pin).setValue(lobbyId).await()
     }
 
-    override suspend fun getLobbyByPIN(PIN: String): Lobby {
-        TODO();
-        val doc = db.collection("lobbies").whereEqualTo("pin", PIN).get().await().documents[0]
+    override suspend fun joinLobbyWithPin(
+        userId: String,
+        username: String,
+        lobbyPIN: String
+    ): String {
+        val snapshot = this.realtime.child("lobbies").child(lobbyPIN).get().await()
+        // TODO: Error handling
+        if (!snapshot.exists()) return ""
+        val lobbyId = snapshot.value.toString()
+        this.realtime.child("players").child(lobbyId).child(userId)
+            .setValue(mapOf("ready" to false, "submitted" to false, "name" to username)).await()
+        return lobbyId
+    }
+
+    override fun listenToLobby(lobbyId: String) {
+        val snapshot = this.realtime.child("players").child(lobbyId)
+        val playerListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val values = snapshot.getValue<Map<String, PlayerRealtime>>()!!
+                for (key in values.keys) {
+                    val data = values[key]!!
+                    val user = User(key, data.name!!, data.ready!!, data.submitted!!)
+                    PlayerEventSource.playerJoined(user)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+                Log.w(TAG, "loadUsers:onCanceled", error.toException())
+            }
+        }
+        snapshot.addValueEventListener(playerListener)
     }
 }

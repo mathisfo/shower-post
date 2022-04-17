@@ -21,17 +21,18 @@ class CreateGameViewModel(private val repository: Repository = Storage.getInstan
         val pin = createRandomPin()
         val lobbyData = Lobby("", pin, true, mutableListOf())
         viewModelScope.launch {
-            val id = repository.createUser(usernameInput.get()!!)
-            val lobbyId = repository.createLobby(lobbyData, id)
-            println(lobbyId)
+            val hostId = repository.createUser(usernameInput.get()!!)
+            val lobbyId = repository.createLobby(lobbyData, hostId)
             _lobbyId.postValue(lobbyId)
+            repository.openLobby(lobbyId, pin)
+            repository.joinLobbyWithPin(hostId, usernameInput.get()!!, pin)
         }
     }
 
     private fun createRandomPin(): String {
         var pin = ""
         repeat(5) {
-            val randomNum = (0..10).shuffled().last()
+            val randomNum = (0..9).shuffled().last()
             pin += "$randomNum"
         }
         return pin

@@ -7,8 +7,9 @@ import com.progark.gameofwits.storage.documents.GameDoc
 import model.User
 
 interface Repository {
-    fun getUser(): String
 
+    // Firestore
+    suspend fun getUserId(): String
     suspend fun getLobbies(): List<Lobby>
     suspend fun getLobby(id: String): Lobby
     suspend fun createUser(name: String): String
@@ -16,7 +17,9 @@ interface Repository {
     suspend fun addGameToFirebase(game: GameDoc): String?
     suspend fun addWordToFirebase(userID: String, word: String, turn: Int, gameID: String)
     suspend fun createLobby(lobby: Lobby, hostId: String): String;
-    suspend fun joinLobbyWithName(name: String, lobbyPIN: String)
-    suspend fun getLobbyByPIN(PIN: String): Lobby;
+    suspend fun openLobby(lobbyId: String, pin: String)
+    suspend fun joinLobbyWithPin(userId: String, username: String, lobbyPIN: String): String
 
+    // Realtime
+    fun listenToLobby(lobbyId: String)
 }
