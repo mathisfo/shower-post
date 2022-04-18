@@ -1,32 +1,34 @@
 package com.progark.gameofwits.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.observers.Observer
+import com.progark.gameofwits.observers.PlayerEventSource
 import kotlinx.coroutines.launch
+import model.User
 import storage.Repository
 import storage.Storage
 
-class LobbyViewModel(private val repository: Repository = Storage.getInstance()): ViewModel() {
+class LobbyViewModel(private val repository: Repository = Storage.getInstance()) : ViewModel(),
+    Observer {
 
-    var activeLobbyId: String = "";
+    private val _lobby = MutableLiveData<Lobby>()
+    val lobby: LiveData<Lobby> = _lobby
 
-
-    fun createLobbyAndAddToStore(lobby: Lobby) = liveData {
-        emit(repository.createLobbyAndAddToStore(lobby))
+    fun fetchLobby(id: String) {
+        viewModelScope.launch {
+            val lobby = repository.getLobby(id)
+            _lobby.postValue(lobby)
+            repository.listenToLobby(id)
+        }
     }
 
-    fun getLobbyByPIN(pin: String) = liveData {
-        emit(repository.getLobbyByPIN(pin))
-    }
-
-    fun getLobby(Id: String) = liveData {
-        emit(repository.getLobby(Id))
-    }
-
-    fun joinLobbyWithName(name: String, gamePIN: String) {
-        viewModelScope.launch { repository.joinLobbyWithName(name, gamePIN) }
+    override fun update(event: String, payload: Any?) {
+        if (event == "PLAYER_JOINED") {
+            val lobby = _lobby.value!!
+            val user = payload as User
+            if (user !in lobby.players) lobby.players.add(payload)
+            _lobby.postValue(lobby)
+        }
     }
 }

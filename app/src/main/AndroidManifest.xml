@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gameofwits">
         <activity
-            android:name=".IntermissionView"
+            android:name=".view.IntermissionView"
             android:exported="false" />
         <activity
-            android:name=".EndOfGameView"
+            android:name=".view.EndOfGameView"
             android:exported="false" />
         <activity
-            android:name=".LobbyView"
+            android:name=".view.LobbyView"
             android:exported="false" />
         <activity
-            android:name=".GameView"
+            android:name=".view.GameView"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -1,4 +1,4 @@
-package com.progark.gameofwits
+package com.progark.gameofwits.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.R
 import com.progark.gameofwits.storage.documents.GameDoc
 import com.progark.gameofwits.viewmodel.GameViewModel
 
@@ -45,10 +46,21 @@ class GameView : AppCompatActivity() {
         val letter8: Button = findViewById(R.id.letter8)
         val letter9: Button = findViewById(R.id.letter9)
         val letter10: Button = findViewById(R.id.letter10)
-        buttons = listOf(letter1, letter2, letter3, letter4, letter5, letter6, letter7, letter8, letter9, letter10)
+        buttons = listOf(
+            letter1,
+            letter2,
+            letter3,
+            letter4,
+            letter5,
+            letter6,
+            letter7,
+            letter8,
+            letter9,
+            letter10
+        )
         val writtenWord: TextView = findViewById(R.id.word)
         writtenWord.text = word
-        buttons.forEach { btn -> btn.setOnClickListener { letterClicked(btn) }}
+        buttons.forEach { btn -> btn.setOnClickListener { letterClicked(btn) } }
         endofgame.setOnClickListener { openEndOfGameView() }
     }
 
@@ -85,7 +97,7 @@ class GameView : AppCompatActivity() {
         buttons.forEach { btn ->
             btn.isEnabled = true
             btn.isClickable = true
-         }
+        }
     }
 
     //private fun fetchLetters(): Array<String> {
@@ -102,11 +114,12 @@ class GameView : AppCompatActivity() {
         )
 
         // TODO: Dynamically set the round-number
-        docRef.update("round1", FieldValue.arrayUnion(wordEntry)).addOnSuccessListener{ documentReference ->
-            Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
+        docRef.update("round1", FieldValue.arrayUnion(wordEntry))
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
             }.addOnFailureListener { e ->
-                Log.w(TAG, "Error adding word", e)
-            }
+            Log.w(TAG, "Error adding word", e)
+        }
     }
 
     private fun openIntermissionView() {

@@ -1,24 +1,18 @@
 package com.progark.gameofwits
 
 import android.content.Intent
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.firebase.FirebaseError
 import com.progark.gameofwits.databinding.ActivityMainBinding
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-//import storage.Storage
-//import storage.Repository
+import com.progark.gameofwits.view.LobbyView
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,25 +30,6 @@ class MainActivity : AppCompatActivity() {
         btn.setOnClickListener { openLobbyView() }
 
         setSupportActionBar(binding.toolbar)
-        /**
-        val db = Firebase.firestore
-
-        val user = hashMapOf(
-            "first" to "Postmann",
-            "last" to "Katt",
-            "died" to 420
-        )
-
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-        **/
-
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
