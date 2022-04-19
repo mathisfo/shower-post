@@ -11,8 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentCreateGameBinding
-import com.progark.gameofwits.model.Lobby
-import com.progark.gameofwits.viewmodel.LobbyViewModel
 import com.progark.gameofwits.viewmodel.CreateGameViewModel
 
 /**
@@ -57,7 +55,7 @@ class CreateGameFragment : Fragment() {
     }
 
     private fun openLobbyView(lobbyId: String) {
-        val intent = Intent(getContext(), LobbyView::class.java)
+        val intent = Intent(getContext(), LobbyFragment::class.java)
         intent.putExtra("ACTIVE_LOBBY_ID", lobbyId)
         startActivity(intent)
     }

@@ -10,12 +10,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
+import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Lobby
+import com.progark.gameofwits.model.Round
 import com.progark.gameofwits.observers.PlayerEventSource
-import com.progark.gameofwits.storage.documents.GameDoc
-import com.progark.gameofwits.storage.documents.LobbyDoc
-import com.progark.gameofwits.storage.documents.PlayerRealtime
-import com.progark.gameofwits.storage.documents.UserDoc
+import com.progark.gameofwits.storage.documents.*
 import kotlinx.coroutines.tasks.await
 import model.User
 
@@ -40,7 +39,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         val snapshot = db.collection("lobbies").get().await()
         val lobbies = snapshot.map { doc ->
             val lobbyDoc = doc.toObject(LobbyDoc::class.java)
-            Lobby(lobbyDoc.id!!, lobbyDoc.pin!!, lobbyDoc.active!!, mutableListOf())
+            Lobby(lobbyDoc.id!!, lobbyDoc.pin!!, lobbyDoc.active!!)
         }
         return lobbies
     }
@@ -52,7 +51,6 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
             doc.id!!,
             doc.pin!!,
             doc.active!!,
-            mutableListOf()
         )
         return lobby
     }
@@ -64,18 +62,11 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         return deviceId
     }
 
-    override suspend fun getGame(id: String): GameDoc {
-        val doc = db.collection("games").document(id).get().await()
-        val game = doc.toObject(GameDoc::class.java)
-        val lettersDoc = db.collection("LetterArrays").document().get().await()
-        return game!!
-    }
-
     override suspend fun addGameToFirebase(game: GameDoc): String? {
         val ref = this.db.collection("games")
             .add(game).await()
         val doc = ref.get().await().toObject(GameDoc::class.java)
-        return doc!!.id
+        return ref.id
     }
 
     override suspend fun addWordToFirebase(
@@ -114,6 +105,27 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         this.realtime.child("players").child(lobbyId).child(userId)
             .setValue(mapOf("ready" to false, "submitted" to false, "name" to username)).await()
         return lobbyId
+    }
+
+    override suspend fun createGame() {
+        val data = hashMapOf(
+            "current_round" to 2,
+            "max_rounds" to 5,
+        )
+    }
+
+    override suspend fun getGame(id: String): Game {
+        val docRef = this.db.collection("games").document(id)
+        val gameSnapshot = docRef.get().await()
+        val game = gameSnapshot.toObject(GameDoc::class.java)!!
+        val roundSnapshot = docRef.collection("rounds").get().await()
+        val roundDocs = roundSnapshot.documents.map { doc -> doc.toObject(RoundDoc::class.java)!! }
+        val rounds = roundDocs.map { roundDoc ->  Round(roundDoc.id!!, roundDoc.letters!!)}
+        return Game(gameSnapshot.id, mutableListOf(), game.currentRound!!, game.maxRounds!!, game.scores!!)
+    }
+
+    override suspend fun submitWord(word: String, userId: String) {
+        TODO("Not yet implemented")
     }
 
     override fun listenToLobby(lobbyId: String) {

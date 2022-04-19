@@ -5,25 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import com.progark.gameofwits.R
 import model.User
 
-class PlayerAdapter(private val mContext: Context, private val dataSource: List<User>) :
-    ArrayAdapter<User?>(mContext, R.layout.lobby_row, dataSource) {
+class LetterAdapter(private val mContext: Context, private val dataSource: List<Char>) :
+    ArrayAdapter<Char?>(mContext, R.layout.lobby_row, dataSource) {
+    private lateinit var callback: (view: View, position: Int, letter: Char) -> Unit
 
     private class ViewHolder {
-        lateinit var textView: TextView
-        lateinit var checkBox: CheckBox
+        lateinit var button: Button
     }
 
     override fun getCount(): Int {
         return dataSource.size
     }
 
-    override fun getItem(position: Int): User {
+    override fun getItem(position: Int): Char {
         return dataSource[position]
     }
 
@@ -38,9 +38,8 @@ class PlayerAdapter(private val mContext: Context, private val dataSource: List<
         if (convertView == null) {
             viewHolder = ViewHolder()
             convertView =
-                LayoutInflater.from(parent.context).inflate(R.layout.lobby_row, parent, false)
-            viewHolder.textView = convertView.findViewById(R.id.row_text)
-            viewHolder.checkBox = convertView.findViewById(R.id.player_row_checkbox)
+                LayoutInflater.from(parent.context).inflate(R.layout.letter_item, parent, false)
+            viewHolder.button = convertView.findViewById(R.id.game_letter)
             result = convertView
             convertView.tag = viewHolder
         } else {
@@ -48,9 +47,13 @@ class PlayerAdapter(private val mContext: Context, private val dataSource: List<
             result = convertView
         }
 
-        val item: User = getItem(position)
-        viewHolder.textView.text = item.name
-        viewHolder.checkBox.isChecked = false
+        val item: Char = getItem(position)
+        viewHolder.button.text = item.toString()
+        viewHolder.button.setOnClickListener { view -> callback(view, position, item) }
         return result
+    }
+
+    fun setButtonOnclick(callback: (view: View, position: Int, letter: Char) -> Unit) {
+        this.callback = callback
     }
 }

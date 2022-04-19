@@ -17,7 +17,7 @@ class IntermissionView : AppCompatActivity() {
     }
 
     private fun goToGameView(turn: Number) {
-        val intent = Intent(this, GameView::class.java)
+        val intent = Intent(this, GameRoundFragment::class.java)
         startActivity(intent)
     }
 }

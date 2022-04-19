@@ -12,13 +12,15 @@ fun createRandomLetters(): String {
 
 data class Game(
     val id: String,
-    val Letters: Map<Char, Int> = HashMap(),
     val rounds: MutableList<Round> = mutableListOf(),
-    val players: List<User> = listOf()
+    // val settings : Settings TODO: Create settings based on lobby?
+    val current_round: Int,
+    val max_round: Int,
+    val scores: Map<String, Int>
 ) {
     fun startNextRound() {
         val letters = createRandomLetters()
         rounds.last().finished = true
-        rounds.add(Round(letters))
+        rounds.add(Round("asf", letters))
     }
 }

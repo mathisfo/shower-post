@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.progark.gameofwits.databinding.ActivityMainBinding
-import com.progark.gameofwits.view.LobbyView
+import com.progark.gameofwits.view.LobbyFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,15 +33,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 
     private fun openLobbyView() {
-        val intent = Intent(this, LobbyView::class.java)
+        val intent = Intent(this, LobbyFragment::class.java)
         startActivity(intent)
     }
 
