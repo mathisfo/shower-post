@@ -19,7 +19,7 @@ class CreateGameViewModel(private val repository: Repository = Storage.getInstan
 
     fun createLobby() {
         val pin = createRandomPin()
-        val lobbyData = Lobby("", pin, true, mutableListOf())
+        val lobbyData = Lobby("", pin, true)
         viewModelScope.launch {
             val hostId = repository.createUser(usernameInput.get()!!)
             val lobbyId = repository.createLobby(lobbyData, hostId)

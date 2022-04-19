@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.progark.gameofwits">
+    package="com.progark.gameofwits" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Gameofwits">
+        android:theme="@style/Theme.Gameofwits" >
         <activity
             android:name=".view.IntermissionView"
             android:exported="false" />
@@ -18,16 +18,13 @@
             android:name=".view.EndOfGameView"
             android:exported="false" />
         <activity
-            android:name=".view.LobbyView"
-            android:exported="false" />
-        <activity
-            android:name=".view.GameView"
+            android:name=".view.GameActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Gameofwits.NoActionBar">
+            android:theme="@style/Theme.Gameofwits.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

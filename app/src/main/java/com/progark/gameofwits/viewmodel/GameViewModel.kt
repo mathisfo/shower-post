@@ -2,53 +2,42 @@ package com.progark.gameofwits.viewmodel
 
 
 import androidx.lifecycle.*
-import com.progark.gameofwits.model.Letters
-import com.progark.gameofwits.model.Words
-import com.progark.gameofwits.model.Lobby
-import com.progark.gameofwits.model.Player
-import com.progark.gameofwits.storage.documents.GameDoc
+import com.progark.gameofwits.model.*
+import com.progark.gameofwits.observers.PlayerObserver
 import kotlinx.coroutines.launch
+import model.User
 import storage.Repository
 import storage.Storage
 
-class GameViewModel(private val repository: Repository = Storage.getInstance()): ViewModel() {
+class GameViewModel(private val repository: Repository = Storage.getInstance()): ViewModel(), PlayerObserver {
+    private val _activeLobby = MutableLiveData<Lobby>()
+    val activeLobby: LiveData<Lobby> = _activeLobby
 
-    val lobbies = MutableLiveData<List<Lobby>>()
-    fun fetchLobbies() {
+    private val _currentGame = MutableLiveData<Game>()
+
+    private val _user = MutableLiveData<String>()
+    val user : LiveData<String> = _user
+
+
+
+    fun fetchLobby(id: String) {
         viewModelScope.launch {
-            lobbies.postValue(repository.getLobbies())
+            val lobby = repository.getLobby(id)
+            _activeLobby.postValue(lobby)
+            repository.listenToLobby(id)
         }
     }
 
-
-    fun getGame(id: String) = liveData {
-        emit(repository.getGame(id))
+    fun setActiveUser(id: String) {
+        _user.postValue(id)
     }
 
-    fun createLetterArray(): List<String> = List(10) {
-        ('A'..'Z').random().toString()
-    }
-
-    fun createGame(lobbyID: String, numberOfTurns: Int, players: List<Player>) = liveData {
-        val letters = hashMapOf(
-            "turn1" to createLetterArray()
-        )
-        var wordList = mutableMapOf<String, String>()
-        players.forEach { player -> wordList[player.id] = "" }
-        val wordsMap = hashMapOf(
-            "turn1" to wordList.toMap()
-        )
-        for (i in 2..numberOfTurns) {
-            letters["turn"+i] = createLetterArray()
-            wordsMap["turn"+i] = wordList.toMap()
+    override fun update(event: String, payload: User?) {
+        if (event == "PLAYER_JOINED") {
+            val lobby = _activeLobby.value!!
+            val user = payload as User
+            lobby.join(user)
+            _activeLobby.postValue(lobby)
         }
-        val letterArrays = Letters(letters["turn1"]!!, letters["turn2"], letters["turn3"], letters["turn4"], letters["turn5"])
-        val words = Words(wordsMap["turn1"]!!, wordsMap["turn2"], wordsMap["turn3"], wordsMap["turn4"], wordsMap["turn5"])
-        emit(repository.addGameToFirebase(GameDoc(null, lobbyID, 1, numberOfTurns, letterArrays, words)))
     }
-
-    fun enterWord(userID: String, word: String, turn: Int, gameID: String) = liveData {
-        emit(repository.addWordToFirebase(userID, word, turn, gameID))
-    }
-
 }

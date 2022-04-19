@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_graph"
+    app:startDestination="@id/lobbyFragment">
+
+    <fragment
+        android:id="@+id/gameRoundFragment"
+        android:name="com.progark.gameofwits.view.GameRoundFragment"
+        android:label="fragment_game_round"
+        tools:layout="@layout/fragment_game_round" />
+    <fragment
+        android:id="@+id/lobbyFragment"
+        android:name="com.progark.gameofwits.view.LobbyFragment"
+        android:label="LobbyFragment"
+        tools:layout="@layout/fragment_lobby">
+        <action
+            android:id="@+id/action_lobbyFragment_to_gameFragment"
+            app:destination="@id/gameRoundFragment" />
+    </fragment>
+</navigation>

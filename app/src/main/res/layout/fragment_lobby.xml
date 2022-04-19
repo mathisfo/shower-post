@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LobbyView">
+    tools:context=".view.">
 
     <Button
         android:id="@+id/nextbutton"
@@ -35,8 +35,9 @@
         android:id="@+id/playerList"
         android:layout_width="299dp"
         android:layout_height="340dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/lobbyId"
-        tools:layout_editor_absoluteX="56dp" />
+        app:layout_constraintBottom_toTopOf="@+id/nextbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lobbyId" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

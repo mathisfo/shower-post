@@ -42,7 +42,8 @@ class JoinGameFragment : Fragment() {
             findNavController().navigate(R.id.action_JoinGameFragment_to_MainMenuFragment)
         }
         viewModel.activeLobbyId.observe(viewLifecycleOwner) { lobbyId ->
-            val intent = Intent(context, LobbyView::class.java)
+            val intent = Intent(requireContext(), GameActivity::class.java)
+            println("lobby $lobbyId")
             intent.putExtra("ACTIVE_LOBBY_ID", lobbyId)
             intent.putExtra("USER_ID", viewModel.userId.value!!)
             startActivity(intent)

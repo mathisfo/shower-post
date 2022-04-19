@@ -2,7 +2,7 @@ package com.progark.gameofwits.model
 
 import model.User
 
-data class Round(private val letters: String) {
+data class Round(val id: String, private val letters: String) {
     val availableLetter: MutableMap<Char, Int> = HashMap()
     var finished: Boolean = false
     private val submitted = HashMap<User, String>()

@@ -8,8 +8,15 @@ class Lobby(
     val id: String,
     val pin: String,
     val active: Boolean,
-    val players: MutableList<User>,
-    ) {
+) {
+    val players = mutableListOf<User>()
+
+
+    fun join(player: User) {
+        if (!players.contains(player)) {
+            players.add(player)
+        }
+    }
 }
 
 

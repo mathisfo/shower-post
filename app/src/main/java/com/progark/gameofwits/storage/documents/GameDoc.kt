@@ -1,17 +1,16 @@
 package com.progark.gameofwits.storage.documents
 
-import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
-import com.progark.gameofwits.model.Letters
-import com.progark.gameofwits.model.Words
 
 data class GameDoc(
-    @DocumentId var id: String?,
-    @PropertyName("lobbyID") val lobbyID: String?,
-    @PropertyName("currentTurn") val currentTurn: Int?,
-    @PropertyName("numberOfTurns") val numberOfTurns: Int?,
-    @PropertyName("letterArrays") val letterArrays: Letters?,
-    @PropertyName("words") val words: Words?
+    @PropertyName("current_round")
+    val currentRound: Int?,
+    @PropertyName("max_rounds")
+    val maxRounds: Int?,
+    @PropertyName("scores")
+    val scores: Map<String, Int>?,
 ) {
-    constructor(): this(null, null, null, null, null, null)
+    constructor() : this(0, 0, null)
 }

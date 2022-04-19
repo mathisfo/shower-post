@@ -20,7 +20,7 @@ class EndOfGameView : AppCompatActivity() {
     }
 
     private fun openLobbyView() {
-        val intent = Intent(this, LobbyView::class.java)
+        val intent = Intent(this, LobbyFragment::class.java)
         startActivity(intent)
     }
 
