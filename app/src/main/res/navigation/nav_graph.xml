@@ -22,7 +22,7 @@
         android:id="@+id/CreateGameFragment"
         android:name="com.progark.gameofwits.view.CreateGameFragment"
         android:label="@string/create_game_fragment_label"
-        tools:layout="@layout/fragment_create_game">
+        tools:layout="@layout/fragment_create_lobby">
 
         <action
             android:id="@+id/action_CreateGameFragment_to_MainMenuFragment"

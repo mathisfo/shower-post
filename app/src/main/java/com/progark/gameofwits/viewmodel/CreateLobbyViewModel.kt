@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import storage.Repository
 import storage.Storage
 
-class CreateGameViewModel(private val repository: Repository = Storage.getInstance()) :
+class CreateLobbyViewModel(private val repository: Repository = Storage.getInstance()) :
     ViewModel() {
     // Input fields
     val usernameInput = ObservableField<String>()
@@ -21,7 +21,7 @@ class CreateGameViewModel(private val repository: Repository = Storage.getInstan
         val pin = createRandomPin()
         val lobbyData = Lobby("", pin, true)
         viewModelScope.launch {
-            val hostId = repository.createUser(usernameInput.get()!!)
+            val hostId = repository.createUser()
             val lobbyId = repository.createLobby(lobbyData, hostId)
             _lobbyId.postValue(lobbyId)
             repository.openLobby(lobbyId, pin)

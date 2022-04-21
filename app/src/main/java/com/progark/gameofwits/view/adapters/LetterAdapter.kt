@@ -11,8 +11,10 @@ import android.widget.TextView
 import com.progark.gameofwits.R
 import model.User
 
-class LetterAdapter(private val mContext: Context, private val dataSource: List<Char>) :
-    ArrayAdapter<Char?>(mContext, R.layout.lobby_row, dataSource) {
+class LetterItem(val letter: Char, var clicked: Boolean) {}
+
+class LetterAdapter(private val mContext: Context, private val dataSource: List<LetterItem>) :
+    ArrayAdapter<LetterItem?>(mContext, R.layout.lobby_row, dataSource) {
     private lateinit var callback: (view: View, position: Int, letter: Char) -> Unit
 
     private class ViewHolder {
@@ -23,7 +25,7 @@ class LetterAdapter(private val mContext: Context, private val dataSource: List<
         return dataSource.size
     }
 
-    override fun getItem(position: Int): Char {
+    override fun getItem(position: Int): LetterItem {
         return dataSource[position]
     }
 
@@ -47,9 +49,11 @@ class LetterAdapter(private val mContext: Context, private val dataSource: List<
             result = convertView
         }
 
-        val item: Char = getItem(position)
-        viewHolder.button.text = item.toString()
-        viewHolder.button.setOnClickListener { view -> callback(view, position, item) }
+        val item: LetterItem = getItem(position)
+        viewHolder.button.text = item.letter.toString()
+        viewHolder.button.setOnClickListener { view -> callback(view, position, item.letter) }
+        viewHolder.button.isClickable = !item.clicked
+        viewHolder.button.isEnabled = !item.clicked
         return result
     }
 

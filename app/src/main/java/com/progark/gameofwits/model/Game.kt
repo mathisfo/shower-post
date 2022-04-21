@@ -12,7 +12,7 @@ fun createRandomLetters(): String = List(10) {
 
 data class Game(
     val id: String,
-    val rounds: MutableList<Round> = mutableListOf(),
+    val rounds: List<Round> = listOf(),
     // val settings : Settings TODO: Create settings based on lobby?
     val current_round: Int,
     val max_round: Int,
@@ -21,6 +21,5 @@ data class Game(
     fun startNextRound() {
         val letters = createRandomLetters()
         rounds.last().finished = true
-        rounds.add(Round("asf", letters))
     }
 }

@@ -2,7 +2,6 @@ package com.progark.gameofwits.view
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.progark.gameofwits.databinding.FragmentGameRoundBinding
 import com.progark.gameofwits.view.adapters.LetterAdapter
+import com.progark.gameofwits.view.adapters.LetterItem
 import com.progark.gameofwits.viewmodel.GameRoundViewModel
 import com.progark.gameofwits.viewmodel.GameViewModel
 
@@ -32,19 +32,22 @@ class GameRoundFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val resetbtn = binding.reset
+        val game = gameViewModel.game.value!!
+        val currentRound = game.rounds[game.current_round-1]
+        roundViewModel.setRound(currentRound)
 
         val enterword = binding.enterword
 
         val endofgame = binding.endofgamebtn
         endofgame.setOnClickListener {  }
 
-        val letters: List<Char> = listOf('a','b','c','d','e','e','f')
+        val word = currentRound.letters
+        val letters = word.toCharArray().map { c -> LetterItem(c, false) }
         val adapter = LetterAdapter(requireContext(), letters)
         adapter.setButtonOnclick { buttonView, position, letter ->
-            buttonView.isEnabled = false
-            buttonView.isClickable = false
+            letters[position].clicked = true
             roundViewModel.addLetter(letter)
+            adapter.notifyDataSetChanged()
         }
         roundViewModel.word.observe(viewLifecycleOwner) { word ->
             binding.word.text = word
@@ -54,6 +57,13 @@ class GameRoundFragment : Fragment() {
         lettersView.adapter = adapter
 
         val writtenWord = binding.word
+
+        val resetbtn = binding.reset
+        resetbtn.setOnClickListener{
+            roundViewModel.resetWord()
+            letters.forEach { item -> item.clicked = false }
+            adapter.notifyDataSetChanged()
+        }
     }
 
     /*

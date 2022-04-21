@@ -23,7 +23,7 @@ class JoinGameViewModel(private val repository: Repository = Storage.getInstance
         val pin = pinField.get()!!
         val username = nameField.get()!!
         viewModelScope.launch {
-            val userId = repository.getUserId()
+            val userId = repository.createUser()
             _userId.postValue(userId)
             val lobbyId = repository.joinLobbyWithPin(userId, username, pin)
             _activeLobbyId.postValue(lobbyId)

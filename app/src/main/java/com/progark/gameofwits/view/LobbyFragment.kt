@@ -39,7 +39,6 @@ class LobbyFragment() : Fragment() {
         val btn = binding.nextbutton
         btn.setOnClickListener {
             gameViewModel.createGame()
-            findNavController().navigate(R.id.action_lobbyFragment_to_gameFragment)
         }
 
         val players = mutableListOf<User>()
@@ -53,6 +52,11 @@ class LobbyFragment() : Fragment() {
                 if (!players.contains(player)) players.add(player)
             }
             adapter.notifyDataSetChanged()
+        }
+        gameViewModel.game.observe(viewLifecycleOwner) {game ->
+            if (game != null) {
+                findNavController().navigate(R.id.action_lobbyFragment_to_gameFragment)
+            }
         }
     }
 

@@ -10,33 +10,33 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.progark.gameofwits.R
-import com.progark.gameofwits.databinding.FragmentCreateGameBinding
-import com.progark.gameofwits.viewmodel.CreateGameViewModel
+import com.progark.gameofwits.databinding.FragmentCreateLobbyBinding
+import com.progark.gameofwits.viewmodel.CreateLobbyViewModel
 
 /**
  * A simple [Fragment] subclass for the "Create Game" view.
  */
 class CreateGameFragment : Fragment() {
-    private var _binding: FragmentCreateGameBinding? = null
+    private var _binding: FragmentCreateLobbyBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel: CreateGameViewModel by viewModels()
+    private val viewModel: CreateLobbyViewModel by viewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCreateGameBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateLobbyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // Init
         super.onViewCreated(view, savedInstanceState)
-        binding.createGameViewModel = viewModel
+        binding.createLobbyViewModel = viewModel
         binding.lifecycleOwner = this
 
         binding.hostBackButton.setOnClickListener {

@@ -13,7 +13,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
     private val _activeLobby = MutableLiveData<Lobby>()
     val activeLobby: LiveData<Lobby> = _activeLobby
 
-    private val _currentGame = MutableLiveData<Game>()
+
+    private val _game = MutableLiveData<Game>()
+    val game: LiveData<Game> = _game
 
     private val _user = MutableLiveData<String>()
     val user : LiveData<String> = _user
@@ -43,7 +45,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
 
     fun createGame() {
         viewModelScope.launch {
-            repository.createGame(activeLobby.value!!, 5)
+            val gameId = repository.createGame(activeLobby.value!!, 5)
+            val game = repository.getGame(gameId)
+            _game.postValue(game)
         }
     }
 }

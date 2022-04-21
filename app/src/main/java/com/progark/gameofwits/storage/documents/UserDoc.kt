@@ -6,7 +6,7 @@ import com.google.firebase.firestore.PropertyName
 
 data class UserDoc(
     @DocumentId var id: String?,
-    @PropertyName("registered_at") var registeredAt: Timestamp?
+    @PropertyName("registeredAt") val registeredAt: Timestamp?
 ) {
     constructor() : this("", null)
 }

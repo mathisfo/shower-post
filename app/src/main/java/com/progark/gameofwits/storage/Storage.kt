@@ -57,7 +57,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         return lobby
     }
 
-    override suspend fun createUser(name: String): String {
+    override suspend fun createUser(): String {
         val deviceId = FirebaseInstallations.getInstance().id.await()
         val user = UserDoc("", Timestamp.now())
         db.collection("users").document(deviceId).set(user).await()
@@ -86,7 +86,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
     override suspend fun createLobby(lobby: Lobby, hostId: String): String {
         val hostRef = this.db.document("users/$hostId")
         val lobbyData =
-            LobbyDoc(null, lobby.pin, lobby.active, null, hostRef)
+            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef)
         val doc = this.db.collection("lobbies").add(lobbyData).await()
         return doc.id
     }
@@ -109,24 +109,22 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         return lobbyId
     }
 
-    override suspend fun createGame(lobby: Lobby, max_rounds: Int) {
+    override suspend fun createGame(lobby: Lobby, max_rounds: Int): String {
         val answers = mutableMapOf<String, String>()
         lobby.players.forEach {player -> answers[player.id] = ""}
         val rounds = mutableListOf<RoundItem>()
         for (i in 1..max_rounds) {
             rounds.add(RoundItem(createRandomLetters(), answers))
         }
-        val game = GameDoc(1, max_rounds, null, rounds)
-        println("Game: " + game)
-        this.db.collection("games").add(game)
+        val game = GameDoc("",1, max_rounds, mapOf(), rounds)
+        return this.db.collection("games").add(game).await().id
     }
 
-
     override suspend fun getGame(id: String): Game {
-        val docRef = this.db.collection("games").document(id)
-        val gameSnapshot = docRef.get().await()
-        val game = gameSnapshot.toObject(GameDoc::class.java)!!
-        return Game(gameSnapshot.id, mutableListOf(), game.currentRound!!, game.maxRounds!!, game.scores!!)
+        val snapshot = this.db.collection("games").document(id).get().await()
+        val game = snapshot.toObject(GameDoc::class.java)!!
+        val rounds = game.rounds!!.map { round -> Round(round.letters!!, round.answers!!) }
+        return Game(snapshot.id, rounds, game.currentRound!!, game.maxRounds!!, game.scores!!)
     }
 
     override suspend fun submitWord(word: String, userId: String) {
