@@ -5,7 +5,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
 import model.User
 
-
 fun createRandomLetters(): String = List(10) {
     (('A'..'Z')+('A')+('E')+('I')+('O')+('U')+('Y')+('A')+('E')+('I')).random()
 }.joinToString("")

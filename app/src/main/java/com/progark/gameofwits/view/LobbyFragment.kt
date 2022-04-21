@@ -41,6 +41,7 @@ class LobbyFragment() : Fragment() {
             gameViewModel.createGame()
         }
 
+
         val players = mutableListOf<User>()
         val playersList = binding.playerList
         val adapter = PlayerAdapter(requireContext(), players)
@@ -48,6 +49,9 @@ class LobbyFragment() : Fragment() {
 
         gameViewModel.activeLobby.observe(viewLifecycleOwner) { lobby ->
             text.text = lobby.pin
+            if (lobby.isHost(gameViewModel.user.value!!)) {
+                btn.visibility = View.VISIBLE
+            }
             lobby.players.forEach { player ->
                 if (!players.contains(player)) players.add(player)
             }

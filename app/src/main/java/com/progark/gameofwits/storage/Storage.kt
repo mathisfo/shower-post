@@ -41,7 +41,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         val snapshot = db.collection("lobbies").get().await()
         val lobbies = snapshot.map { doc ->
             val lobbyDoc = doc.toObject(LobbyDoc::class.java)
-            Lobby(lobbyDoc.id!!, lobbyDoc.pin!!, lobbyDoc.active!!)
+            Lobby(lobbyDoc.id!!, lobbyDoc.pin!!, lobbyDoc.active!!, lobbyDoc.host!!.id)
         }
         return lobbies
     }
@@ -53,6 +53,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
             doc.id!!,
             doc.pin!!,
             doc.active!!,
+            doc.host!!.id,
         )
         return lobby
     }
