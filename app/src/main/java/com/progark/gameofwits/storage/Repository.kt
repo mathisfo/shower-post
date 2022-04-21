@@ -18,8 +18,10 @@ interface Repository {
     suspend fun openLobby(lobbyId: String, pin: String)
     suspend fun joinLobbyWithPin(userId: String, username: String, lobbyPIN: String): String
     suspend fun createGame(lobby:Lobby, rounds: Int): String
-    suspend fun submitWord(word: String, userId: String)
+    suspend fun updateAnswerToUser(game: Game, userId: String, word: String)
+    suspend fun updateCurrentRound(id: String)
 
     // Realtime
     fun listenToLobby(lobbyId: String)
+    fun listenToAnswers(game: Game)
 }

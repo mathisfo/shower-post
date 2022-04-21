@@ -9,7 +9,8 @@ import model.User
 import storage.Repository
 import storage.Storage
 
-class GameViewModel(private val repository: Repository = Storage.getInstance()): ViewModel(), PlayerObserver {
+class GameViewModel(private val repository: Repository = Storage.getInstance()) : ViewModel(),
+    PlayerObserver {
     private val _activeLobby = MutableLiveData<Lobby>()
     val activeLobby: LiveData<Lobby> = _activeLobby
 
@@ -18,8 +19,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
     val game: LiveData<Game> = _game
 
     private val _user = MutableLiveData<String>()
-    val user : LiveData<String> = _user
-
+    val user: LiveData<String> = _user
 
 
     fun fetchLobby(id: String) {
@@ -34,12 +34,17 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
         _user.postValue(id)
     }
 
-    override fun update(event: String, payload: User?) {
+    override fun update(event: String, payload: Any?) {
         if (event == "PLAYER_JOINED") {
             val lobby = _activeLobby.value!!
             val user = payload as User
             lobby.join(user)
             _activeLobby.postValue(lobby)
+        }
+        if (event == "ALL_USERS_SUBMITTED") {
+            viewModelScope.launch {
+                repository.updateCurrentRound(game.value!!.id)
+            }
         }
     }
 
@@ -48,6 +53,17 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
             val gameId = repository.createGame(activeLobby.value!!, 5)
             val game = repository.getGame(gameId)
             _game.postValue(game)
+            repository.listenToAnswers(game)
+        }
+    }
+
+    fun submitWord(word: String) {
+        val game = this.game.value ?: return
+        val round = game.rounds[game.current_round-1]
+        viewModelScope.launch {
+            if (round.isValidWord(word)) {
+                repository.updateAnswerToUser(game, user.value!!, word)
+            }
         }
     }
 }

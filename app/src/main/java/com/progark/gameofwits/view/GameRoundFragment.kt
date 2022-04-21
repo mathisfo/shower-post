@@ -22,7 +22,6 @@ class GameRoundFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,13 +32,12 @@ class GameRoundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val game = gameViewModel.game.value!!
-        val currentRound = game.rounds[game.current_round-1]
+        val currentRound = game.rounds[game.current_round - 1]
         roundViewModel.setRound(currentRound)
 
-        val enterword = binding.enterword
 
         val endofgame = binding.endofgamebtn
-        endofgame.setOnClickListener {  }
+        endofgame.setOnClickListener { }
 
         val word = currentRound.letters
         val letters = word.toCharArray().map { c -> LetterItem(c, false) }
@@ -49,20 +47,23 @@ class GameRoundFragment : Fragment() {
             roundViewModel.addLetter(letter)
             adapter.notifyDataSetChanged()
         }
-        roundViewModel.word.observe(viewLifecycleOwner) { word ->
-            binding.word.text = word
+        roundViewModel.word.observe(viewLifecycleOwner) { updatedWord ->
+            binding.word.text = updatedWord
         }
 
         val lettersView = binding.availableLetters
         lettersView.adapter = adapter
 
-        val writtenWord = binding.word
-
         val resetbtn = binding.reset
-        resetbtn.setOnClickListener{
+        resetbtn.setOnClickListener {
             roundViewModel.resetWord()
             letters.forEach { item -> item.clicked = false }
             adapter.notifyDataSetChanged()
+        }
+
+        val enterword = binding.enterword
+        enterword.setOnClickListener {
+            gameViewModel.submitWord(roundViewModel.word.value!!)
         }
     }
 

@@ -3,7 +3,7 @@ package com.progark.gameofwits.observers
 import model.User
 
 interface PlayerObserver {
-    fun update(event: String, payload: User?)
+    fun update(event: String, payload: Any?)
 }
 
 object PlayerEventSource {
@@ -19,5 +19,9 @@ object PlayerEventSource {
 
     fun playerJoined(user: User) {
         notifyObservers("PLAYER_JOINED", user)
+    }
+
+    fun allUsersSubmitted() {
+        notifyObservers("ALL_USERS_SUBMITTED", null)
     }
 }
