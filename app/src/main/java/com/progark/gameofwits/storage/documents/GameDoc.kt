@@ -1,8 +1,9 @@
 package com.progark.gameofwits.storage.documents
 
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
+import com.progark.gameofwits.model.Letters
+
+data class RoundItem(val letters: String, val answers: Map<String, String>)
 
 data class GameDoc(
     @PropertyName("current_round")
@@ -11,6 +12,8 @@ data class GameDoc(
     val maxRounds: Int?,
     @PropertyName("scores")
     val scores: Map<String, Int>?,
+    @PropertyName("rounds")
+    val rounds: List<RoundItem>?
 ) {
-    constructor() : this(0, 0, null)
+    constructor() : this(0, 0, null, null)
 }

@@ -6,9 +6,9 @@ import com.google.firebase.firestore.PropertyName
 import model.User
 
 
-fun createRandomLetters(): String {
-    return "abcdfaa"
-}
+fun createRandomLetters(): String = List(10) {
+    (('A'..'Z')+('A')+('E')+('I')+('O')+('U')+('Y')+('A')+('E')+('I')).random()
+}.joinToString("")
 
 data class Game(
     val id: String,

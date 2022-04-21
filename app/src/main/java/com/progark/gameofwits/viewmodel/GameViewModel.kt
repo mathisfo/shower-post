@@ -40,4 +40,10 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()):
             _activeLobby.postValue(lobby)
         }
     }
+
+    fun createGame() {
+        viewModelScope.launch {
+            repository.createGame(activeLobby.value!!, 5)
+        }
+    }
 }

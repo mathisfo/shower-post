@@ -13,5 +13,5 @@ class LobbyDoc(
     @PropertyName("games") val games: List<DocumentReference>?,
     @PropertyName("host") val host: DocumentReference?,
 ) {
-    constructor() : this("", "", false, listOf(), null)
+    constructor() : this("", "", false, null, null)
 }

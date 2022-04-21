@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.model.Round
+import com.progark.gameofwits.model.createRandomLetters
 import com.progark.gameofwits.observers.PlayerEventSource
 import com.progark.gameofwits.storage.documents.*
 import kotlinx.coroutines.tasks.await
@@ -84,7 +86,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
     override suspend fun createLobby(lobby: Lobby, hostId: String): String {
         val hostRef = this.db.document("users/$hostId")
         val lobbyData =
-            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef)
+            LobbyDoc(null, lobby.pin, lobby.active, null, hostRef)
         val doc = this.db.collection("lobbies").add(lobbyData).await()
         return doc.id
     }
@@ -107,20 +109,23 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         return lobbyId
     }
 
-    override suspend fun createGame() {
-        val data = hashMapOf(
-            "current_round" to 2,
-            "max_rounds" to 5,
-        )
+    override suspend fun createGame(lobby: Lobby, max_rounds: Int) {
+        val answers = mutableMapOf<String, String>()
+        lobby.players.forEach {player -> answers[player.id] = ""}
+        val rounds = mutableListOf<RoundItem>()
+        for (i in 1..max_rounds) {
+            rounds.add(RoundItem(createRandomLetters(), answers))
+        }
+        val game = GameDoc(1, max_rounds, null, rounds)
+        println("Game: " + game)
+        this.db.collection("games").add(game)
     }
+
 
     override suspend fun getGame(id: String): Game {
         val docRef = this.db.collection("games").document(id)
         val gameSnapshot = docRef.get().await()
         val game = gameSnapshot.toObject(GameDoc::class.java)!!
-        val roundSnapshot = docRef.collection("rounds").get().await()
-        val roundDocs = roundSnapshot.documents.map { doc -> doc.toObject(RoundDoc::class.java)!! }
-        val rounds = roundDocs.map { roundDoc ->  Round(roundDoc.id!!, roundDoc.letters!!)}
         return Game(gameSnapshot.id, mutableListOf(), game.currentRound!!, game.maxRounds!!, game.scores!!)
     }
 

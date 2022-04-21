@@ -17,7 +17,7 @@ interface Repository {
     suspend fun createLobby(lobby: Lobby, hostId: String): String;
     suspend fun openLobby(lobbyId: String, pin: String)
     suspend fun joinLobbyWithPin(userId: String, username: String, lobbyPIN: String): String
-    suspend fun createGame()
+    suspend fun createGame(lobby:Lobby, rounds: Int)
     suspend fun submitWord(word: String, userId: String)
 
     // Realtime
