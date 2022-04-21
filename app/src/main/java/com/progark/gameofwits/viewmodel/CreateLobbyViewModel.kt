@@ -17,11 +17,15 @@ class CreateLobbyViewModel(private val repository: Repository = Storage.getInsta
     private val _lobbyId = MutableLiveData<String>()
     val lobbyId: LiveData<String> = _lobbyId
 
+    private val _userId = MutableLiveData<String>()
+    val userId : LiveData<String> = _userId
+
     fun createLobby() {
         val pin = createRandomPin()
         val lobbyData = Lobby("", pin, true)
         viewModelScope.launch {
             val hostId = repository.createUser()
+            _userId.postValue(hostId)
             val lobbyId = repository.createLobby(lobbyData, hostId)
             _lobbyId.postValue(lobbyId)
             repository.openLobby(lobbyId, pin)

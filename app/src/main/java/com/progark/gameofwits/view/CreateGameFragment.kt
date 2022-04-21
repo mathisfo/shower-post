@@ -50,13 +50,14 @@ class CreateGameFragment : Fragment() {
             viewModel.createLobby()
         }
         viewModel.lobbyId.observe(viewLifecycleOwner) { lobbyId ->
-            openLobbyView(lobbyId)
+            openLobbyView(lobbyId, viewModel.userId.value!!)
         }
     }
 
-    private fun openLobbyView(lobbyId: String) {
-        val intent = Intent(getContext(), LobbyFragment::class.java)
+    private fun openLobbyView(lobbyId: String, userId: String) {
+        val intent = Intent(requireContext(), GameActivity::class.java)
         intent.putExtra("ACTIVE_LOBBY_ID", lobbyId)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
