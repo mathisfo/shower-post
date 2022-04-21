@@ -10,7 +10,7 @@ class LobbyDoc(
     @DocumentId val id: String?,
     @PropertyName("pin") val pin: String?,
     @PropertyName("active") val active: Boolean?,
-    @PropertyName("game") val game: DocumentReference?,
+    @PropertyName("games") val games: List<DocumentReference>?,
     @PropertyName("host") val host: DocumentReference?,
 ) {
     constructor() : this("", "", false, null, null)
