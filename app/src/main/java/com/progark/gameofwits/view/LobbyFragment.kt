@@ -38,6 +38,7 @@ class LobbyFragment() : Fragment() {
         val text = binding.lobbyId
         val btn = binding.nextbutton
         btn.setOnClickListener {
+            gameViewModel.createGame()
             findNavController().navigate(R.id.action_lobbyFragment_to_gameFragment)
         }
 
