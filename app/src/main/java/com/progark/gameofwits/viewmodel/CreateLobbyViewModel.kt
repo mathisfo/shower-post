@@ -22,10 +22,10 @@ class CreateLobbyViewModel(private val repository: Repository = Storage.getInsta
 
     fun createLobby() {
         val pin = createRandomPin()
-        val lobbyData = Lobby("", pin, true)
         viewModelScope.launch {
             val hostId = repository.createUser()
             _userId.postValue(hostId)
+            val lobbyData = Lobby("", pin, true, hostId)
             val lobbyId = repository.createLobby(lobbyData, hostId)
             _lobbyId.postValue(lobbyId)
             repository.openLobby(lobbyId, pin)
