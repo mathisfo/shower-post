@@ -62,6 +62,8 @@ class LobbyFragment() : Fragment() {
                 findNavController().navigate(R.id.action_lobbyFragment_to_gameFragment)
             }
         }
+
+
     }
 
 

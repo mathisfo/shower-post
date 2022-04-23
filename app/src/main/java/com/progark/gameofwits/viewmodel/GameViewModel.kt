@@ -14,6 +14,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     private val _activeLobby = MutableLiveData<Lobby>()
     val activeLobby: LiveData<Lobby> = _activeLobby
 
+    private val _submittedWords = MutableLiveData<Int>(0)
+    val submittedWords: LiveData<Int> = _submittedWords
+
 
     private val _game = MutableLiveData<Game>()
     val game: LiveData<Game> = _game
@@ -42,13 +45,14 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             lobby.join(user)
             _activeLobby.postValue(lobby)
         }
-        if (event == "ALL_USERS_SUBMITTED") {
+        else if (event == "ALL_USERS_SUBMITTED") {
             viewModelScope.launch {
                 repository.updateCurrentRound(game.value!!.id)
             }
         }
-
-        if (event == "GAME_CREATED" && _game.value == null) {
+        else if (event == "USER_SUBMITTED") {
+            _submittedWords.postValue(payload as Int)
+        else if (event == "GAME_CREATED" && _game.value == null) {
             viewModelScope.launch {
                 val id = payload as String
                 getGame(id)

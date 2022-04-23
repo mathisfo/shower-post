@@ -21,6 +21,10 @@ object PlayerEventSource {
         notifyObservers("PLAYER_JOINED", user)
     }
 
+    fun userHasSubmitted(subs: Int) {
+        notifyObservers("USER_SUBMITTED", subs)
+    }
+
     fun allUsersSubmitted() {
         notifyObservers("ALL_USERS_SUBMITTED", null)
     }

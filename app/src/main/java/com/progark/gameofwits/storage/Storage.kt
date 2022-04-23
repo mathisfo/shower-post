@@ -181,10 +181,11 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
             if (snapshot != null && snapshot.exists()) {
                 val gameSnap = snapshot.toObject(GameDoc::class.java)!!
                 val round = gameSnap.rounds!!["${game.current_round}"]
-                val allSubmitted = round!!.answers!!.values.all { answer -> answer != "" }
-                if (allSubmitted) {
-                    PlayerEventSource.allUsersSubmitted()
-                }
+                println(round)
+                var submitted = 0;
+                round!!.answers!!.values.forEach {word -> if (word!= "") submitted++}
+                println("Words submitted: " + submitted)
+                PlayerEventSource.userHasSubmitted(submitted)
             }
         }
     }
