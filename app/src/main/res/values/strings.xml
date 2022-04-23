@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">gameofwits</string>
+    <string name="app_name">Game of Wits</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="main_menu_fragment_label">Main Menu Fragment</string>
