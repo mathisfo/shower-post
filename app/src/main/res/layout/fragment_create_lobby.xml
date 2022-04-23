@@ -11,19 +11,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.CreateGameFragment">
-
-        <Button
-            android:id="@+id/hostBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hostConfirmButton"
-            app:layout_constraintVertical_bias="0.100000024" />
+        tools:context=".view.CreateGameFragment"
+        android:background="@color/background">
 
         <EditText
             android:id="@+id/hostNameField"
@@ -34,6 +23,7 @@
             android:hint="Name:"
             android:inputType="text"
             android:minHeight="48dp"
+            android:fontFamily="sans-serif-condensed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -43,6 +33,7 @@
 
         <Button
             android:id="@+id/hostConfirmButton"
+            android:backgroundTint="@color/confirmbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="139dp"
@@ -58,12 +49,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter Name"
+            android:textColor="#000"
             android:textSize="34sp"
+            android:fontFamily="sans-serif-condensed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.224" />
+
+        <ImageButton
+            android:id="@+id/hostBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background"
+            android:textColor="#000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.074"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.045"
+            app:srcCompat="?attr/homeAsUpIndicator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.progark.gameofwits.model.Game
 import com.progark.gameofwits.model.Lobby
 import com.progark.gameofwits.model.Round
@@ -22,12 +23,18 @@ import kotlinx.coroutines.tasks.await
 import model.User
 
 
-class Storage private constructor(val db: FirebaseFirestore, val realtime: DatabaseReference) :
+class Storage private constructor(
+    val db: FirebaseFirestore,
+    val realtime: DatabaseReference,
+) :
     Repository {
     companion object {
         private var instance: Storage? = null
         fun getInstance() = instance ?: synchronized(this) {
-            instance ?: Storage(Firebase.firestore, Firebase.database.reference).also {
+            instance ?: Storage(
+                Firebase.firestore,
+                Firebase.database.reference,
+            ).also {
                 instance = it
             }
         }
@@ -88,7 +95,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
     override suspend fun createLobby(lobby: Lobby, hostId: String): String {
         val hostRef = this.db.document("users/$hostId")
         val lobbyData =
-            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef, false)
+            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef, lobby.started)
         val doc = this.db.collection("lobbies").add(lobbyData).await()
         return doc.id
     }
@@ -120,10 +127,12 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         }
         val game = GameDoc("", 1, max_rounds, mapOf(), rounds)
         val ref = this.db.collection("games").add(game).await()
-        this.db.collection("lobbies").document(lobby.id).update(mapOf(
-            "started" to true,
-            "games" to FieldValue.arrayUnion(ref)
-        ))
+        this.db.collection("lobbies").document(lobby.id).update(
+            mapOf(
+                "started" to true,
+                "games" to FieldValue.arrayUnion(ref)
+            )
+        )
         return ref.id
     }
 
@@ -178,7 +187,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
                 val round = gameSnap.rounds!!["${game.current_round}"]
                 println(round)
                 var submitted = 0;
-                round!!.answers!!.values.forEach {word -> if (word!= "") submitted++}
+                round!!.answers!!.values.forEach { word -> if (word != "") submitted++ }
                 println("Words submitted: " + submitted)
                 PlayerEventSource.userHasSubmitted(submitted)
             }
@@ -221,8 +230,11 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         }
     }
 
-    override suspend fun goToNextRound(round: Int) {
-        TODO("Not yet implemented")
+    override suspend fun loadValidWords(): List<String> {
+        val storage = FirebaseStorage.getInstance().reference
+        val hm = storage.child("words.txt")
+        val ONE_MEGA_BYTE: Long = 1024 * 1024
+        val words = String(hm.getBytes(ONE_MEGA_BYTE).await())
+        return words.split("\n")
     }
-
 }

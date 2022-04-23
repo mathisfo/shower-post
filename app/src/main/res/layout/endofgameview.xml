@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.EndOfGameView">
+    tools:context=".view.EndOfGameView"
+    android:background="@color/background">
 
     <Button
         android:id="@+id/playagainbtn"
         android:layout_width="231dp"
         android:layout_height="47dp"
         android:text="Play again"
+        android:backgroundTint="@color/confirmbtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +24,7 @@
         android:layout_height="45dp"
         android:layout_marginBottom="228dp"
         android:text="Main Menu"
+        android:backgroundTint="@color/text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
