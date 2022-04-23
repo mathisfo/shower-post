@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import model.User
 import storage.Repository
 import storage.Storage
+import java.util.*
 
 class GameViewModel(private val repository: Repository = Storage.getInstance()) : ViewModel(),
     PlayerObserver {
@@ -17,13 +18,23 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     private val _submittedWords = MutableLiveData<Int>(0)
     val submittedWords: LiveData<Int> = _submittedWords
 
-
     private val _game = MutableLiveData<Game>()
     val game: LiveData<Game> = _game
 
     private val _user = MutableLiveData<String>()
     val user: LiveData<String> = _user
 
+    private val _words = MutableLiveData<List<String>>()
+
+    private val _validOrError = MutableLiveData<Pair<Boolean, String>>()
+    val validOrError: LiveData<Pair<Boolean, String>> = _validOrError
+
+    init {
+        viewModelScope.launch {
+            val words = repository.loadValidWords()
+            _words.postValue(words)
+        }
+    }
 
     fun fetchLobby(id: String) {
         viewModelScope.launch {
@@ -44,16 +55,13 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             val user = payload as User
             lobby.join(user)
             _activeLobby.postValue(lobby)
-        }
-        else if (event == "ALL_USERS_SUBMITTED") {
+        } else if (event == "ALL_USERS_SUBMITTED") {
             viewModelScope.launch {
                 repository.updateCurrentRound(game.value!!.id)
             }
-        }
-        else if (event == "USER_SUBMITTED") {
+        } else if (event == "USER_SUBMITTED") {
             _submittedWords.postValue(payload as Int)
-        }
-        else if (event == "GAME_CREATED" && _game.value == null) {
+        } else if (event == "GAME_CREATED" && _game.value == null) {
             viewModelScope.launch {
                 val id = payload as String
                 getGame(id)
@@ -78,9 +86,26 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         val game = this.game.value ?: return
         val round = game.rounds[game.current_round - 1]
         viewModelScope.launch {
-            if (round.isValidWord(word)) {
+            val words = getWords()
+
+            if (!round.isValidLetters(word)) {
+                _validOrError.postValue(Pair(false, "Word does not contain the provided letters"))
+            } else if (!words.contains(word.lowercase(Locale.getDefault()))) {
+                _validOrError.postValue(Pair(false, "$word is not a valid word"))
+            } else {
                 repository.updateAnswerToUser(game, user.value!!, word)
+                _validOrError.postValue(Pair(true, ""))
             }
         }
+    }
+
+    private suspend fun getWords(): List<String> {
+        val words = _words.value
+        if (words == null) {
+            val data = repository.loadValidWords()
+            _words.postValue(data)
+            return data
+        }
+        return words
     }
 }
