@@ -7,6 +7,7 @@ import com.google.firebase.database.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.installations.FirebaseInstallations
@@ -41,7 +42,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
         val snapshot = db.collection("lobbies").get().await()
         val lobbies = snapshot.map { doc ->
             val lobbyDoc = doc.toObject(LobbyDoc::class.java)
-            Lobby(lobbyDoc.id!!, lobbyDoc.pin!!, lobbyDoc.active!!)
+            Lobby(lobbyDoc.id!!, lobbyDoc.pin!!, lobbyDoc.active!!, lobbyDoc.host!!.id)
         }
         return lobbies
     }
@@ -53,6 +54,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
             doc.id!!,
             doc.pin!!,
             doc.active!!,
+            doc.host!!.id,
         )
         return lobby
     }
@@ -86,7 +88,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
     override suspend fun createLobby(lobby: Lobby, hostId: String): String {
         val hostRef = this.db.document("users/$hostId")
         val lobbyData =
-            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef)
+            LobbyDoc(null, lobby.pin, lobby.active, listOf(), hostRef, false)
         val doc = this.db.collection("lobbies").add(lobbyData).await()
         return doc.id
     }
@@ -117,7 +119,12 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
             rounds["$i"] = RoundItem(createRandomLetters(), answers)
         }
         val game = GameDoc("", 1, max_rounds, mapOf(), rounds)
-        return this.db.collection("games").add(game).await().id
+        val ref = this.db.collection("games").add(game).await()
+        this.db.collection("lobbies").document(lobby.id).update(mapOf(
+            "started" to true,
+            "games" to FieldValue.arrayUnion(ref)
+        ))
+        return ref.id
     }
 
     override suspend fun updateAnswerToUser(game: Game, userId: String, word: String) {
@@ -175,12 +182,32 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
                 val gameSnap = snapshot.toObject(GameDoc::class.java)!!
                 val round = gameSnap.rounds!!["${game.current_round}"]
                 println(round)
-                val allSubmitted = round!!.answers!!.values.all { answer -> answer != "" }
-                println(allSubmitted)
-                if (allSubmitted) {
-                    PlayerEventSource.allUsersSubmitted()
-                }
+                var submitted = 0;
+                round!!.answers!!.values.forEach {word -> if (word!= "") submitted++}
+                println("Words submitted: " + submitted)
+                PlayerEventSource.userHasSubmitted(submitted)
             }
         }
     }
+
+    override fun listenOnLobbyForGames(lobbyId: String) {
+        this.db.collection("lobbies").document(lobbyId).addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()) {
+                val lobbySnap = snapshot.toObject(LobbyDoc::class.java)
+                if (lobbySnap != null && lobbySnap.started) {
+                    val games = lobbySnap.games ?: return@addSnapshotListener
+                    println(games)
+                    println(lobbyId)
+                    if (!games.isEmpty()) {
+                        PlayerEventSource.gameCreated(games.last().id)
+                    }
+                }
+            }
+        }
+
+    }
+
 }

@@ -14,6 +14,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     private val _activeLobby = MutableLiveData<Lobby>()
     val activeLobby: LiveData<Lobby> = _activeLobby
 
+    private val _submittedWords = MutableLiveData<Int>(0)
+    val submittedWords: LiveData<Int> = _submittedWords
+
 
     private val _game = MutableLiveData<Game>()
     val game: LiveData<Game> = _game
@@ -27,6 +30,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             val lobby = repository.getLobby(id)
             _activeLobby.postValue(lobby)
             repository.listenToLobby(id)
+            repository.listenOnLobbyForGames(id)
         }
     }
 
@@ -41,9 +45,18 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             lobby.join(user)
             _activeLobby.postValue(lobby)
         }
-        if (event == "ALL_USERS_SUBMITTED") {
+        else if (event == "ALL_USERS_SUBMITTED") {
             viewModelScope.launch {
                 repository.updateCurrentRound(game.value!!.id)
+            }
+        }
+        else if (event == "USER_SUBMITTED") {
+            _submittedWords.postValue(payload as Int)
+        }
+        else if (event == "GAME_CREATED" && _game.value == null) {
+            viewModelScope.launch {
+                val id = payload as String
+                getGame(id)
             }
         }
     }
@@ -51,15 +64,19 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     fun createGame() {
         viewModelScope.launch {
             val gameId = repository.createGame(activeLobby.value!!, 5)
-            val game = repository.getGame(gameId)
-            _game.postValue(game)
-            repository.listenToAnswers(game)
+            getGame(gameId)
         }
+    }
+
+    private suspend fun getGame(id: String) {
+        val game = repository.getGame(id)
+        _game.postValue(game)
+        repository.listenToAnswers(game)
     }
 
     fun submitWord(word: String) {
         val game = this.game.value ?: return
-        val round = game.rounds[game.current_round-1]
+        val round = game.rounds[game.current_round - 1]
         viewModelScope.launch {
             if (round.isValidWord(word)) {
                 repository.updateAnswerToUser(game, user.value!!, word)
