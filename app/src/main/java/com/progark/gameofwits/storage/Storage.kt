@@ -213,16 +213,14 @@ class Storage private constructor(
         }
     }
 
-    override fun listenToNextRound(game: Game) {
-        this.db.collection("games").document(game.id).addSnapshotListener { snapshot, e ->
+    override fun listenToNextRound(gameID: String, currentRound: Int) {
+        this.db.collection("games").document(gameID).addSnapshotListener { snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener
             }
             if (snapshot != null && snapshot.exists()) {
                 val gameSnap = snapshot.toObject(GameDoc::class.java)!!
-                println("Snap: " + gameSnap)
-                println("Game: " + game)
-                if (gameSnap.currentRound == game.current_round+1) {
+                if (gameSnap.currentRound == currentRound+1) {
                     println("Go to next round")
                     PlayerEventSource.goToNextRound(gameSnap.currentRound)
                 }

@@ -49,13 +49,6 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         _user.postValue(id)
     }
 
-    fun goToNextRound() {
-        var game = _game.value!!
-        println("GVM next round: " + game.current_round)
-        game.current_round += 1
-        _game.postValue(game)
-    }
-
     fun updateCurrentRound() {
         if(game.value!!.current_round < game.value!!.max_round) {
             viewModelScope.launch {
@@ -80,11 +73,12 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             }
         }
         else if (event == "NEXT_ROUND") {
-            _submittedWords.postValue(0)
+            println("$event: ${_game.value}")
             viewModelScope.launch {
+                _submittedWords.postValue(0)
+                _validOrError.postValue(Pair(false,""))
                 getGame(_game.value!!.id)
             }
-            goToNextRound()
         }
     }
 
@@ -99,7 +93,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         val game = repository.getGame(id)
         _game.postValue(game)
         repository.listenToAnswers(game)
-        repository.listenToNextRound(game)
+        repository.listenToNextRound(game.id, game.current_round)
     }
 
     fun submitWord(word: String) {

@@ -29,6 +29,7 @@ class IntermissionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val nextword: Button = binding.nextword
+        val endGame: Button = binding.endgame
         var currentRound = gameViewModel.game.value!!.current_round
         val submissions: TextView = binding.submissions
         nextword.setOnClickListener {
@@ -36,11 +37,20 @@ class IntermissionFragment : Fragment() {
         }
         gameViewModel.submittedWords.observe(viewLifecycleOwner) { submitted ->
             submissions.text = "" + submitted + "/" + gameViewModel.activeLobby.value!!.players.size + " players ready"
-            if (submitted == gameViewModel.activeLobby.value!!.players.size && gameViewModel.activeLobby.value!!.isHost(gameViewModel.user.value!!)) {
-                nextword.visibility = View.VISIBLE
+            val lobby = gameViewModel.activeLobby.value!!
+            val game = gameViewModel.game.value!!
+            if (submitted == lobby.players.size &&
+                lobby.isHost(gameViewModel.user.value!!)) {
+                    if (game.current_round == game.max_round) {
+                        endGame.visibility = View.VISIBLE
+                    }
+                    else {
+                        nextword.visibility = View.VISIBLE
+                    }
             }
         }
         gameViewModel.game.observe(viewLifecycleOwner) { game ->
+            println("HELLO: ${game.current_round} vs $currentRound")
             if (game.current_round > currentRound) {
                 currentRound += 1
                 nextword.visibility = View.INVISIBLE
