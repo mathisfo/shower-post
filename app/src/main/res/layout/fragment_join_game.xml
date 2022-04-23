@@ -10,13 +10,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.JoinGameFragment">
+    tools:context=".view.JoinGameFragment"
+    android:background="@color/background">
 
     <!-- TODO: Update blank fragment layout -->
 
     <Button
         android:id="@+id/joinConfirmButton"
-        android:backgroundTint="#00AFB9"
+        android:backgroundTint="@color/confirmbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="139dp"
@@ -66,6 +67,7 @@
         android:text="Enter Name"
         android:textColor="#000000"
         android:textSize="34sp"
+        android:fontFamily="sans-serif-condensed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -78,7 +80,7 @@
         android:id="@+id/joinBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/background"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -6,13 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.GameRoundFragment">
+    tools:context=".view.GameRoundFragment"
+    android:background="@color/background">
 
     <Button
         android:id="@+id/endofgamebtn"
         android:layout_width="158dp"
         android:layout_height="52dp"
-        android:text="End of game"
+        android:text="End game"
         android:backgroundTint="#F07167"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,57 +29,83 @@
         android:background="@drawable/rounded_corners"
         android:gravity="center"
         android:textSize="30dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.14"
-/>
+        app:layout_constraintVertical_bias="0.244" />
 
     <Button
         android:id="@+id/reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="22dp"
         android:background="?android:attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_baseline_delete_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/word"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.835"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149" />
+        app:layout_constraintHorizontal_bias="0.637"
+        app:layout_constraintStart_toStartOf="@+id/word"
+        app:layout_constraintTop_toTopOf="@+id/word" />
 
     <Button
         android:id="@+id/enterword"
-        android:backgroundTint="#00AFB9"
         android:layout_width="202dp"
         android:layout_height="49dp"
-        android:text="Enter word"
+        android:backgroundTint="#00AFB9"
+        android:text="Submit word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reset"
-        app:layout_constraintVertical_bias="0.743" />
+        app:layout_constraintVertical_bias="0.679" />
 
     <GridView
         android:id="@+id/available_letters"
         android:layout_width="360dp"
         android:layout_height="230dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:gravity="center"
         android:horizontalSpacing="5dp"
         android:numColumns="5"
-        android:verticalSpacing="5dp"
         android:stretchMode="columnWidth"
-        app:layout_constraintBottom_toTopOf="@+id/enterword"
+        android:verticalSpacing="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reset"
-        app:layout_constraintVertical_bias="0.528" />
+        app:layout_constraintTop_toBottomOf="@+id/word"
+        app:layout_constraintVertical_bias="0.207" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spell a word with as many letters as possible!"
+        android:textColor="#000"
+        android:textSize="12dp"
+        android:textStyle="italic"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintBottom_toTopOf="@+id/available_letters"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/word"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="Game on!"
+        android:textColor="#000"
+        android:textSize="40dp"
+        android:fontFamily="sans-serif-condensed"
+        app:layout_constraintBottom_toTopOf="@+id/word"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.868" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

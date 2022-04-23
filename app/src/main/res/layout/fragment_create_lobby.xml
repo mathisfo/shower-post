@@ -11,7 +11,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.CreateGameFragment">
+        tools:context=".view.CreateGameFragment"
+        android:background="@color/background">
 
         <EditText
             android:id="@+id/hostNameField"
@@ -22,6 +23,7 @@
             android:hint="Name:"
             android:inputType="text"
             android:minHeight="48dp"
+            android:fontFamily="sans-serif-condensed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -31,7 +33,7 @@
 
         <Button
             android:id="@+id/hostConfirmButton"
-            android:backgroundTint="#00AFB9"
+            android:backgroundTint="@color/confirmbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="139dp"
@@ -49,6 +51,7 @@
             android:text="Enter Name"
             android:textColor="#000"
             android:textSize="34sp"
+            android:fontFamily="sans-serif-condensed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"
@@ -60,7 +63,7 @@
             android:id="@+id/hostBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/background"
             android:textColor="#000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

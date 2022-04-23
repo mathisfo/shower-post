@@ -11,4 +11,9 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
+    <color name="text">#0081A7</color>
+    <color name="confirmbtn">#00AFB9</color>
+    <color name="playerbackground">#FED9B7</color>
+    <color name="negativebtn">#F07167</color>
+    <color name="background">#f7eadf</color>
 </resources>
