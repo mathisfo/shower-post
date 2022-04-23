@@ -49,22 +49,35 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         _user.postValue(id)
     }
 
+    fun updateCurrentRound() {
+        if(game.value!!.current_round < game.value!!.max_round) {
+            viewModelScope.launch {
+                repository.updateCurrentRound(game.value!!.id)
+            }
+        }
+    }
+
     override fun update(event: String, payload: Any?) {
         if (event == "PLAYER_JOINED") {
             val lobby = _activeLobby.value!!
             val user = payload as User
             lobby.join(user)
             _activeLobby.postValue(lobby)
-        } else if (event == "ALL_USERS_SUBMITTED") {
-            viewModelScope.launch {
-                repository.updateCurrentRound(game.value!!.id)
-            }
-        } else if (event == "USER_SUBMITTED") {
+        }
+        else if (event == "USER_SUBMITTED") {
             _submittedWords.postValue(payload as Int)
         } else if (event == "GAME_CREATED" && _game.value == null) {
             viewModelScope.launch {
                 val id = payload as String
                 getGame(id)
+            }
+        }
+        else if (event == "NEXT_ROUND") {
+            println("$event: ${_game.value}")
+            viewModelScope.launch {
+                _submittedWords.postValue(0)
+                _validOrError.postValue(Pair(false,""))
+                getGame(_game.value!!.id)
             }
         }
     }
@@ -80,6 +93,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         val game = repository.getGame(id)
         _game.postValue(game)
         repository.listenToAnswers(game)
+        repository.listenToNextRound(game.id, game.current_round)
     }
 
     fun submitWord(word: String) {

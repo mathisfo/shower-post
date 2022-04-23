@@ -153,12 +153,7 @@ class Storage private constructor(
 
     override suspend fun updateCurrentRound(id: String) {
         val game = this.getGame(id)
-        val round = game.rounds[game.current_round - 1]
-        // Check so two people dont update rounds at the same time
-        val allSubmitted = round.answers.values.all { answer -> answer != "" }
-        if (allSubmitted) {
-            this.db.collection("games").document(id).update("currentRound", game.current_round + 1)
-        }
+        this.db.collection("games").document(id).update("currentRound", game.current_round + 1)
     }
 
 
@@ -213,6 +208,21 @@ class Storage private constructor(
                     if (!games.isEmpty()) {
                         PlayerEventSource.gameCreated(games.last().id)
                     }
+                }
+            }
+        }
+    }
+
+    override fun listenToNextRound(gameID: String, currentRound: Int) {
+        this.db.collection("games").document(gameID).addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()) {
+                val gameSnap = snapshot.toObject(GameDoc::class.java)!!
+                if (gameSnap.currentRound == currentRound+1) {
+                    println("Go to next round")
+                    PlayerEventSource.goToNextRound(gameSnap.currentRound)
                 }
             }
         }

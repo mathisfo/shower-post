@@ -25,6 +25,7 @@ interface Repository {
     fun listenToLobby(lobbyId: String)
     fun listenToAnswers(game: Game)
     fun listenOnLobbyForGames(lobbyId: String)
+    fun listenToNextRound(gameID: String, currentRound: Int)
 
     // Storage
     suspend fun loadValidWords(): List<String>
