@@ -11,7 +11,7 @@ data class Round(val letters: String, val answers: Map<String, String>) {
         }
     }
 
-    fun isValidWord(word: String): Boolean {
+    fun isValidLetters(word: String): Boolean {
         val counter = HashMap(availableLetter)
         for (c in word) {
             val value = counter[c] ?: return false

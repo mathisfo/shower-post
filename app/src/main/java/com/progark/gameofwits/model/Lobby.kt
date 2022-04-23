@@ -11,6 +11,7 @@ class Lobby(
     val pin: String,
     val active: Boolean,
     val host: String,
+    val started: Boolean = false
 ) {
     val players = mutableListOf<User>()
 
