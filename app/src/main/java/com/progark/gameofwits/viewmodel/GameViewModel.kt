@@ -52,6 +52,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         }
         else if (event == "USER_SUBMITTED") {
             _submittedWords.postValue(payload as Int)
+        }
         else if (event == "GAME_CREATED" && _game.value == null) {
             viewModelScope.launch {
                 val id = payload as String
