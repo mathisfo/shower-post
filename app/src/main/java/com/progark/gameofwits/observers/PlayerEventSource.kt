@@ -9,7 +9,7 @@ interface PlayerObserver {
 object PlayerEventSource {
     private var observers = mutableListOf<PlayerObserver>()
 
-    private fun notifyObservers(event: String, payload: User?) {
+    private fun notifyObservers(event: String, payload: Any?) {
         observers.forEach { observer -> observer.update(event, payload) }
     }
 
@@ -19,6 +19,10 @@ object PlayerEventSource {
 
     fun playerJoined(user: User) {
         notifyObservers("PLAYER_JOINED", user)
+    }
+
+    fun userHasSubmitted(subs: Int) {
+        notifyObservers("USER_SUBMITTED", subs)
     }
 
     fun allUsersSubmitted() {
