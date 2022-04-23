@@ -24,4 +24,5 @@ interface Repository {
     // Realtime
     fun listenToLobby(lobbyId: String)
     fun listenToAnswers(game: Game)
+    fun listenOnLobbyForGames(lobbyId: String)
 }

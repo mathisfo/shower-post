@@ -28,4 +28,8 @@ object PlayerEventSource {
     fun allUsersSubmitted() {
         notifyObservers("ALL_USERS_SUBMITTED", null)
     }
+
+    fun gameCreated(id: String) {
+        notifyObservers("GAME_CREATED", id)
+    }
 }

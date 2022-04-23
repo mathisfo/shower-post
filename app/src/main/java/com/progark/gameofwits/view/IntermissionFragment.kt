@@ -36,5 +36,4 @@ class IntermissionFragment : Fragment() {
             }
         }
     }
-
 }
