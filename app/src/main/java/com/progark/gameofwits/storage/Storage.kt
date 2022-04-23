@@ -144,12 +144,7 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
 
     override suspend fun updateCurrentRound(id: String) {
         val game = this.getGame(id)
-        val round = game.rounds[game.current_round - 1]
-        // Check so two people dont update rounds at the same time
-        val allSubmitted = round.answers.values.all { answer -> answer != "" }
-        if (allSubmitted) {
-            this.db.collection("games").document(id).update("currentRound", game.current_round + 1)
-        }
+        this.db.collection("games").document(id).update("currentRound", game.current_round + 1)
     }
 
 
@@ -207,7 +202,27 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
                 }
             }
         }
+    }
 
+    override fun listenToNextRound(game: Game) {
+        this.db.collection("games").document(game.id).addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()) {
+                val gameSnap = snapshot.toObject(GameDoc::class.java)!!
+                println("Snap: " + gameSnap)
+                println("Game: " + game)
+                if (gameSnap.currentRound == game.current_round+1) {
+                    println("Go to next round")
+                    PlayerEventSource.goToNextRound(gameSnap.currentRound)
+                }
+            }
+        }
+    }
+
+    override suspend fun goToNextRound(round: Int) {
+        TODO("Not yet implemented")
     }
 
 }

@@ -32,4 +32,8 @@ object PlayerEventSource {
     fun gameCreated(id: String) {
         notifyObservers("GAME_CREATED", id)
     }
+
+    fun goToNextRound(round: Int) {
+        notifyObservers("NEXT_ROUND", round)
+    }
 }

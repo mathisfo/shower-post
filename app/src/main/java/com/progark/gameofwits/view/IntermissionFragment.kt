@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentIntermissionBinding
 import com.progark.gameofwits.viewmodel.GameViewModel
 
@@ -27,13 +29,27 @@ class IntermissionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val nextword: Button = binding.nextword
+        var currentRound = gameViewModel.game.value!!.current_round
         val submissions: TextView = binding.submissions
-        nextword.setOnClickListener {}
+        nextword.setOnClickListener {
+            gameViewModel.updateCurrentRound()
+        }
         gameViewModel.submittedWords.observe(viewLifecycleOwner) { submitted ->
             submissions.text = "" + submitted + "/" + gameViewModel.activeLobby.value!!.players.size + "players ready"
             if (submitted == gameViewModel.activeLobby.value!!.players.size) {
                 nextword.visibility = View.VISIBLE
             }
         }
+        gameViewModel.game.observe(viewLifecycleOwner) { game ->
+            if (game.current_round > currentRound) {
+                currentRound += 1
+                nextword.visibility = View.INVISIBLE
+                openGameRoundView()
+            }
+        }
+    }
+
+    private fun openGameRoundView() {
+        findNavController().navigate(R.id.action_intermissionFragment_to_gameRoundFragment)
     }
 }

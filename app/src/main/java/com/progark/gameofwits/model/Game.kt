@@ -14,7 +14,7 @@ data class Game(
     val id: String,
     val rounds: List<Round> = listOf(),
     // val settings : Settings TODO: Create settings based on lobby?
-    val current_round: Int,
+    var current_round: Int,
     val max_round: Int,
     val scores: Map<String, Int>
 ) {

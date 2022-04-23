@@ -17,7 +17,6 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     private val _submittedWords = MutableLiveData<Int>(0)
     val submittedWords: LiveData<Int> = _submittedWords
 
-
     private val _game = MutableLiveData<Game>()
     val game: LiveData<Game> = _game
 
@@ -38,6 +37,20 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         _user.postValue(id)
     }
 
+    fun goToNextRound() {
+        var game = _game.value!!
+        game.current_round += 1
+        _game.postValue(game)
+    }
+
+    fun updateCurrentRound() {
+        if(game.value!!.current_round < game.value!!.max_round) {
+            viewModelScope.launch {
+                repository.updateCurrentRound(game.value!!.id)
+            }
+        }
+    }
+
     override fun update(event: String, payload: Any?) {
         if (event == "PLAYER_JOINED") {
             val lobby = _activeLobby.value!!
@@ -46,9 +59,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             _activeLobby.postValue(lobby)
         }
         else if (event == "ALL_USERS_SUBMITTED") {
-            viewModelScope.launch {
-                repository.updateCurrentRound(game.value!!.id)
-            }
+
         }
         else if (event == "USER_SUBMITTED") {
             _submittedWords.postValue(payload as Int)
@@ -58,6 +69,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
                 val id = payload as String
                 getGame(id)
             }
+        }
+        else if (event == "NEXT_ROUND") {
+            goToNextRound()
         }
     }
 
@@ -72,6 +86,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         val game = repository.getGame(id)
         _game.postValue(game)
         repository.listenToAnswers(game)
+        repository.listenToNextRound(game)
     }
 
     fun submitWord(word: String) {
