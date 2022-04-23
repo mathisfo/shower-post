@@ -27,6 +27,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             val lobby = repository.getLobby(id)
             _activeLobby.postValue(lobby)
             repository.listenToLobby(id)
+            repository.listenOnLobbyForGames(id)
         }
     }
 
@@ -46,20 +47,31 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
                 repository.updateCurrentRound(game.value!!.id)
             }
         }
+
+        if (event == "GAME_CREATED" && _game.value == null) {
+            viewModelScope.launch {
+                val id = payload as String
+                getGame(id)
+            }
+        }
     }
 
     fun createGame() {
         viewModelScope.launch {
             val gameId = repository.createGame(activeLobby.value!!, 5)
-            val game = repository.getGame(gameId)
-            _game.postValue(game)
-            repository.listenToAnswers(game)
+            getGame(gameId)
         }
+    }
+
+    private suspend fun getGame(id: String) {
+        val game = repository.getGame(id)
+        _game.postValue(game)
+        repository.listenToAnswers(game)
     }
 
     fun submitWord(word: String) {
         val game = this.game.value ?: return
-        val round = game.rounds[game.current_round-1]
+        val round = game.rounds[game.current_round - 1]
         viewModelScope.launch {
             if (round.isValidWord(word)) {
                 repository.updateAnswerToUser(game, user.value!!, word)

@@ -26,6 +26,6 @@ class IntermissionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val nextword: Button = binding.nextword
-        nextword.setOnClickListener {}
+        nextword.setOnClickListener {3}
     }
 }
