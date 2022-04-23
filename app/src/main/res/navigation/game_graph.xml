@@ -9,7 +9,11 @@
         android:id="@+id/gameRoundFragment"
         android:name="com.progark.gameofwits.view.GameRoundFragment"
         android:label="fragment_game_round"
-        tools:layout="@layout/fragment_game_round" />
+        tools:layout="@layout/fragment_game_round" >
+        <action
+            android:id="@+id/action_gameRoundFragment_to_intermissionFragment"
+            app:destination="@id/intermissionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/lobbyFragment"
         android:name="com.progark.gameofwits.view.LobbyFragment"
@@ -17,6 +21,15 @@
         tools:layout="@layout/fragment_lobby">
         <action
             android:id="@+id/action_lobbyFragment_to_gameFragment"
+            app:destination="@id/gameRoundFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/intermissionFragment"
+        android:name="com.progark.gameofwits.view.IntermissionFragment"
+        android:label="fragment_intermission"
+        tools:layout="@layout/fragment_intermission" >
+        <action
+            android:id="@+id/action_intermissionFragment_to_gameRoundFragment"
             app:destination="@id/gameRoundFragment" />
     </fragment>
 </navigation>

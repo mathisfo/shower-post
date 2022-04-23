@@ -1,6 +1,5 @@
 package com.progark.gameofwits.view
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentGameRoundBinding
 import com.progark.gameofwits.view.adapters.LetterAdapter
 import com.progark.gameofwits.view.adapters.LetterItem
@@ -64,20 +65,14 @@ class GameRoundFragment : Fragment() {
         val enterword = binding.enterword
         enterword.setOnClickListener {
             gameViewModel.submitWord(roundViewModel.word.value!!)
+            openIntermissionView()
         }
     }
 
-    /*
     private fun openIntermissionView() {
-        val intent = Intent(this, IntermissionView::class.java)
-        startActivity(intent)
+        findNavController().navigate(R.id.action_gameRoundFragment_to_intermissionFragment)
     }
 
-    private fun openEndOfGameView() {
-        val intent = Intent(this, EndOfGameView::class.java)
-        startActivity(intent)
-    }
-     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
