@@ -112,25 +112,40 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
 
     override suspend fun createGame(lobby: Lobby, max_rounds: Int): String {
         val answers = mutableMapOf<String, String>()
-        lobby.players.forEach {player -> answers[player.id] = ""}
-        val rounds = mutableListOf<RoundItem>()
+        lobby.players.forEach { player -> answers[player.id] = "" }
+        val rounds = mutableMapOf<String, RoundItem>()
         for (i in 1..max_rounds) {
-            rounds.add(RoundItem(createRandomLetters(), answers))
+            rounds["$i"] = RoundItem(createRandomLetters(), answers)
         }
-        val game = GameDoc("",1, max_rounds, mapOf(), rounds)
+        val game = GameDoc("", 1, max_rounds, mapOf(), rounds)
         return this.db.collection("games").add(game).await().id
+    }
+
+    override suspend fun updateAnswerToUser(game: Game, userId: String, word: String) {
+        this.db.collection("games").document(game.id).update(
+            mapOf(
+                "rounds.${game.current_round}.answers.${userId}" to word
+            )
+        ).await()
     }
 
     override suspend fun getGame(id: String): Game {
         val snapshot = this.db.collection("games").document(id).get().await()
         val game = snapshot.toObject(GameDoc::class.java)!!
-        val rounds = game.rounds!!.map { round -> Round(round.letters!!, round.answers!!) }
+        val rounds = game.rounds!!.values.map { round -> Round(round.letters!!, round.answers!!) }
         return Game(snapshot.id, rounds, game.currentRound!!, game.maxRounds!!, game.scores!!)
     }
 
-    override suspend fun submitWord(word: String, userId: String) {
-        TODO("Not yet implemented")
+    override suspend fun updateCurrentRound(id: String) {
+        val game = this.getGame(id)
+        val round = game.rounds[game.current_round - 1]
+        // Check so two people dont update rounds at the same time
+        val allSubmitted = round.answers.values.all { answer -> answer != "" }
+        if (allSubmitted) {
+            this.db.collection("games").document(id).update("currentRound", game.current_round + 1)
+        }
     }
+
 
     override fun listenToLobby(lobbyId: String) {
         val snapshot = this.realtime.child("players").child(lobbyId)
@@ -150,5 +165,23 @@ class Storage private constructor(val db: FirebaseFirestore, val realtime: Datab
             }
         }
         snapshot.addValueEventListener(playerListener)
+    }
+
+    override fun listenToAnswers(game: Game) {
+        this.db.collection("games").document(game.id).addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()) {
+                val gameSnap = snapshot.toObject(GameDoc::class.java)!!
+                val round = gameSnap.rounds!!["${game.current_round}"]
+                println(round)
+                val allSubmitted = round!!.answers!!.values.all { answer -> answer != "" }
+                println(allSubmitted)
+                if (allSubmitted) {
+                    PlayerEventSource.allUsersSubmitted()
+                }
+            }
+        }
     }
 }

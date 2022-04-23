@@ -1,6 +1,5 @@
 package com.progark.gameofwits.view
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentGameRoundBinding
 import com.progark.gameofwits.view.adapters.LetterAdapter
 import com.progark.gameofwits.view.adapters.LetterItem
@@ -22,7 +23,6 @@ class GameRoundFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,13 +33,12 @@ class GameRoundFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val game = gameViewModel.game.value!!
-        val currentRound = game.rounds[game.current_round-1]
+        val currentRound = game.rounds[game.current_round - 1]
         roundViewModel.setRound(currentRound)
 
-        val enterword = binding.enterword
 
         val endofgame = binding.endofgamebtn
-        endofgame.setOnClickListener {  }
+        endofgame.setOnClickListener { }
 
         val word = currentRound.letters
         val letters = word.toCharArray().map { c -> LetterItem(c, false) }
@@ -49,34 +48,31 @@ class GameRoundFragment : Fragment() {
             roundViewModel.addLetter(letter)
             adapter.notifyDataSetChanged()
         }
-        roundViewModel.word.observe(viewLifecycleOwner) { word ->
-            binding.word.text = word
+        roundViewModel.word.observe(viewLifecycleOwner) { updatedWord ->
+            binding.word.text = updatedWord
         }
 
         val lettersView = binding.availableLetters
         lettersView.adapter = adapter
 
-        val writtenWord = binding.word
-
         val resetbtn = binding.reset
-        resetbtn.setOnClickListener{
+        resetbtn.setOnClickListener {
             roundViewModel.resetWord()
             letters.forEach { item -> item.clicked = false }
             adapter.notifyDataSetChanged()
         }
+
+        val enterword = binding.enterword
+        enterword.setOnClickListener {
+            gameViewModel.submitWord(roundViewModel.word.value!!)
+            openIntermissionView()
+        }
     }
 
-    /*
     private fun openIntermissionView() {
-        val intent = Intent(this, IntermissionView::class.java)
-        startActivity(intent)
+        findNavController().navigate(R.id.action_gameRoundFragment_to_intermissionFragment)
     }
 
-    private fun openEndOfGameView() {
-        val intent = Intent(this, EndOfGameView::class.java)
-        startActivity(intent)
-    }
-     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

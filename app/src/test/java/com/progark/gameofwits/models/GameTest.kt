@@ -7,7 +7,7 @@ import org.junit.Test
 class GameTest {
     @Test
     fun correctInitializationOfRound() {
-        val round = Round("aabc")
+        val round = Round("aabc", mapOf())
         assertEquals(round.availableLetter['a'], 2)
         assertEquals(round.availableLetter['b'], 1)
         assertEquals(round.availableLetter['c'], 1)

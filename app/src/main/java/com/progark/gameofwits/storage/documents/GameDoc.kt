@@ -15,7 +15,7 @@ data class GameDoc(
     @PropertyName("scores")
     val scores: Map<String, Int>?,
     @PropertyName("rounds")
-    val rounds: List<RoundItem>?
+    val rounds: Map<String, RoundItem>?
 ) {
     constructor() : this("",0, 0, null, null)
 }
