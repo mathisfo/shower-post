@@ -7,12 +7,19 @@
     <CheckBox
         android:id="@+id/player_row_checkbox"
         android:layout_width="30dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/row_text"
-        android:layout_width="137dp"
+        android:layout_width=
+            "137dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10px"
         android:layout_weight="1"
-        android:text="Player" />
+        android:textColor="#000"
+        android:background="@drawable/lobbyplayerliststyle"
+        android:padding="15px"
+        android:text="Player"
+        android:textSize="24sp" />
 </LinearLayout>
