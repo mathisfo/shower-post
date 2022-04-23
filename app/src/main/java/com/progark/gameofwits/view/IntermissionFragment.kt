@@ -35,8 +35,8 @@ class IntermissionFragment : Fragment() {
             gameViewModel.updateCurrentRound()
         }
         gameViewModel.submittedWords.observe(viewLifecycleOwner) { submitted ->
-            submissions.text = "" + submitted + "/" + gameViewModel.activeLobby.value!!.players.size + "players ready"
-            if (submitted == gameViewModel.activeLobby.value!!.players.size) {
+            submissions.text = "" + submitted + "/" + gameViewModel.activeLobby.value!!.players.size + " players ready"
+            if (submitted == gameViewModel.activeLobby.value!!.players.size && gameViewModel.activeLobby.value!!.isHost(gameViewModel.user.value!!)) {
                 nextword.visibility = View.VISIBLE
             }
         }

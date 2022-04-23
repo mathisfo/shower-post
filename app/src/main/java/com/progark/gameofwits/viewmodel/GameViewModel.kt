@@ -39,6 +39,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
 
     fun goToNextRound() {
         var game = _game.value!!
+        println("GVM next round: " + game.current_round)
         game.current_round += 1
         _game.postValue(game)
     }
@@ -71,6 +72,10 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             }
         }
         else if (event == "NEXT_ROUND") {
+            _submittedWords.postValue(0)
+            viewModelScope.launch {
+                getGame(_game.value!!.id)
+            }
             goToNextRound()
         }
     }
