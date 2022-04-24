@@ -3,8 +3,6 @@ package com.progark.gameofwits.storage.documents
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
-import com.google.j2objc.annotations.Property
-import com.progark.gameofwits.model.Player
 
 class LobbyDoc(
     @DocumentId val id: String?,
