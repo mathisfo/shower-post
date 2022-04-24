@@ -25,6 +25,7 @@
         android:layout_width="140dp"
         android:layout_height="51dp"
         android:text="End game"
+        android:visibility="invisible"
         android:backgroundTint="@color/negativebtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -65,7 +66,15 @@ class GameRoundFragment : Fragment() {
         val enterword = binding.enterword
         enterword.setOnClickListener {
             gameViewModel.submitWord(roundViewModel.word.value!!)
-            openIntermissionView()
+        }
+        gameViewModel.validOrError.observe(viewLifecycleOwner) { validOrError ->
+            val valid = validOrError.first
+            val error = validOrError.second
+            if (valid && error == "") {
+                openIntermissionView()
+            } else {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
