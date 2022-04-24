@@ -32,6 +32,7 @@ class IntermissionFragment : Fragment() {
         val endGame: Button = binding.endgame
         var currentRound = gameViewModel.game.value!!.current_round
         val submissions: TextView = binding.submissions
+        val roundCounter = binding.roundcounter
         nextword.setOnClickListener {
             gameViewModel.updateCurrentRound()
         }
@@ -39,6 +40,7 @@ class IntermissionFragment : Fragment() {
             submissions.text = "" + submitted + "/" + gameViewModel.activeLobby.value!!.players.size + " players ready"
             val lobby = gameViewModel.activeLobby.value!!
             val game = gameViewModel.game.value!!
+            roundCounter.text = "${game.current_round}/5"
             if (submitted == lobby.players.size &&
                 lobby.isHost(gameViewModel.user.value!!)) {
                     if (game.current_round == game.max_round) {

@@ -36,6 +36,8 @@ class GameRoundFragment : Fragment() {
         val game = gameViewModel.game.value!!
         val currentRound = game.rounds[game.current_round - 1]
         roundViewModel.setRound(currentRound)
+        val currentRoundText = binding.roundCounterGame
+        currentRoundText.text = "Playing round ${game.current_round}/5 "
 
 
         val endofgame = binding.endofgamebtn
