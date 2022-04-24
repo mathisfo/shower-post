@@ -10,11 +10,11 @@
     android:background="@color/background">
 
     <Button
-        android:id="@+id/endofgamebtn"
+        android:id="@+id/skip"
         android:layout_width="158dp"
         android:layout_height="52dp"
-        android:text="End game"
         android:backgroundTint="#F07167"
+        android:text="Skip word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -94,18 +94,17 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
+        android:id="@+id/roundCounterGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:text="Game on!"
-        android:textColor="#000"
+        android:text=""
         android:textSize="40dp"
+        android:textColor="#000"
         android:fontFamily="sans-serif-condensed"
         app:layout_constraintBottom_toTopOf="@+id/word"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.868" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

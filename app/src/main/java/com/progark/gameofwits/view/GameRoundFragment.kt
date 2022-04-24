@@ -36,10 +36,14 @@ class GameRoundFragment : Fragment() {
         val game = gameViewModel.game.value!!
         val currentRound = game.rounds[game.current_round - 1]
         roundViewModel.setRound(currentRound)
+        val currentRoundText = binding.roundCounterGame
+        currentRoundText.text = "Playing round ${game.current_round}/${game.max_round} "
 
 
-        val endofgame = binding.endofgamebtn
-        endofgame.setOnClickListener { }
+        val skipWord = binding.skip
+        skipWord.setOnClickListener {
+            gameViewModel.submitWord(" ")
+        }
 
         val word = currentRound.letters
         val letters = word.toCharArray().map { c -> LetterItem(c, false) }

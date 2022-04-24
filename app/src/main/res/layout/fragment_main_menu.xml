@@ -9,9 +9,7 @@
 
     <Button
         android:id="@+id/menuCreateButton"
-
         android:layout_width="190dp"
-
         android:layout_height="67dp"
         android:backgroundTint="@color/confirmbtn"
         android:text="Create Game"
@@ -54,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Game of Wits"
+        android:text="Word War"
         android:textColor="#000"
         android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"

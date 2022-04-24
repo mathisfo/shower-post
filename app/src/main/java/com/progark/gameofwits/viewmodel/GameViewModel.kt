@@ -85,9 +85,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         }
     }
 
-    fun createGame() {
+    fun createGame(rounds: Int) {
         viewModelScope.launch {
-            val gameId = repository.createGame(activeLobby.value!!, 3)
+            val gameId = repository.createGame(activeLobby.value!!, rounds)
             getGame(gameId)
             _ended.postValue(false)
         }
@@ -106,9 +106,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         viewModelScope.launch {
             val words = getWords()
 
-            if (!round.isValidLetters(word)) {
+            if (!round.isValidLetters(word) && word != " ") {
                 _validOrError.postValue(Pair(false, "Word does not contain the provided letters"))
-            } else if (!words.contains(word.lowercase(Locale.getDefault()))) {
+            } else if (!words.contains(word.lowercase(Locale.getDefault())) && word != " ") {
                 _validOrError.postValue(Pair(false, "$word is not a valid word"))
             } else {
                 repository.updateAnswerToUser(game, user.value!!, word)
