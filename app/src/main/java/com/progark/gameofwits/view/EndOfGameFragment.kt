@@ -39,7 +39,7 @@ class EndOfGameFragment : Fragment() {
 
         gameViewModel.game.observe(viewLifecycleOwner) { game ->
             val players = gameViewModel.activeLobby.value!!.players
-            game.scores.entries.forEach { (key, value) ->
+            game.scores.toList().sortedBy { (_, value) -> -value}.toMap().entries.forEach { (key, value) ->
                 val user = players.find { user -> user.id == key }
                 if (user != null) {
                     val text = "${user.name}: $value"
