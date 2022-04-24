@@ -50,7 +50,6 @@ class IntermissionFragment : Fragment() {
             }
         }
         gameViewModel.game.observe(viewLifecycleOwner) { game ->
-            println("HELLO: ${game.current_round} vs $currentRound")
             if (game.current_round > currentRound) {
                 currentRound += 1
                 nextword.visibility = View.INVISIBLE

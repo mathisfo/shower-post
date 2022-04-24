@@ -152,12 +152,18 @@ class Storage private constructor(
         val snapshot = this.db.collection("games").document(id).get().await()
         val game = snapshot.toObject(GameDoc::class.java)!!
         val rounds = game.rounds!!.values.map { round -> Round(round.letters!!, round.answers!!) }
-        return Game(snapshot.id, rounds, game.currentRound!!, game.maxRounds!!, game.scores!!, game.ended!!)
+        return Game(snapshot.id, rounds, game.currentRound!!, game.maxRounds!!, game.scores!!.toMutableMap(), game.ended!!)
     }
 
     override suspend fun updateCurrentRound(id: String) {
         val game = this.getGame(id)
         this.db.collection("games").document(id).update("currentRound", game.current_round + 1)
+    }
+
+    override suspend fun updateScore(gameID: String) {
+        val game = this.getGame(gameID)
+        game.calculateScore()
+        this.db.collection("games").document(gameID).update(mapOf("scores" to game.scores)).await()
     }
 
 

@@ -21,6 +21,7 @@ interface Repository {
     suspend fun updateAnswerToUser(game: Game, userId: String, word: String)
     suspend fun updateCurrentRound(id: String)
     suspend fun endGame(id: String)
+    suspend fun updateScore(gameID: String)
 
     // Realtime
     fun listenToLobby(lobbyId: String)
