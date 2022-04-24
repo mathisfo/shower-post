@@ -71,12 +71,15 @@ class LobbyFragment() : Fragment() {
         val playersList = binding.playerList
         val adapter = PlayerAdapter(requireContext(), players)
         playersList.adapter = adapter
+        val roundsText = binding.roundsText
 
         gameViewModel.activeLobby.observe(viewLifecycleOwner) { lobby ->
             text.text = lobby.pin
             if (lobby.isHost(gameViewModel.user.value!!)) {
                 btn.visibility = View.VISIBLE
                 waitingText.visibility = View.INVISIBLE
+                numberOfRounds.visibility = View.VISIBLE
+                roundsText.visibility = View.VISIBLE
             }
             lobby.players.forEach { player ->
                 if (!players.contains(player)) players.add(player)
