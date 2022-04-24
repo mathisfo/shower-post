@@ -29,6 +29,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     private val _validOrError = MutableLiveData<Pair<Boolean, String>>()
     val validOrError: LiveData<Pair<Boolean, String>> = _validOrError
 
+    private val _ended = MutableLiveData(false)
+    val ended: LiveData<Boolean> = _ended
+
     init {
         viewModelScope.launch {
             val words = repository.loadValidWords()
@@ -80,12 +83,16 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
                 getGame(_game.value!!.id)
             }
         }
+        else if (event == "GAME_ENDED") {
+            _ended.postValue(true)
+        }
     }
 
     fun createGame() {
         viewModelScope.launch {
-            val gameId = repository.createGame(activeLobby.value!!, 5)
+            val gameId = repository.createGame(activeLobby.value!!, 3)
             getGame(gameId)
+            _ended.postValue(false)
         }
     }
 
@@ -93,7 +100,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         val game = repository.getGame(id)
         _game.postValue(game)
         repository.listenToAnswers(game)
-        repository.listenToNextRound(game.id, game.current_round)
+        repository.listenToGame(game.id, game.current_round)
     }
 
     fun submitWord(word: String) {
@@ -121,5 +128,14 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             return data
         }
         return words
+    }
+
+    fun endCurrentGame() {
+        val game = game.value ?: return
+        if (game.current_round == game.max_round) {
+            viewModelScope.launch {
+                repository.endGame(game.id)
+            }
+        }
     }
 }

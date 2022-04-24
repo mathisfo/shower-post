@@ -16,7 +16,8 @@ data class Game(
     // val settings : Settings TODO: Create settings based on lobby?
     var current_round: Int,
     val max_round: Int,
-    val scores: Map<String, Int>
+    val scores: Map<String, Int>,
+    val ended: Boolean
 ) {
     fun startNextRound() {
         val letters = createRandomLetters()

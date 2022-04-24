@@ -57,6 +57,14 @@ class IntermissionFragment : Fragment() {
                 openGameRoundView()
             }
         }
+        endGame.setOnClickListener {
+            gameViewModel.endCurrentGame()
+        }
+        gameViewModel.ended.observe(viewLifecycleOwner) { ended ->
+            if (ended) {
+                findNavController().navigate(R.id.action_intermissionFragment_to_endOfGameFragment)
+            }
+        }
     }
 
     private fun openGameRoundView() {

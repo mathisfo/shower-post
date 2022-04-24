@@ -31,5 +31,17 @@
         <action
             android:id="@+id/action_intermissionFragment_to_gameRoundFragment"
             app:destination="@id/gameRoundFragment" />
+        <action
+            android:id="@+id/action_intermissionFragment_to_endOfGameFragment"
+            app:destination="@id/endOfGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/endOfGameFragment"
+        android:name="com.progark.gameofwits.view.EndOfGameFragment"
+        android:label="fragment_endofgame"
+        tools:layout="@layout/fragment_endofgame" >
+        <action
+            android:id="@+id/action_endOfGameFragment_to_lobbyFragment"
+            app:destination="@id/lobbyFragment" />
     </fragment>
 </navigation>
