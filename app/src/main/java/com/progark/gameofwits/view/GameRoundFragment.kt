@@ -37,7 +37,7 @@ class GameRoundFragment : Fragment() {
         val currentRound = game.rounds[game.current_round - 1]
         roundViewModel.setRound(currentRound)
         val currentRoundText = binding.roundCounterGame
-        currentRoundText.text = "Playing round ${game.current_round}/5 "
+        currentRoundText.text = "Playing round ${game.current_round}/${game.max_round} "
 
 
         val skipWord = binding.skip

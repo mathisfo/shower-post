@@ -39,8 +39,8 @@
 
     <ListView
         android:id="@+id/playerList"
-        android:layout_width="299dp"
-        android:layout_height="340dp"
+        android:layout_width="301dp"
+        android:layout_height="279dp"
         android:divider="@null"
         android:dividerHeight="0px"
         android:textSize="25dp"
@@ -48,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lobbyId"
-        app:layout_constraintVertical_bias="0.56" />
+        app:layout_constraintVertical_bias="0.391" />
 
     <TextView
         android:id="@+id/textView3"
@@ -85,7 +85,73 @@
         android:text="Waiting for the host to start the game .. "
         app:layout_constraintBottom_toTopOf="@+id/nextbutton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerList" />
+        app:layout_constraintTop_toBottomOf="@+id/playerList"
+        app:layout_constraintVertical_bias="0.913" />
+
+    <RadioGroup
+        android:id="@+id/numberOfRounds"
+        android:layout_width="239dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="3dp"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/waitingText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roundsText">
+
+        <RadioButton
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <RadioButton
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <RadioButton
+            android:id="@+id/btn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="3"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <RadioButton
+            android:id="@+id/btn4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <RadioButton
+            android:id="@+id/btn5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/roundsText"
+        android:layout_width="184dp"
+        android:layout_height="23dp"
+        android:gravity="center"
+        android:text="Select number of rounds"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/waitingText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerList"
+        app:layout_constraintVertical_bias="0.236" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

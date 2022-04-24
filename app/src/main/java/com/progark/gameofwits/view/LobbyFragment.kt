@@ -1,21 +1,18 @@
 package com.progark.gameofwits.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.progark.gameofwits.R
-import com.progark.gameofwits.model.Player
-import com.progark.gameofwits.viewmodel.GameViewModel
 import com.progark.gameofwits.databinding.FragmentLobbyBinding
-import com.progark.gameofwits.observers.PlayerEventSource
 import com.progark.gameofwits.view.adapters.PlayerAdapter
+import com.progark.gameofwits.viewmodel.GameViewModel
 import model.User
+
 
 class LobbyFragment() : Fragment() {
 
@@ -38,8 +35,35 @@ class LobbyFragment() : Fragment() {
         val text = binding.lobbyId
         val btn = binding.nextbutton
         val waitingText = binding.waitingText
+        var rounds = 3
         btn.setOnClickListener {
-            gameViewModel.createGame()
+            gameViewModel.createGame(rounds)
+        }
+        val numberOfRounds = binding.numberOfRounds
+        numberOfRounds.setOnCheckedChangeListener {group, checkedId ->
+            println("Checked: " + checkedId)
+            when (checkedId) {
+                R.id.btn1 -> {
+                    println("Rounds: " + 1)
+                    rounds = 1
+                }
+                R.id.btn2 -> {
+                    println("Rounds: " + 1)
+                    rounds = 2
+                }
+                R.id.btn3 -> {
+                    println("Rounds: " + 1)
+                    rounds = 3
+                }
+                R.id.btn4 -> {
+                    println("Rounds: " + 1)
+                    rounds = 4
+                }
+                R.id.btn5 -> {
+                    println("Rounds: " + 1)
+                    rounds = 5
+                }
+            }
         }
 
 
@@ -47,12 +71,15 @@ class LobbyFragment() : Fragment() {
         val playersList = binding.playerList
         val adapter = PlayerAdapter(requireContext(), players)
         playersList.adapter = adapter
+        val roundsText = binding.roundsText
 
         gameViewModel.activeLobby.observe(viewLifecycleOwner) { lobby ->
             text.text = lobby.pin
             if (lobby.isHost(gameViewModel.user.value!!)) {
                 btn.visibility = View.VISIBLE
                 waitingText.visibility = View.INVISIBLE
+                numberOfRounds.visibility = View.VISIBLE
+                roundsText.visibility = View.VISIBLE
             }
             lobby.players.forEach { player ->
                 if (!players.contains(player)) players.add(player)

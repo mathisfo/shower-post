@@ -40,7 +40,7 @@ class IntermissionFragment : Fragment() {
             submissions.text = "" + submitted + "/" + gameViewModel.activeLobby.value!!.players.size + " players ready"
             val lobby = gameViewModel.activeLobby.value!!
             val game = gameViewModel.game.value!!
-            roundCounter.text = "${game.current_round}/5"
+            roundCounter.text = "${game.current_round}/${game.max_round}"
             if (submitted == lobby.players.size &&
                 lobby.isHost(gameViewModel.user.value!!)) {
                     if (game.current_round == game.max_round) {

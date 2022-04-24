@@ -82,9 +82,9 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         }
     }
 
-    fun createGame() {
+    fun createGame(rounds: Int) {
         viewModelScope.launch {
-            val gameId = repository.createGame(activeLobby.value!!, 5)
+            val gameId = repository.createGame(activeLobby.value!!, rounds)
             getGame(gameId)
         }
     }
