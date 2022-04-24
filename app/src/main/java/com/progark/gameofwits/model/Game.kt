@@ -18,7 +18,8 @@ data class Game(
         for (round in rounds) {
             round.answers.keys.forEach { user ->
                 if (scores[user] == null) scores[user] = 0
-                scores[user] = scores[user]!! + (round.answers[user]?.length ?: 0)
+                val score = if(round.answers[user] == " ") 0 else round.answers[user]?.length ?: 0
+                scores[user] = scores[user]!! + score
             }
         }
     }
