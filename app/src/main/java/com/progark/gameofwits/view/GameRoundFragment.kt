@@ -40,8 +40,10 @@ class GameRoundFragment : Fragment() {
         currentRoundText.text = "Playing round ${game.current_round}/5 "
 
 
-        val endofgame = binding.endofgamebtn
-        endofgame.setOnClickListener { }
+        val skipWord = binding.skip
+        skipWord.setOnClickListener {
+            gameViewModel.submitWord(" ")
+        }
 
         val word = currentRound.letters
         val letters = word.toCharArray().map { c -> LetterItem(c, false) }
