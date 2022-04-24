@@ -3,7 +3,7 @@ package com.progark.gameofwits.storage.documents
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 
-class RoundItem(val letters: String? = "", val answers: Map<String, String>? = null){}
+class RoundItem(val letters: String? = "", val answers: Map<String, String>? = null) {}
 
 data class GameDoc(
     @DocumentId
@@ -15,7 +15,9 @@ data class GameDoc(
     @PropertyName("scores")
     val scores: Map<String, Int>?,
     @PropertyName("rounds")
-    val rounds: Map<String, RoundItem>?
+    val rounds: Map<String, RoundItem>?,
+    @PropertyName("ended")
+    val ended: Boolean?
 ) {
-    constructor() : this("",0, 0, null, null)
+    constructor() : this("", 0, 0, null, null, false)
 }

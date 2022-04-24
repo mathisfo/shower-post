@@ -20,12 +20,14 @@ interface Repository {
     suspend fun createGame(lobby:Lobby, rounds: Int): String
     suspend fun updateAnswerToUser(game: Game, userId: String, word: String)
     suspend fun updateCurrentRound(id: String)
+    suspend fun endGame(id: String)
+    suspend fun updateScore(gameID: String)
 
     // Realtime
     fun listenToLobby(lobbyId: String)
     fun listenToAnswers(game: Game)
     fun listenOnLobbyForGames(lobbyId: String)
-    fun listenToNextRound(gameID: String, currentRound: Int)
+    fun listenToGame(gameID: String, currentRound: Int)
 
     // Storage
     suspend fun loadValidWords(): List<String>

@@ -104,6 +104,10 @@ class Storage private constructor(
         this.realtime.child("lobbies").child(pin).setValue(lobbyId).await()
     }
 
+    override suspend fun endGame(id: String) {
+        this.db.collection("games").document(id).update(mapOf("ended" to true)).await()
+    }
+
     override suspend fun joinLobbyWithPin(
         userId: String,
         username: String,
@@ -125,7 +129,7 @@ class Storage private constructor(
         for (i in 1..max_rounds) {
             rounds["$i"] = RoundItem(createRandomLetters(), answers)
         }
-        val game = GameDoc("", 1, max_rounds, mapOf(), rounds)
+        val game = GameDoc("", 1, max_rounds, mapOf(), rounds, false)
         val ref = this.db.collection("games").add(game).await()
         this.db.collection("lobbies").document(lobby.id).update(
             mapOf(
@@ -148,12 +152,18 @@ class Storage private constructor(
         val snapshot = this.db.collection("games").document(id).get().await()
         val game = snapshot.toObject(GameDoc::class.java)!!
         val rounds = game.rounds!!.values.map { round -> Round(round.letters!!, round.answers!!) }
-        return Game(snapshot.id, rounds, game.currentRound!!, game.maxRounds!!, game.scores!!)
+        return Game(snapshot.id, rounds, game.currentRound!!, game.maxRounds!!, game.scores!!.toMutableMap(), game.ended!!)
     }
 
     override suspend fun updateCurrentRound(id: String) {
         val game = this.getGame(id)
         this.db.collection("games").document(id).update("currentRound", game.current_round + 1)
+    }
+
+    override suspend fun updateScore(gameID: String) {
+        val game = this.getGame(gameID)
+        game.calculateScore()
+        this.db.collection("games").document(gameID).update(mapOf("scores" to game.scores)).await()
     }
 
 
@@ -213,7 +223,7 @@ class Storage private constructor(
         }
     }
 
-    override fun listenToNextRound(gameID: String, currentRound: Int) {
+    override fun listenToGame(gameID: String, currentRound: Int) {
         this.db.collection("games").document(gameID).addSnapshotListener { snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener
@@ -223,6 +233,9 @@ class Storage private constructor(
                 if (gameSnap.currentRound == currentRound+1) {
                     println("Go to next round")
                     PlayerEventSource.goToNextRound(gameSnap.currentRound)
+                }
+                if (gameSnap.ended != null && gameSnap.ended) {
+                    PlayerEventSource.gameEnded()
                 }
             }
         }

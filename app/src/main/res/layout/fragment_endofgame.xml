@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.EndOfGameView"
+    tools:context=".view.EndOfGameFragment"
     android:background="@color/background">
 
     <Button
@@ -31,4 +31,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playagainbtn"
         app:layout_constraintVertical_bias="0.253" />
+
+    <ListView
+        android:id="@+id/scores"
+        android:layout_width="322dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="38dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/playagainbtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

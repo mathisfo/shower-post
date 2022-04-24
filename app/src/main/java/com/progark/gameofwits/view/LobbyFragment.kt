@@ -87,7 +87,7 @@ class LobbyFragment() : Fragment() {
             adapter.notifyDataSetChanged()
         }
         gameViewModel.game.observe(viewLifecycleOwner) {game ->
-            if (game != null) {
+            if (game != null && !game.ended) {
                 findNavController().navigate(R.id.action_lobbyFragment_to_gameFragment)
             }
         }
