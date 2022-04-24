@@ -9,9 +9,7 @@
 
     <Button
         android:id="@+id/menuCreateButton"
-
         android:layout_width="190dp"
-
         android:layout_height="67dp"
         android:backgroundTint="@color/confirmbtn"
         android:text="Create Game"
