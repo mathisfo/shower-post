@@ -43,10 +43,6 @@ class LobbyFragment() : Fragment() {
         numberOfRounds.setOnCheckedChangeListener {group, checkedId ->
             println("Checked: " + checkedId)
             when (checkedId) {
-                R.id.btn1 -> {
-                    println("Rounds: " + 1)
-                    rounds = 1
-                }
                 R.id.btn2 -> {
                     println("Rounds: " + 1)
                     rounds = 2
