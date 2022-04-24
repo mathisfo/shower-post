@@ -10,11 +10,11 @@
     android:background="@color/background">
 
     <Button
-        android:id="@+id/endofgamebtn"
+        android:id="@+id/skip"
         android:layout_width="158dp"
         android:layout_height="52dp"
-        android:text="End game"
         android:backgroundTint="#F07167"
+        android:text="Skip word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
