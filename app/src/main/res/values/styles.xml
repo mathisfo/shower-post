@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="Widget.Theme.Gameofwits.MyView" parent="">
+    <style name="Widget.Theme.wordwar.MyView" parent="">
         <item name="android:background">@color/gray_400</item>
         <item name="exampleColor">@color/light_blue_400</item>
     </style>

@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.progark.gameofwits"
+        applicationId "com.progark.wordwar"
         minSdk 21
         targetSdk 32
         versionCode 1

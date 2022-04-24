@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Gameofwits" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.wordwar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -14,12 +14,12 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.Gameofwits.NoActionBar">
+    <style name="Theme.wordwar.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Gameofwits.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.wordwar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Gameofwits.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.wordwar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

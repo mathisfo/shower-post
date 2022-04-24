@@ -39,7 +39,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:951384451735:android:a731296d66d6492bdbd7d2",
         "android_client_info": {
-          "package_name": "com.progark.gameofwits"
+          "package_name": "com.progark.wordwar"
         }
       },
       "oauth_client": [

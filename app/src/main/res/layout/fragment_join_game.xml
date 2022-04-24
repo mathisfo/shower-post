@@ -5,7 +5,7 @@
     <data>
         <variable
             name="joinGameViewModel"
-            type="com.progark.gameofwits.viewmodel.JoinGameViewModel" />
+            type="com.progark.wordwar.viewmodel.JoinGameViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -35,6 +35,7 @@
         android:ems="10"
         android:hint="Name:"
         android:inputType="text"
+        android:textColor="#000"
         android:text="@={joinGameViewModel.nameField}"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,6 +54,7 @@
         android:text="@={joinGameViewModel.pinField}"
         android:inputType="text"
         android:minHeight="48dp"
+        android:textColor="#000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

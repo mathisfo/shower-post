@@ -3,7 +3,7 @@
     <data>
         <variable
             name="createLobbyViewModel"
-            type="com.progark.gameofwits.viewmodel.CreateLobbyViewModel" />
+            type="com.progark.wordwar.viewmodel.CreateLobbyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,6 +23,7 @@
             android:hint="Name:"
             android:inputType="text"
             android:minHeight="48dp"
+            android:textColor="#000"
             android:fontFamily="sans-serif-condensed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
