@@ -37,6 +37,7 @@ class LobbyFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val text = binding.lobbyId
         val btn = binding.nextbutton
+        val waitingText = binding.waitingText
         btn.setOnClickListener {
             gameViewModel.createGame()
         }
@@ -51,6 +52,7 @@ class LobbyFragment() : Fragment() {
             text.text = lobby.pin
             if (lobby.isHost(gameViewModel.user.value!!)) {
                 btn.visibility = View.VISIBLE
+                waitingText.visibility = View.INVISIBLE
             }
             lobby.players.forEach { player ->
                 if (!players.contains(player)) players.add(player)
