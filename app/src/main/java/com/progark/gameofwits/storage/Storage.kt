@@ -167,8 +167,10 @@ class Storage private constructor(
     }
 
 
-    override suspend fun mainMenu(lobbyId: String) {
+    override suspend fun mainMenu(lobbyId: String, pin: String) {
         this.db.collection("lobbies").document(lobbyId).update(mapOf("active" to false)).await()
+        this.realtime.child("players").child(lobbyId).removeValue()
+        this.realtime.child("lobbies").child(pin).removeValue()
     }
 
 

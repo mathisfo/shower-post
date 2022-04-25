@@ -54,13 +54,15 @@ class EndOfGameFragment : Fragment() {
                     }
                 }
             adapter.notifyDataSetChanged()
-            val best = game.getBestScore()
-            val winner = users.find { user -> user.id == best.first }
-            Toast.makeText(
-                requireContext(),
-                "${winner?.name} won with ${best.second}",
-                Toast.LENGTH_LONG
-            ).show()
+            if (game != null) {
+                val best = game.getBestScore()
+                val winner = users.find { user -> user.id == best.first }
+                Toast.makeText(
+                    requireContext(),
+                    "${winner?.name} won with ${best.second}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
 
         gameViewModel.activeLobby.observe(viewLifecycleOwner) { lobby ->
@@ -70,8 +72,11 @@ class EndOfGameFragment : Fragment() {
         }
 
         playagain.setOnClickListener {
-            findNavController().navigate(R.id.action_endOfGameFragment_to_lobbyFragment)
+            val lobbyId = gameViewModel.activeLobby.value!!.id
+            val userId = gameViewModel.user.value!!
+            openLobby(lobbyId, userId)
         }
+
         mainmenu.setOnClickListener {
             if (gameViewModel.activeLobby.value!!.isHost(gameViewModel.user.value!!)) {
                 gameViewModel.mainMenu()
@@ -81,6 +86,13 @@ class EndOfGameFragment : Fragment() {
 
     private fun openMainMenuView() {
         val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openLobby(lobbyId: String, userId: String) {
+        val intent = Intent(requireContext(), GameActivity::class.java)
+        intent.putExtra("ACTIVE_LOBBY_ID", lobbyId)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 }
