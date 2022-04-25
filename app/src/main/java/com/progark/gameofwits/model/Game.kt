@@ -23,4 +23,15 @@ data class Game(
             }
         }
     }
+
+    fun getBestScore(): Pair<String, Int> {
+        val score = scores.entries.reduce { max, entry->
+            if (entry.value > max.value) {
+                entry
+            } else {
+                max
+            }
+        }
+        return score.toPair()
+    }
 }

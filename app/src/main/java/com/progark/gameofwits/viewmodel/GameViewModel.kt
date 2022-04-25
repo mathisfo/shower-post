@@ -105,6 +105,7 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
 
     private suspend fun getGame(id: String) {
         val game = repository.getGame(id)
+        _ended.postValue(game.ended)
         _game.postValue(game)
         repository.listenToAnswers(game)
         repository.listenToGame(game.id, game.current_round)
