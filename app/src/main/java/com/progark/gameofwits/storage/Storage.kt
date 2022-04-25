@@ -152,7 +152,14 @@ class Storage private constructor(
         val snapshot = this.db.collection("games").document(id).get().await()
         val game = snapshot.toObject(GameDoc::class.java)!!
         val rounds = game.rounds!!.values.map { round -> Round(round.letters!!, round.answers!!) }
-        return Game(snapshot.id, rounds, game.currentRound!!, game.maxRounds!!, game.scores!!.toMutableMap(), game.ended!!)
+        return Game(
+            snapshot.id,
+            rounds,
+            game.currentRound!!,
+            game.maxRounds!!,
+            game.scores!!.toMutableMap(),
+            game.ended!!
+        )
     }
 
     override suspend fun updateCurrentRound(id: String) {
@@ -178,11 +185,13 @@ class Storage private constructor(
         val snapshot = this.realtime.child("players").child(lobbyId)
         val playerListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val values = snapshot.getValue<Map<String, PlayerRealtime>>()!!
-                for (key in values.keys) {
-                    val data = values[key]!!
-                    val user = User(key, data.name!!, data.ready!!, data.submitted!!)
-                    PlayerEventSource.playerJoined(user)
+                val values = snapshot.getValue<Map<String, PlayerRealtime>>()
+                if (values != null) {
+                    for (key in values.keys) {
+                        val data = values[key]!!
+                        val user = User(key, data.name!!, data.ready!!, data.submitted!!)
+                        PlayerEventSource.playerJoined(user)
+                    }
                 }
             }
 
@@ -225,8 +234,7 @@ class Storage private constructor(
                     println(lobbyId)
                     if (!active) {
                         PlayerEventSource.mainMenu()
-                    }
-                    else if (!games.isEmpty()) {
+                    } else if (!games.isEmpty()) {
                         PlayerEventSource.gameCreated(games.last().id)
                     }
                 }
@@ -241,7 +249,7 @@ class Storage private constructor(
             }
             if (snapshot != null && snapshot.exists()) {
                 val gameSnap = snapshot.toObject(GameDoc::class.java)!!
-                if (gameSnap.currentRound == currentRound+1) {
+                if (gameSnap.currentRound == currentRound + 1) {
                     println("Go to next round")
                     PlayerEventSource.goToNextRound(gameSnap.currentRound)
                 }
