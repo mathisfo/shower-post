@@ -22,7 +22,7 @@ interface Repository {
     suspend fun updateCurrentRound(id: String)
     suspend fun endGame(id: String)
     suspend fun updateScore(gameID: String)
-    suspend fun mainMenu(lobbyId: String)
+    suspend fun mainMenu(lobbyId: String, pin: String)
 
     // Realtime
     fun listenToLobby(lobbyId: String)

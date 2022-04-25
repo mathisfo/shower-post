@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import com.progark.gameofwits.MainActivity
 import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentEndofgameBinding
 import com.progark.gameofwits.viewmodel.GameViewModel
+import model.User
 
 class EndOfGameFragment : Fragment() {
     private var _binding: FragmentEndofgameBinding? = null
@@ -41,37 +43,54 @@ class EndOfGameFragment : Fragment() {
 
         gameViewModel.game.observe(viewLifecycleOwner) { game ->
             val players = gameViewModel.activeLobby.value!!.players
-            game.scores.toList().sortedBy { (_, value) -> -value}.toMap().entries.forEach { (key, value) ->
-                val user = players.find { user -> user.id == key }
-                if (user != null) {
-                    val text = "${user.name}: $value"
-                    if (!items.contains(text)) items.add(text)
+            val users: MutableList<User> = mutableListOf()
+            game.scores.toList().sortedBy { (_, value) -> -value }
+                .toMap().entries.forEach { (key, value) ->
+                    val user = players.find { user -> user.id == key }
+                    if (user != null) {
+                        val text = "${user.name}: $value"
+                        if (!items.contains(text)) items.add(text)
+                        users.add(user)
+                    }
                 }
-            }
             adapter.notifyDataSetChanged()
+            if (game != null) {
+                val best = game.getBestScore()
+                val winner = users.find { user -> user.id == best.first }
+                println(winner)
+            }
         }
 
         gameViewModel.activeLobby.observe(viewLifecycleOwner) { lobby ->
-               if (!lobby.active) {
-                   openMainMenuView()
-               }
+            if (!lobby.active) {
+                openMainMenuView()
+            }
         }
 
         playagain.setOnClickListener {
-            findNavController().navigate(R.id.action_endOfGameFragment_to_lobbyFragment)
+            val lobbyId = gameViewModel.activeLobby.value!!.id
+            val userId = gameViewModel.user.value!!
+            openLobby(lobbyId, userId)
         }
+
         mainmenu.setOnClickListener {
             if (gameViewModel.activeLobby.value!!.isHost(gameViewModel.user.value!!)) {
                 gameViewModel.mainMenu()
-            }
-            else openMainMenuView()
+            } else openMainMenuView()
         }
-
-
     }
 
     private fun openMainMenuView() {
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
+        activity?.finish()
+    }
+
+    private fun openLobby(lobbyId: String, userId: String) {
+        val intent = Intent(requireContext(), GameActivity::class.java)
+        intent.putExtra("ACTIVE_LOBBY_ID", lobbyId)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+        activity?.finish()
     }
 }

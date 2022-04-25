@@ -57,15 +57,16 @@ class IntermissionFragment : Fragment() {
                 nextword.visibility = View.INVISIBLE
                 openGameRoundView()
             }
+            else if (game.ended) {
+                openEndGameView()
+            }
         }
         endGame.setOnClickListener {
             gameViewModel.endCurrentGame()
         }
-        gameViewModel.ended.observe(viewLifecycleOwner) { ended ->
-            if (ended) {
-                findNavController().navigate(R.id.action_intermissionFragment_to_endOfGameFragment)
-            }
-        }
+    }
+    private fun openEndGameView() {
+        findNavController().navigate(R.id.action_intermissionFragment_to_endOfGameFragment)
     }
 
     private fun openGameRoundView() {

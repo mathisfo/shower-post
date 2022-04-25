@@ -6,14 +6,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class GameTest {
-    @Test
-    fun correctInitializationOfRound() {
-        val round = Round("aabc", mapOf())
-        assertEquals(round.availableLetter['a'], 2)
-        assertEquals(round.availableLetter['b'], 1)
-        assertEquals(round.availableLetter['c'], 1)
-        assertEquals(round.availableLetter['d'], null)
-    }
+
     @Test
     fun testCorrectScore() {
         val rounds = listOf(
@@ -24,5 +17,20 @@ class GameTest {
         assertEquals(game.scores["user1"], 6)
         assertEquals(game.scores["user2"], 8)
         assertEquals(game.scores["user3"], null)
+
+        val best = game.getBestScore()
+        assertEquals(best.first, "user2")
+        assertEquals(best.second, 8)
     }
+
+    @Test
+    fun testSkip() {
+        val rounds = listOf(
+            Round("dacr", mapOf("user1" to " ")),
+            Round("enif", mapOf("user1" to "fin")))
+        val game = Game("id123", rounds,2,2, mutableMapOf(),true)
+        game.calculateScore()
+        assertEquals(game.scores["user1"], 3)
+    }
+
 }

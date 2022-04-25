@@ -29,9 +29,6 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     private val _validOrError = MutableLiveData<Pair<Boolean, String>>()
     val validOrError: LiveData<Pair<Boolean, String>> = _validOrError
 
-    private val _ended = MutableLiveData(false)
-    val ended: LiveData<Boolean> = _ended
-
     init {
         viewModelScope.launch {
             val words = repository.loadValidWords()
@@ -84,14 +81,12 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
                 _validOrError.postValue(Pair(false, ""))
                 getGame(_game.value!!.id)
             }
-        } else if (event == "GAME_ENDED") {
-            _ended.postValue(true)
         }
     }
 
     fun mainMenu() {
         viewModelScope.launch {
-            repository.mainMenu(activeLobby.value!!.id)
+            repository.mainMenu(activeLobby.value!!.id, activeLobby.value!!.pin)
         }
     }
 
@@ -99,7 +94,6 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
         viewModelScope.launch {
             val gameId = repository.createGame(activeLobby.value!!, rounds)
             getGame(gameId)
-            _ended.postValue(false)
         }
     }
 
