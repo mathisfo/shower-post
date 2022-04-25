@@ -1,7 +1,8 @@
 # README
 
 1. [Running the game](https://github.com/mathisfo/shower-post#running-the-game)
-    *  [Quick Start](https://github.com/mathisfo/shower-post#quck-start)
+    * [Quick Start through emulator](https://github.com/mathisfo/shower-post#quck-start-through-emulator)
+    * [Quick Start through Android device](https://github.com/mathisfo/shower-post#quck-start-through-physical-android-device)
     * [Compile and run through source code](https://github.com/mathisfo/shower-post#compile-and-run-through-source-code)
 2. [Code Structure](https://github.com/mathisfo/shower-post#compile-and-run-through-source-code)
     * [Model](https://github.com/mathisfo/shower-post#model)
@@ -11,11 +12,12 @@
     * [ViewModel](https://github.com/mathisfo/shower-post#viewmodel)
 
 ## Running the game
-### Quck Start
+### Quck Start through emulator
 
-The easiest way to run the game, is by dragging the provided `wordwar.apk` file located in the `dist` folder into your android emulator. The game has been tested on a Pixel 2 emulator with API level 29.
+The easiest way to run the game, is by dragging the provided `wordwar.apk` file located in the `dist/releases` folder into your android emulator. The game has been tested on a Pixel 2 emulator with API level 29.
 
-It’s also possible to download the apk file to your Android device if applicable. OnePlus 9 and OnePlus 8 on Android 11 have been tried and confirmed working.
+### Quck Start through physical Android device
+It’s also possible to download the apk file to your Android device if applicable. OnePlus 9 and OnePlus 8 on Android 11 have been tried and confirmed working. Note that the app does not support dark mode.
 
 ### Compile and run through source code
 
