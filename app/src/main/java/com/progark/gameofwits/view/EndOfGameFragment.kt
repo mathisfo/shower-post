@@ -61,7 +61,10 @@ class EndOfGameFragment : Fragment() {
             findNavController().navigate(R.id.action_endOfGameFragment_to_lobbyFragment)
         }
         mainmenu.setOnClickListener {
-            gameViewModel.mainMenu()
+            if (gameViewModel.activeLobby.value!!.isHost(gameViewModel.user.value!!)) {
+                gameViewModel.mainMenu()
+            }
+            else openMainMenuView()
         }
 
 
