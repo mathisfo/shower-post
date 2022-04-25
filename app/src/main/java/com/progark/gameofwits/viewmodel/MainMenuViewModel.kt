@@ -3,8 +3,6 @@ package com.progark.gameofwits.viewmodel
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.progark.gameofwits.model.Lobby
-import com.progark.gameofwits.model.Player
-import kotlinx.coroutines.launch
 import storage.Repository
 import storage.Storage
 
