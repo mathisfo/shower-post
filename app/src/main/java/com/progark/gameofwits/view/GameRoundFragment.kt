@@ -76,7 +76,7 @@ class GameRoundFragment : Fragment() {
             val error = validOrError.second
             if (valid && error == "") {
                 openIntermissionView()
-            } else {
+            } else if (error != "") {
                 Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
             }
         }
