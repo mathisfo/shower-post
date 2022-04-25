@@ -1,6 +1,14 @@
 # README
 
-[TOC]
+1. [Running the game](https://github.com/mathisfo/shower-post#running-the-game)
+    *  [Quick Start](https://github.com/mathisfo/shower-post#quck-start)
+    * [Compile and run through source code](https://github.com/mathisfo/shower-post#compile-and-run-through-source-code)
+2. [Code Structure](https://github.com/mathisfo/shower-post#compile-and-run-through-source-code)
+    * [Model](https://github.com/mathisfo/shower-post#model)
+    * [Observers](https://github.com/mathisfo/shower-post#observers)
+    * [Storage](https://github.com/mathisfo/shower-post#storage)
+    * [View](https://github.com/mathisfo/shower-post#view)
+    * [ViewModel](https://github.com/mathisfo/shower-post#viewmodel)
 
 ## Running the game
 ### Quck Start
@@ -29,14 +37,14 @@ The code structure follows the Model-View-ViewModel (MVVM). The code that is ass
 
 The model package includes all the objects that are used within the game. Since Firebase is not object oriented, the repository pattern maps between database entities and objects useful in the game. The objects that are associated to their related entities are located in the model package.
 
-## Observers
+### Observers
 
 
 [observers](https://github.com/mathisfo/shower-post/tree/main/app/src/main/java/com/progark/gameofwits/observers)
 
 The observers package follows the observer pattern. The content of this package acts as abservers to notify whenever a user changes its local state of the game. For example, the `PlayerEventSource` notifies the `PlayerObserver` interface when all users have submitted their word for each round. Finally, the host is notifed through the interface and is allowed to continue to the next round.
 
-## Storage
+### Storage
 
 
 [storage](https://github.com/mathisfo/shower-post/tree/main/app/src/main/java/com/progark/gameofwits/storage)
@@ -45,14 +53,14 @@ The storage package is part of the repository pattern and translates database en
 
 Storage also includes the logic for interacting with observers from [observers](https://github.com/mathisfo/shower-post/tree/main/app/src/main/java/com/progark/gameofwits/observers)
 
-## View
+### View
 
 
 [View](https://github.com/mathisfo/shower-post/tree/main/app/src/main/java/com/progark/gameofwits/view)
 
 The view package contains all views that are displayed to the user. These are implemented through the Fragment class of the Android SDK. The views of the view package ties the user interaction into business logic. Since the GUI is drawn from the xml files in the [res](https://github.com/mathisfo/shower-post/tree/main/app/src/main/res/layout) folder, the views creates a binding between user interactable objects and business logic. For example, [GameRoundFragment.kt - Line 85](https://github.com/mathisfo/shower-post/blob/main/app/src/main/java/com/progark/gameofwits/view/GameRoundFragment.kt#L85) is invoked when the player presses the “Submit Word" button in a round. 
 
-## ViewModel
+### ViewModel
 
 
 The viewmodel package contains the layer between view and model layer. When clicking the button from the example above, the `GameViewModel` operates as the binding between UI elements to its corresponding controls. For the “Submit Word" button case, the `GameViewModel` invokes the repository to update the user's answer.
