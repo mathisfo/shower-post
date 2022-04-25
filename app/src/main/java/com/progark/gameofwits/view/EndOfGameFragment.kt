@@ -57,11 +57,7 @@ class EndOfGameFragment : Fragment() {
             if (game != null) {
                 val best = game.getBestScore()
                 val winner = users.find { user -> user.id == best.first }
-                Toast.makeText(
-                    requireContext(),
-                    "${winner?.name} won with ${best.second}",
-                    Toast.LENGTH_LONG
-                ).show()
+                println(winner)
             }
         }
 
@@ -87,6 +83,7 @@ class EndOfGameFragment : Fragment() {
     private fun openMainMenuView() {
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
+        activity?.finish()
     }
 
     private fun openLobby(lobbyId: String, userId: String) {
@@ -94,5 +91,6 @@ class EndOfGameFragment : Fragment() {
         intent.putExtra("ACTIVE_LOBBY_ID", lobbyId)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
+        activity?.finish()
     }
 }

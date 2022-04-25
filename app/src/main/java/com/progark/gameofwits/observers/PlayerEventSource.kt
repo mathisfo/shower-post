@@ -40,8 +40,4 @@ object PlayerEventSource {
     fun goToNextRound(round: Int) {
         notifyObservers("NEXT_ROUND", round)
     }
-
-    fun gameEnded() {
-        notifyObservers("GAME_ENDED", null)
-    }
 }

@@ -1,16 +1,9 @@
 package com.progark.gameofwits.view
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.ActivityGameBinding
-import com.progark.gameofwits.databinding.ActivityMainBinding
 import com.progark.gameofwits.observers.PlayerEventSource
 import com.progark.gameofwits.viewmodel.GameViewModel
 

@@ -18,20 +18,23 @@ data class Game(
         for (round in rounds) {
             round.answers.keys.forEach { user ->
                 if (scores[user] == null) scores[user] = 0
-                val score = if(round.answers[user] == " ") 0 else round.answers[user]?.length ?: 0
+                val score = if (round.answers[user] == " ") 0 else round.answers[user]?.length ?: 0
                 scores[user] = scores[user]!! + score
             }
         }
     }
 
     fun getBestScore(): Pair<String, Int> {
-        val score = scores.entries.reduce { max, entry->
-            if (entry.value > max.value) {
-                entry
-            } else {
-                max
+        if (scores.isNotEmpty()) {
+            val score = scores.entries.reduce { max, entry ->
+                if (entry.value > max.value) {
+                    entry
+                } else {
+                    max
+                }
             }
+            return score.toPair()
         }
-        return score.toPair()
+        return Pair("", 0)
     }
 }

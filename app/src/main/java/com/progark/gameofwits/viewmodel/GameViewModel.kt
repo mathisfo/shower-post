@@ -29,9 +29,6 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
     private val _validOrError = MutableLiveData<Pair<Boolean, String>>()
     val validOrError: LiveData<Pair<Boolean, String>> = _validOrError
 
-    private val _ended = MutableLiveData(false)
-    val ended: LiveData<Boolean> = _ended
-
     init {
         viewModelScope.launch {
             val words = repository.loadValidWords()
@@ -84,8 +81,6 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
                 _validOrError.postValue(Pair(false, ""))
                 getGame(_game.value!!.id)
             }
-        } else if (event == "GAME_ENDED") {
-            _ended.postValue(true)
         }
     }
 

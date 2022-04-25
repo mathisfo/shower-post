@@ -245,9 +245,6 @@ class Storage private constructor(
                     println("Go to next round")
                     PlayerEventSource.goToNextRound(gameSnap.currentRound)
                 }
-                if (gameSnap.ended != null && gameSnap.ended) {
-                    PlayerEventSource.gameEnded()
-                }
             }
         }
     }
