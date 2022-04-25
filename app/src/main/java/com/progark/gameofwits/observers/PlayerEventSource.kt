@@ -21,6 +21,10 @@ object PlayerEventSource {
         notifyObservers("PLAYER_JOINED", user)
     }
 
+    fun mainMenu() {
+        notifyObservers("MAIN_MENU", null)
+    }
+
     fun userHasSubmitted(subs: Int) {
         notifyObservers("USER_SUBMITTED", subs)
     }

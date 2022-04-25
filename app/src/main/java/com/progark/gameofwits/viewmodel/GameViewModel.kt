@@ -73,6 +73,10 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
                 val id = payload as String
                 getGame(id)
             }
+        } else if (event == "MAIN_MENU") {
+            val lobby = _activeLobby.value!!
+            lobby.active = false
+            _activeLobby.postValue(lobby)
         } else if (event == "NEXT_ROUND") {
             println("$event: ${_game.value}")
             viewModelScope.launch {
@@ -82,6 +86,12 @@ class GameViewModel(private val repository: Repository = Storage.getInstance()) 
             }
         } else if (event == "GAME_ENDED") {
             _ended.postValue(true)
+        }
+    }
+
+    fun mainMenu() {
+        viewModelScope.launch {
+            repository.mainMenu(activeLobby.value!!.id)
         }
     }
 

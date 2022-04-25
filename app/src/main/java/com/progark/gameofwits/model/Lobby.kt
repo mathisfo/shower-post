@@ -9,7 +9,7 @@ import model.User
 class Lobby(
     val id: String,
     val pin: String,
-    val active: Boolean,
+    var active: Boolean,
     val host: String,
     val started: Boolean = false
 ) {

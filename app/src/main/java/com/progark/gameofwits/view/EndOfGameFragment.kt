@@ -1,5 +1,6 @@
 package com.progark.gameofwits.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.progark.gameofwits.MainActivity
 import com.progark.gameofwits.R
 import com.progark.gameofwits.databinding.FragmentEndofgameBinding
 import com.progark.gameofwits.viewmodel.GameViewModel
@@ -49,10 +51,24 @@ class EndOfGameFragment : Fragment() {
             adapter.notifyDataSetChanged()
         }
 
+        gameViewModel.activeLobby.observe(viewLifecycleOwner) { lobby ->
+               if (!lobby.active) {
+                   openMainMenuView()
+               }
+        }
 
         playagain.setOnClickListener {
             findNavController().navigate(R.id.action_endOfGameFragment_to_lobbyFragment)
         }
-        mainmenu.setOnClickListener {}
+        mainmenu.setOnClickListener {
+            gameViewModel.mainMenu()
+        }
+
+
+    }
+
+    private fun openMainMenuView() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
     }
 }

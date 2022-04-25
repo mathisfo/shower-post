@@ -167,6 +167,11 @@ class Storage private constructor(
     }
 
 
+    override suspend fun mainMenu(lobbyId: String) {
+        this.db.collection("lobbies").document(lobbyId).update(mapOf("active" to false)).await()
+    }
+
+
     override fun listenToLobby(lobbyId: String) {
         val snapshot = this.realtime.child("players").child(lobbyId)
         val playerListener = object : ValueEventListener {
@@ -213,9 +218,13 @@ class Storage private constructor(
                 val lobbySnap = snapshot.toObject(LobbyDoc::class.java)
                 if (lobbySnap != null && lobbySnap.started) {
                     val games = lobbySnap.games ?: return@addSnapshotListener
+                    val active = lobbySnap.active ?: return@addSnapshotListener
                     println(games)
                     println(lobbyId)
-                    if (!games.isEmpty()) {
+                    if (!active) {
+                        PlayerEventSource.mainMenu()
+                    }
+                    else if (!games.isEmpty()) {
                         PlayerEventSource.gameCreated(games.last().id)
                     }
                 }
@@ -248,4 +257,5 @@ class Storage private constructor(
         val words = String(hm.getBytes(ONE_MEGA_BYTE).await())
         return words.split("\n")
     }
+
 }
